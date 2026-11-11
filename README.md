@@ -12,22 +12,25 @@ This is the separate **solo RIMBARA project**. It does not modify the earlier
 
 ## Open and play
 
-1. Install **Unity 6000.3.6f1 (Unity 6.3 LTS)** through Unity Hub, including
+1. Install **Unity 6000.3.27f2 (Unity 6.3 LTS)** through Unity Hub, including
    Windows Build Support (Mono).
-2. Clone the private repository with an account that has access:
+2. Clone the repository (if it is private, use an account with access):
 
    ```powershell
    git lfs install
-   git clone https://github.com/fahrurrozi487/RIMBARA.git
-   cd RIMBARA
+   git clone https://github.com/vaskoyudha/Rimbara_Grafikom.git
+   cd Rimbara_Grafikom
    git lfs pull
    ```
 
    Use Git and Git LFS rather than **Download ZIP**: source archives can contain
    LFS pointer files instead of the required character meshes, audio and textures.
+   The clone includes the project assets under `Assets/RIMBARA/`, including the
+   Kenney models, textures, materials, and generated environment prefabs.
 
-3. Add the `RIMBARA` folder to Unity Hub. It contains `Assets`, `Packages`, and
-   `ProjectSettings`; do not select the sibling Forest Reborn folder.
+3. Add the cloned `Rimbara_Grafikom` folder to Unity Hub. It contains `Assets`,
+   `Packages`, and `ProjectSettings`; do not select the sibling Forest Reborn
+   folder.
 4. Open **`Assets/Scenes/Main.unity`** and press **Play**.
 5. Select **Begin Restoration**, read the briefing, then **Enter Arunika**.
 
@@ -123,7 +126,7 @@ cloud saves/leaderboards, complex inventory, crafting, and skill trees.
 
 Kenney environment assets are CC0. Mixamo and Unity Starter Assets retain
 their own licences; **this is not an entirely open-source asset pack**. Keep
-the private repository private unless you first review redistribution rights
-or replace licensed assets. No Persons B/C or other collaborators are invited.
+the repository private unless you first review redistribution rights or replace
+licensed assets.
 
 # Rimbara_Grafikom
