@@ -125,3 +125,5 @@ Kenney environment assets are CC0. Mixamo and Unity Starter Assets retain
 their own licences; **this is not an entirely open-source asset pack**. Keep
 the private repository private unless you first review redistribution rights
 or replace licensed assets. No Persons B/C or other collaborators are invited.
+
+# Rimbara_Grafikom
