@@ -105,6 +105,7 @@ public static class BuildRimbaraEnvironment
             if (c == null || c.isTrigger || c is TerrainCollider) continue;
             if (c.transform.root.name.StartsWith("RIMBARA_")) continue;
             if (c.bounds.size.sqrMagnitude < 0.0001f) continue;
+            if (c.bounds.size.x * c.bounds.size.y * c.bounds.size.z < 0.75f) continue;
             occupied.Add(c.bounds);
         }
 
@@ -127,10 +128,10 @@ public static class BuildRimbaraEnvironment
         PlaceHouse(houses, "House_B", new Vector3(27f, 0f, 4f), 0f);
         PlaceHouse(houses, "House_C", new Vector3(42.5f, 0f, -9f), 90f);
         PlaceHouse(houses, "House_D", new Vector3(41f, 0f, -14.5f), 90f);
-        PlaceHouse(houses, "House_E", new Vector3(30.5f, 0f, -10.5f), 180f);
+        PlaceHouse(houses, "House_E", new Vector3(30f, 0f, -10f), 180f);
         PlaceHouse(houses, "House_F", new Vector3(23f, 0f, -19f), 180f);
         PlaceHouse(houses, "Shed_1", new Vector3(31.5f, 0f, -3.5f), -90f);
-        PlaceHouse(houses, "Shed_2", new Vector3(35f, 0f, 11f), 0f);
+        PlaceHouse(houses, "Shed_2", new Vector3(47f, 0f, -15f), 0f);
 
         BuildVillagePlaza(root);
         BuildVillageTrail(root);
