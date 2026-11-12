@@ -34,3 +34,6 @@
 
 # Preserve the official controller's source bytes, including vendor line endings.
 "Assets/Starter Assets/**/*.cs" -text !eol
+
+# Arunika is a binary-serialized scene (EditorSettings m_SerializationMode: 2)
+Assets/Scenes/Arunika.unity binary
