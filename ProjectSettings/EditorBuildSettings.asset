@@ -6,7 +6,13 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/Arunika.unity
+    guid: 016777cf3ed65f626b7827e2df08b4ce
+  - enabled: 1
+    path: Assets/Scenes/VillageRestoration.unity
+    guid: 7a7292bfb6054ecb974f9ebe08f7e429
+  - enabled: 1
     path: Assets/Scenes/Main.unity
-    guid: 00000000000000000000000000000000
+    guid: 9821b1b18e5ab2a41a2c3a72812b492e
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0

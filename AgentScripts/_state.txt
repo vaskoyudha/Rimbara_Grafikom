@@ -1,0 +1,11 @@
+play=False playingOrWill=False
+scene=Arunika path=Assets/Scenes/Arunika.unity dirty=False
+unity=6000.3.6f1 log=/home/vyns/.config/unity3d/Editor.log
+screen Gameplay HUD active=True
+screen Menu dimmer active=False
+screen Main menu active=False
+screen Briefing screen active=False
+screen Controls screen active=False
+screen Pause screen active=False
+screen Ending screen active=False
+rig=Volunteer prefab=True

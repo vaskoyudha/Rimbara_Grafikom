@@ -110,7 +110,9 @@ namespace Rimbara.Mission
 
         private void OnApplicationFocus(bool focused)
         {
+#if !UNITY_EDITOR
             if (!focused && Mode == ScreenMode.Playing && !DiagnosticMode) Pause();
+#endif
         }
 
         private void OnDestroy()

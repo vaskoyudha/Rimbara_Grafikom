@@ -101,7 +101,7 @@ namespace Rimbara.UI
         private void RefreshProgress(ProgressSnapshot progress)
         {
             view.Seedlings.text = "SEEDLINGS   <b>" + progress.Seedlings + " / " + progress.SeedlingGoal + "</b>"
-                + "  <color=#95BDA3>(carrying " + progress.CarriedSeedlings + ")</color>";
+                + "  <color=#8A6242>(carrying " + progress.CarriedSeedlings + ")</color>";
             view.Trees.text = "TREES PLANTED   <b>" + progress.Trees + " / " + progress.TreeGoal + "</b>";
             view.Fires.text = "FIRES OUT   <b>" + progress.Fires + " / " + progress.FireGoal + "</b>";
             view.Restoration.text = Mathf.RoundToInt(progress.Restoration * 100f) + "% RESTORED";
@@ -143,7 +143,7 @@ namespace Rimbara.UI
         public void ShowToast(string text, bool success = true)
         {
             view.Toast.text = text;
-            view.Toast.color = success ? new Color(0.85f, 0.97f, 0.87f) : new Color(1f, 0.8f, 0.52f);
+            view.Toast.color = success ? new Color32(0x2F, 0x6B, 0x1F, 0xFF) : new Color32(0xA3, 0x2B, 0x22, 0xFF);
             toastUntil = Time.unscaledTime + 5.5f;
             view.Toast.transform.parent.gameObject.SetActive(true);
         }

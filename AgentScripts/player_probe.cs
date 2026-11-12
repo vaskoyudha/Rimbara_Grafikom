@@ -1,0 +1,22 @@
+using System.Text;
+using UnityEngine;
+using Rimbara.Player;
+var rig=Object.FindFirstObjectByType<VolunteerRig>();
+if(rig==null) return "no rig";
+var cam=rig.ViewCamera;
+var sb=new StringBuilder();
+var p=rig.transform.position;
+var sp=cam.WorldToScreenPoint(p+Vector3.up*0.9f);
+sb.AppendLine("player "+p+" screen="+sp+" cam="+cam.name);
+var an=rig.Animator;
+sb.AppendLine("anim avatar="+(an.avatar!=null?an.avatar.name+" human="+an.avatar.isHuman+" valid="+an.avatar.isValid:"null")+" ctrl="+(an.runtimeAnimatorController!=null?an.runtimeAnimatorController.name:"null"));
+var st=an.GetCurrentAnimatorStateInfo(0);
+sb.AppendLine("state="+st.fullPathHash+" norm="+st.normalizedTime+" speed="+st.speed);
+var hand=an.GetBoneTransform(HumanBodyBones.RightHand);
+var head=an.GetBoneTransform(HumanBodyBones.Head);
+sb.AppendLine("hand="+hand.position+" head="+head.position+" h="+(head.position.y-p.y));
+var rends=rig.GetComponentsInChildren<Renderer>(true);
+float minY=999,maxY=-999; int n=0;
+foreach(var r in rends){ if(!r.enabled) continue; var b=r.bounds; minY=Mathf.Min(minY,b.min.y); maxY=Mathf.Max(maxY,b.max.y); n++; }
+sb.AppendLine("renderers="+n+" worldY "+minY+".."+maxY+" (height "+(maxY-minY)+")");
+return sb.ToString();

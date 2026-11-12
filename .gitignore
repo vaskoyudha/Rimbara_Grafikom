@@ -36,3 +36,7 @@ Thumbs.db
 
 # Keep Unity asset metadata: it preserves scene/prefab references.
 !/[Aa]ssets/**/*.meta
+
+# Unity crash artifacts
+mono_crash.*.blob
+/[Aa]ssets/_Recovery/
