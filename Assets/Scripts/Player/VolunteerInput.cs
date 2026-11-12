@@ -13,6 +13,7 @@ namespace Rimbara.Player
         private InputAction move;
         private InputAction look;
         private InputAction sprint;
+        private InputAction jump;
         private InputAction interact;
         private InputAction spray;
         private InputAction pause;
@@ -20,12 +21,14 @@ namespace Rimbara.Player
         private Vector2 testMove;
         private Vector2 testLook;
         private bool testSprint;
+        private bool testJump;
         private bool testInteract;
         private bool testSpray;
         public bool GameplayEnabled { get; private set; }
         public Vector2 Move => GameplayEnabled ? testMode ? testMove : move.ReadValue<Vector2>() : Vector2.zero;
         public Vector2 Look => GameplayEnabled ? testMode ? testLook : look.ReadValue<Vector2>() : Vector2.zero;
         public bool SprintHeld => GameplayEnabled && (testMode ? testSprint : sprint.IsPressed());
+        public bool JumpPressed => GameplayEnabled && (testMode ? testJump : jump.WasPressedThisFrame());
         public bool InteractPressed => GameplayEnabled && (testMode ? testInteract : interact.WasPressedThisFrame());
         public bool SprayHeld => GameplayEnabled && (testMode ? testSpray : spray.IsPressed());
         public bool PausePressed => !testMode && pause.WasPressedThisFrame();
@@ -40,6 +43,8 @@ namespace Rimbara.Player
             look = actions.AddAction("Look", InputActionType.Value, "<Mouse>/delta", expectedControlLayout: "Vector2");
             sprint = actions.AddAction("Sprint", InputActionType.Button, "<Keyboard>/leftShift");
             sprint.AddBinding("<Keyboard>/rightShift");
+            jump = actions.AddAction("Jump", InputActionType.Button, "<Keyboard>/space");
+            jump.AddBinding("<Gamepad>/buttonSouth");
             interact = actions.AddAction("Interact", InputActionType.Button, "<Keyboard>/e");
             interact.AddBinding("<Gamepad>/buttonWest");
             spray = actions.AddAction("Spray", InputActionType.Button, "<Mouse>/leftButton");
@@ -58,6 +63,8 @@ namespace Rimbara.Player
         }
 
         public void EnableTestDriver(bool enabled) { testMode = enabled; }
+
+        public void SetTestJump(bool pressed) { testJump = pressed; }
 
         public void SetTestInput(Vector2 movement, Vector2 cameraLook, bool running, bool interacting, bool spraying)
         {

@@ -70,7 +70,7 @@ namespace Rimbara.Player
             starterInputs.MoveInput(controls.Move);
             starterInputs.LookInput(controls.Look * 0.12f);
             starterInputs.SprintInput(controls.SprintHeld);
-            starterInputs.JumpInput(false); // Jumping is intentionally outside this walking restoration MVP.
+            starterInputs.JumpInput(controls.JumpPressed);
         }
 
         private void Start()
@@ -87,8 +87,8 @@ namespace Rimbara.Player
             if (controls.SprayHeld && viewCamera != null)
                 transform.rotation = Quaternion.Euler(0f, viewCamera.transform.eulerAngles.y, 0f);
             // Recovery, not a fail condition. Counters and mission state are untouched.
-            if (transform.position.y < -8f || Mathf.Abs(transform.position.x) > 64f
-                || transform.position.z < -42f || transform.position.z > 90f)
+            // Bound the play space around the spawn so moved restoration grounds stay valid.
+            if (transform.position.y < -8f || (transform.position - spawnPosition).sqrMagnitude > 3600f)
                 Teleport(spawnPosition);
         }
 

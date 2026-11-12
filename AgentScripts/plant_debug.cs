@@ -1,0 +1,17 @@
+using System.Linq;
+using System.Text;
+using UnityEngine;
+using Rimbara.Mission;
+using Rimbara.Interaction;
+var sb=new StringBuilder();
+var ms=Object.FindObjectsByType<MissionSystem>(FindObjectsInactive.Include,FindObjectsSortMode.None).FirstOrDefault();
+var st=ms.State;
+var actor=Object.FindObjectsByType<VolunteerActor>(FindObjectsInactive.Include,FindObjectsSortMode.None).FirstOrDefault();
+var beds=Object.FindObjectsByType<PlantingPoint>(FindObjectsInactive.Include,FindObjectsSortMode.None).OrderBy(x=>x.Slot).ToArray();
+sb.AppendLine($"stage={ms.Stage} running={st.SessionRunning} canPlant={ms.CanCollectOrPlant} carried={st.Snapshot.CarriedSeedlings} seeds={st.Snapshot.Seedlings} trees={st.Snapshot.Trees}");
+foreach(var b in beds) sb.AppendLine($"bed{b.Slot} avail={b.Available} planted={b.Planted} dist={Vector3.Distance(actor.transform.position,b.transform.position):F2}");
+var bed=beds[0];
+var cc=actor.GetComponent<CharacterController>(); if(cc)cc.enabled=false; actor.transform.position=bed.transform.position+Vector3.up*0.3f; if(cc)cc.enabled=true;
+var r=bed.Interact(actor);
+sb.AppendLine("interact="+r.Success+" msg="+r.Message+" planted="+bed.Planted);
+return sb.ToString();

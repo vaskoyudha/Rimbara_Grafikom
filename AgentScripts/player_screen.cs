@@ -1,0 +1,14 @@
+using System.Text;
+using UnityEngine;
+using Rimbara.Player;
+var sb = new StringBuilder();
+var rig = Object.FindFirstObjectByType<VolunteerRig>(FindObjectsInactive.Include);
+var cam = rig.ViewCamera;
+if (cam == null) return "no view camera";
+var p = rig.transform.position;
+var feet = p + Vector3.up * 0.08f;
+var sp = cam.WorldToScreenPoint(feet);
+sb.AppendLine("rig=" + p.ToString("F2") + " cam=" + cam.name + " campos=" + cam.transform.position.ToString("F2"));
+sb.AppendLine("feetScreen=" + sp.ToString("F0") + " screenSize=" + Screen.width + "x" + Screen.height);
+sb.AppendLine("headScreen=" + cam.WorldToScreenPoint(p + Vector3.up * 1.7f).ToString("F0"));
+return sb.ToString();
