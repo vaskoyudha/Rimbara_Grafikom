@@ -2,6 +2,9 @@
 
 These reports apply to the Disaster Zone slice in `Assets/Scenes/FromAshes.unity`
 on local branch `feature/from-ashes-zone1`, based on team commit `3611552`.
+This is the published Zone 1 milestone `096d8e9`, not verification of the later
+Recovery extension. Current two-zone evidence is kept separately under
+`Docs/Evidence/Recovery` once the new tests have completed.
 
 - `editmode-tests.xml`: 56/56 passing tests (36 legacy + 11 Disaster + 9 language).
 - `scene-verification.json`: chapter references, supply and interaction checks.

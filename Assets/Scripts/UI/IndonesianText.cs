@@ -9,6 +9,7 @@ namespace Rimbara.UI
     public static class IndonesianText
     {
         public const string WaterAction = "TAHAN KLIK KIRI  |  Padamkan api";
+        public const string SeedlingWaterAction = "TAHAN KLIK KIRI  |  Siram bibit";
         public const string ChapterPending = "masih dalam pengembangan";
         public static readonly Dictionary<string, string> Labels = new Dictionary<string, string>
         {
@@ -16,22 +17,22 @@ namespace Rimbara.UI
             { "RIMBARA title", "RIMBARA" },
             { "Game subtitle", "DARI ABU MENUJU KEHIDUPAN" },
             { "Menu story", "Kamu tiba di kawasan yang dilanda kebakaran.\nPadamkan api. Bersihkan lahan. Beri kehidupan kesempatan untuk kembali." },
-            { "Menu scope", "ZONA BENCANA / BAB PERTAMA" },
-            { "Menu footer", "Setiap Pohon Menyimpan Cerita.\nVERSI PENGEMBANGAN TIM / ZONA 1" },
+            { "Menu scope", "BENCANA → PEMULIHAN → HUTAN PULIH / MISI 01–05" },
+            { "Menu footer", "Setiap Pohon Menyimpan Cerita.\nVERSI PENGEMBANGAN TIM / TIGA ZONA" },
             { "Start restoration label", "MULAI PEMULIHAN" },
             { "Controls button label", "CARA BERMAIN" },
             { "Menu quit label", "KELUAR" },
             { "Briefing eyebrow", "POSKO RELAWAN / HUTAN ARUNIKA" },
             { "Briefing title", "HARI PERTAMAMU" },
             { "Briefing story", "Hutan masih terbakar. Datangi posko darurat dan temui koordinator. Ambil perlengkapan, padamkan titik api yang ditandai, lalu bersihkan puing sisa kebakaran." },
-            { "Briefing steps", "PROLOG / Temui koordinator di posko\n01 PADAMKAN API / Ambil alat dan padamkan api\n02 BERSIHKAN LAHAN / Singkirkan puing bertanda\nBERIKUTNYA / Bab Pemulihan masih dikembangkan" },
+            { "Briefing steps", "01–02 / Padamkan api dan bersihkan lahan\n03 / Ambil bibit, gali, tanam, dan siram\n04 / Bersihkan sungai dan pulihkan habitat\n05 / Janji untuk Hutan: bibit terakhir dan titik pandang" },
             { "No fail promise", "Tanpa batas waktu atau batas air. Karakter tidak menerima cedera." },
             { "Enter Arunika label", "MASUK KE ARUNIKA" },
             { "Briefing back label", "KEMBALI" },
             { "Help eyebrow", "PANDUAN LAPANGAN" },
             { "Help title", "CARA BERMAIN" },
-            { "Control list", "WASD / Bergerak    MOUSE / Putar kamera\nSHIFT / Berlari    SPASI / Melompat\nE / Berbicara, ambil alat, bersihkan puing\nKLIK KIRI / Tahan untuk menyemprot air\nESC / Jeda, lanjutkan, atau tutup dialog" },
-            { "Help tip", "Ikuti penanda kuning dan peta. Dekati objek untuk berinteraksi. Arahkan bidikan ke api sebelum menyemprot; penghalang dapat menghalangi aliran air." },
+            { "Control list", "WASD / Bergerak    MOUSE / Putar kamera\nSHIFT / Berlari    SPASI / Melompat\nE / Bicara, ambil, gali, tanam, dan bersihkan\nKLIK KIRI / Tahan untuk padamkan api atau siram bibit\nESC / Jeda, lanjutkan, atau tutup dialog" },
+            { "Help tip", "Ikuti penanda dan peta. Dekati objek untuk berinteraksi. Bidik api atau bibit sebelum menyemprot; penghalang dapat menghalangi air. Setiap bibit harus disiram." },
             { "Help back label", "KEMBALI KE MENU" },
             { "Controls text", "WASD gerak / SHIFT lari / SPASI lompat / E interaksi / KLIK KIRI air / ESC jeda" },
             { "Map title", "ARUNIKA / PETA" },
@@ -60,8 +61,10 @@ namespace Rimbara.UI
             { "Waypoint instruction", "POSKO DARURAT" },
             { "Interaction text", "[E]  Berinteraksi" },
             { "Feedback text", "" },
-            { "Mission results", "Bab Pemulihan dan Hutan Pulih masih dalam pengembangan." },
-            { "Dialogue text", "KOORDINATOR MISI" }
+            { "Mission results", "Zona Hutan Pulih masih dalam pengembangan." },
+            { "Dialogue text", "KOORDINATOR MISI" },
+            { "Ending subtitle", "" },
+            { "Skip cinematic label", "LEWATI SINEMATIK" }
         };
 
         private static readonly Dictionary<string, string> WorldLabels = new Dictionary<string, string>

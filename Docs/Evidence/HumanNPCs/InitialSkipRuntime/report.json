@@ -1,0 +1,175 @@
+{
+    "Passed": false,
+    "Unity": "6000.3.6f1",
+    "Profile": "From Ashes / Disaster chapter / local interaction fixtures",
+    "Utc": "2026-11-15T23:16:23.8706531Z",
+    "GraphicsDevice": "AMD Radeon RX 6600 / Direct3D11",
+    "Width": 1600,
+    "Height": 900,
+    "MeanFrameMilliseconds": 0.0,
+    "P95FrameMilliseconds": 0.0,
+    "Checks": [
+        {
+            "Name": "Story starts in menu with chapter briefing pending",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Authored Disaster object supply",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Ten NPCs use eight distinct human characters",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "NPC Humanoid avatar and controller: Coordinator visual - Ch42",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "NPC visual preserves player and physics: Coordinator visual - Ch42",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "NPC Humanoid avatar and controller: Evacuated villager at relief post",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "NPC visual preserves player and physics: Evacuated villager at relief post",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "NPC Humanoid avatar and controller: Restored villager ambient 2",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "NPC visual preserves player and physics: Restored villager ambient 2",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "NPC Humanoid avatar and controller: Restored villager ambient 3",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "NPC visual preserves player and physics: Restored villager ambient 3",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "NPC Humanoid avatar and controller: Restored villager ambient 4",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "NPC visual preserves player and physics: Restored villager ambient 4",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "NPC Humanoid avatar and controller: Ranger visual - Ch42 placeholder",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "NPC visual preserves player and physics: Ranger visual - Ch42 placeholder",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "NPC Humanoid avatar and controller: Restored villager ambient 0",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "NPC visual preserves player and physics: Restored villager ambient 0",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "NPC Humanoid avatar and controller: Restored villager ambient 1",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "NPC visual preserves player and physics: Restored villager ambient 1",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "NPC Humanoid avatar and controller: Elder visual - existing character placeholder",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "NPC visual preserves player and physics: Elder visual - existing character placeholder",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "NPC Humanoid avatar and controller: Volunteer awaiting orders",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "NPC visual preserves player and physics: Volunteer awaiting orders",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Original Disaster map uses kit resources, not demo village layout",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Emergency post inscription is attached to board, not a billboard",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Emergency post inscription stays aligned and fits board",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Menu is Indonesian",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Indonesian controls screen opens",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Pointer opens storyline briefing",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Pointer begins Disaster chapter",
+            "Passed": false,
+            "Detail": ""
+        },
+        {
+            "Name": "Smoke execution completed",
+            "Passed": false,
+            "Detail": "System.InvalidOperationException: Runtime smoke check failed: Pointer begins Disaster chapter / \r\n  at Rimbara.Diagnostics.RuntimeSmokeDriver.Check (System.String name, System.Boolean passed, System.String detail) [0x00039] in <d1f49e8baa9c4fecb1812d73ab1ca479>:0 \r\n  at Rimbara.Diagnostics.RuntimeSmokeDriver+<RunDisaster>d__40.MoveNext () [0x00694] in <d1f49e8baa9c4fecb1812d73ab1ca479>:0 \r\n  at Rimbara.Diagnostics.RuntimeSmokeDriver+<Start>d__36.MoveNext () [0x00054] in <d1f49e8baa9c4fecb1812d73ab1ca479>:0 "
+        }
+    ],
+    "Captures": [
+        "01c-post-board.png",
+        "01-story-menu.png",
+        "01a-controls-id.png",
+        "01b-briefing-id.png"
+    ],
+    "Errors": []
+}

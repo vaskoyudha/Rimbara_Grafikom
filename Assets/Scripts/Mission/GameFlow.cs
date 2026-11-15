@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 namespace Rimbara.Mission
 {
-    public enum ScreenMode { Menu, Briefing, Controls, Playing, Paused, Victory }
+    public enum ScreenMode { Menu, Briefing, Controls, Playing, Paused, Victory, Transition, Cinematic }
 
     [DefaultExecutionOrder(-40)]
     public sealed class GameFlow : MonoBehaviour
@@ -15,6 +15,7 @@ namespace Rimbara.Mission
         [SerializeField] private VolunteerRig rig;
         [SerializeField] private VolunteerInput input;
         private static ScreenMode nextLaunchMode = ScreenMode.Menu;
+        private ScreenMode resumeMode = ScreenMode.Playing;
         public ScreenMode Mode { get; private set; } = ScreenMode.Menu;
         public float ElapsedSeconds { get; private set; }
         public bool DiagnosticMode => CommandLine.Value("--rimbara-smoke") != null;
@@ -42,7 +43,7 @@ namespace Rimbara.Mission
             if (Mode == ScreenMode.Playing) ElapsedSeconds += Time.deltaTime;
             if (input.PausePressed)
             {
-                if (Mode == ScreenMode.Playing) Pause();
+                if (Mode == ScreenMode.Playing || Mode == ScreenMode.Cinematic || Mode == ScreenMode.Transition) Pause();
                 else if (Mode == ScreenMode.Paused) Resume();
                 else if (Mode == ScreenMode.Briefing || Mode == ScreenMode.Controls) ShowMenu();
             }
@@ -58,15 +59,40 @@ namespace Rimbara.Mission
             SetMode(ScreenMode.Playing);
         }
 
-        public void Pause() { if (Mode == ScreenMode.Playing) SetMode(ScreenMode.Paused); }
-        public void Resume() { if (Mode == ScreenMode.Paused) SetMode(ScreenMode.Playing); }
+        public void Pause()
+        {
+            if (Mode != ScreenMode.Playing && Mode != ScreenMode.Cinematic && Mode != ScreenMode.Transition) return;
+            resumeMode = Mode; SetMode(ScreenMode.Paused);
+        }
+        public void Resume() { if (Mode == ScreenMode.Paused) SetMode(resumeMode); }
         private void ShowVictory() { SetMode(ScreenMode.Victory); }
 
         public void CompleteDisasterChapter()
         {
             DisasterChapter chapter = missions.DisasterChapter;
             if (Mode == ScreenMode.Playing && chapter != null && chapter.Progress.Stage == DisasterStage.RecoveryReady)
-                SetMode(ScreenMode.Victory);
+            {
+                if (chapter.Recovery != null) chapter.Recovery.Begin();
+                else SetMode(ScreenMode.Victory);
+            }
+        }
+
+        public void CompleteRecoveryChapter()
+        {
+            RecoveryChapter recovery = missions.DisasterChapter == null ? null : missions.DisasterChapter.Recovery;
+            if (Mode == ScreenMode.Playing && recovery != null && recovery.Progress.Stage == RecoveryStage.Complete)
+            {
+                if (recovery.Restored != null) recovery.Restored.Begin();
+                else SetMode(ScreenMode.Victory);
+            }
+        }
+        public void BeginStorySequence(bool ending) { SetMode(ending ? ScreenMode.Cinematic : ScreenMode.Transition); }
+        public void EndStorySequence(bool ending)
+        {
+            RestoredChapter restored = missions.DisasterChapter == null || missions.DisasterChapter.Recovery == null ? null : missions.DisasterChapter.Recovery.Restored;
+            if (restored == null) return;
+            if (ending && restored.Progress.Stage == RestoredStage.Complete) SetMode(ScreenMode.Victory);
+            else if (!ending && restored.Progress.Stage == RestoredStage.ElderBriefing) SetMode(ScreenMode.Playing);
         }
 
         public void Replay()
@@ -105,7 +131,7 @@ namespace Rimbara.Mission
         {
             Mode = mode;
             bool playing = mode == ScreenMode.Playing;
-            bool gameplayView = playing || mode == ScreenMode.Paused || mode == ScreenMode.Victory;
+            bool gameplayView = playing || mode == ScreenMode.Paused || mode == ScreenMode.Victory || mode == ScreenMode.Transition || mode == ScreenMode.Cinematic;
             Time.timeScale = mode == ScreenMode.Paused ? 0f : 1f;
             state.SetSessionRunning(playing);
             rig.SetControlsEnabled(playing, mode == ScreenMode.Paused);
@@ -118,7 +144,7 @@ namespace Rimbara.Mission
         private void OnApplicationFocus(bool focused)
         {
 #if !UNITY_EDITOR
-            if (!focused && Mode == ScreenMode.Playing && !DiagnosticMode) Pause();
+            if (!focused && (Mode == ScreenMode.Playing || Mode == ScreenMode.Cinematic || Mode == ScreenMode.Transition) && !DiagnosticMode) Pause();
 #endif
         }
 

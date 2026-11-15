@@ -1,0 +1,47 @@
+﻿[
+    {
+        "Path":  "SourceArt/HumanNPCs/Coordinator.blend",
+        "Bytes":  14277799,
+        "SHA256":  "46aec786420ac526a07b265e88cbc593b3e670b4503469f2771d67fbdab31aef"
+    },
+    {
+        "Path":  "SourceArt/HumanNPCs/Elder.blend",
+        "Bytes":  21706871,
+        "SHA256":  "df6b983dbb15b35390c41978b53f7059f4859e2c36877602259d3ca38fd71f0e"
+    },
+    {
+        "Path":  "SourceArt/HumanNPCs/NPC-Lineup.blend",
+        "Bytes":  91550324,
+        "SHA256":  "79667a6bac69774811d1ef87cde121c5e167b2963894b87f9ee8f6c6965e1191"
+    },
+    {
+        "Path":  "SourceArt/HumanNPCs/Ranger.blend",
+        "Bytes":  18340191,
+        "SHA256":  "f84e8d4ceb53dbb9fd848fd1e5730e833446032d2c5a7c1892bace876b58849a"
+    },
+    {
+        "Path":  "SourceArt/HumanNPCs/ResidentWoman.blend",
+        "Bytes":  27824764,
+        "SHA256":  "5991670dd41888217467396224dadcb9a2c7f6a1efcccd9ff17708a73b06cd0a"
+    },
+    {
+        "Path":  "SourceArt/HumanNPCs/VillagerMan.blend",
+        "Bytes":  28578445,
+        "SHA256":  "fb55c77a82ab9a6bc148b18b8b0995d7d73efc029595dae3b44f2bf9e3afe3f5"
+    },
+    {
+        "Path":  "SourceArt/HumanNPCs/VillagerSenior.blend",
+        "Bytes":  30973160,
+        "SHA256":  "23ac50736204a952883cc3a71a84363c02f7f9f90802cadfc86709602caca845"
+    },
+    {
+        "Path":  "SourceArt/HumanNPCs/VillagerWoman.blend",
+        "Bytes":  29654669,
+        "SHA256":  "f115f3f01530f04507da87500bd490681c2c384869b0cee0e93606821612a6e0"
+    },
+    {
+        "Path":  "SourceArt/HumanNPCs/Volunteer.blend",
+        "Bytes":  24788772,
+        "SHA256":  "67b76dea01197199b4705414ab7fba59a44b196074d9cb53668ed5f8ae64dab0"
+    }
+]

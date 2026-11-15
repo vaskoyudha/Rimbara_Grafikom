@@ -54,6 +54,18 @@ Zone 2 source-document review and proposed acceptance criteria:
 [Zone2-Concept.md](Zone2-Concept.md). This is a design study, not a claim that
 Recovery gameplay is already implemented.
 
+Recovery implementation is now in progress on `feature/recovery-zone2` from the
+team's merged `f4ec160`. See [Zone2-Implementation.md](Zone2-Implementation.md)
+for executed features and current validation; the concept remains the design source.
+
+Zone 3 requirements, visual transformation, M05 gates, time transition and ending
+plan: [Zone3-PRD.md](Zone3-PRD.md). This PRD is a draft for team review; no Restored
+gameplay is implemented by writing it.
+
+The user subsequently authorized building Zone 3. Work is local on
+`feature/restored-zone3`; see [Zone3-Implementation.md](Zone3-Implementation.md)
+for actual features and test status. No publication/merge is implied.
+
 1. Recovery: update inventory/targets, implement per-tree watering, clean source
    and habitat interactions, and progress-driven lighting/audio/vegetation.
 2. Restored: reserve inventory for the final tree; require watering and viewpoint

@@ -1,0 +1,726 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="105" result="Passed" total="105" passed="105" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-11-15 23:24:32Z" end-time="2026-11-15 23:24:33Z" duration="0.7199207">
+  <test-suite type="TestSuite" id="1000" name="RIMBARA" fullname="RIMBARA" runstate="Runnable" testcasecount="105" result="Passed" start-time="2026-11-15 23:24:32Z" end-time="2026-11-15 23:24:33Z" duration="0.719921" total="105" passed="105" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <test-suite type="Assembly" id="1130" name="Rimbara.Tests.dll" fullname="C:/Users/MUHAMMAD FAHRUR ROZI/OneDrive/Documents/Default Project/Rimbara_Grafikom/Library/ScriptAssemblies/Rimbara.Tests.dll" runstate="Runnable" testcasecount="105" result="Passed" start-time="2026-11-15 23:24:32Z" end-time="2026-11-15 23:24:33Z" duration="0.713630" total="105" passed="105" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="31596" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1131" name="Rimbara" fullname="Rimbara" runstate="Runnable" testcasecount="105" result="Passed" start-time="2026-11-15 23:24:32Z" end-time="2026-11-15 23:24:33Z" duration="0.713125" total="105" passed="105" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1132" name="Tests" fullname="Rimbara.Tests" runstate="Runnable" testcasecount="105" result="Passed" start-time="2026-11-15 23:24:32Z" end-time="2026-11-15 23:24:33Z" duration="0.712765" total="105" passed="105" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestFixture" id="1001" name="DisasterProgressTests" fullname="Rimbara.Tests.DisasterProgressTests" classname="Rimbara.Tests.DisasterProgressTests" runstate="Runnable" testcasecount="11" result="Passed" start-time="2026-11-15 23:24:32Z" end-time="2026-11-15 23:24:32Z" duration="0.032296" total="11" passed="11" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1007" name="CleanupCannotStartUntilEveryFireIsContained" fullname="Rimbara.Tests.DisasterProgressTests.CleanupCannotStartUntilEveryFireIsContained" methodname="CleanupCannotStartUntilEveryFireIsContained" classname="Rimbara.Tests.DisasterProgressTests" runstate="Runnable" seed="1252610750" result="Passed" start-time="2026-11-15 23:24:32Z" end-time="2026-11-15 23:24:32Z" duration="0.012177" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-suite type="ParameterizedMethod" id="1013" name="InvalidIdsNeverEarnProgress" fullname="Rimbara.Tests.DisasterProgressTests.InvalidIdsNeverEarnProgress" classname="Rimbara.Tests.DisasterProgressTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-11-15 23:24:32Z" end-time="2026-11-15 23:24:32Z" duration="0.002159" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1010" name="InvalidIdsNeverEarnProgress(null)" fullname="Rimbara.Tests.DisasterProgressTests.InvalidIdsNeverEarnProgress(null)" methodname="InvalidIdsNeverEarnProgress" classname="Rimbara.Tests.DisasterProgressTests" runstate="Runnable" seed="554850832" result="Passed" start-time="2026-11-15 23:24:32Z" end-time="2026-11-15 23:24:32Z" duration="0.000300" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1011" name="InvalidIdsNeverEarnProgress(&quot;&quot;)" fullname="Rimbara.Tests.DisasterProgressTests.InvalidIdsNeverEarnProgress(&quot;&quot;)" methodname="InvalidIdsNeverEarnProgress" classname="Rimbara.Tests.DisasterProgressTests" runstate="Runnable" seed="1911856735" result="Passed" start-time="2026-11-15 23:24:32Z" end-time="2026-11-15 23:24:32Z" duration="0.000069" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1012" name="InvalidIdsNeverEarnProgress(&quot; &quot;)" fullname="Rimbara.Tests.DisasterProgressTests.InvalidIdsNeverEarnProgress(&quot; &quot;)" methodname="InvalidIdsNeverEarnProgress" classname="Rimbara.Tests.DisasterProgressTests" runstate="Runnable" seed="2073816383" result="Passed" start-time="2026-11-15 23:24:32Z" end-time="2026-11-15 23:24:32Z" duration="0.000037" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-case id="1009" name="PauseBlocksAllChapterMutations" fullname="Rimbara.Tests.DisasterProgressTests.PauseBlocksAllChapterMutations" methodname="PauseBlocksAllChapterMutations" classname="Rimbara.Tests.DisasterProgressTests" runstate="Runnable" seed="301897526" result="Passed" start-time="2026-11-15 23:24:32Z" end-time="2026-11-15 23:24:32Z" duration="0.000784" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-suite type="ParameterizedMethod" id="1005" name="RejectsMissingChapterSupply" fullname="Rimbara.Tests.DisasterProgressTests.RejectsMissingChapterSupply" classname="Rimbara.Tests.DisasterProgressTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-11-15 23:24:32Z" end-time="2026-11-15 23:24:32Z" duration="0.004499" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1002" name="RejectsMissingChapterSupply(0,4)" fullname="Rimbara.Tests.DisasterProgressTests.RejectsMissingChapterSupply(0,4)" methodname="RejectsMissingChapterSupply" classname="Rimbara.Tests.DisasterProgressTests" runstate="Runnable" seed="45597703" result="Passed" start-time="2026-11-15 23:24:32Z" end-time="2026-11-15 23:24:32Z" duration="0.003751" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1003" name="RejectsMissingChapterSupply(2,0)" fullname="Rimbara.Tests.DisasterProgressTests.RejectsMissingChapterSupply(2,0)" methodname="RejectsMissingChapterSupply" classname="Rimbara.Tests.DisasterProgressTests" runstate="Runnable" seed="1726564713" result="Passed" start-time="2026-11-15 23:24:32Z" end-time="2026-11-15 23:24:32Z" duration="0.000094" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1004" name="RejectsMissingChapterSupply(-1,4)" fullname="Rimbara.Tests.DisasterProgressTests.RejectsMissingChapterSupply(-1,4)" methodname="RejectsMissingChapterSupply" classname="Rimbara.Tests.DisasterProgressTests" runstate="Runnable" seed="2097170623" result="Passed" start-time="2026-11-15 23:24:32Z" end-time="2026-11-15 23:24:32Z" duration="0.000064" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-case id="1006" name="RequiresBriefingThenEquipmentBeforeFire" fullname="Rimbara.Tests.DisasterProgressTests.RequiresBriefingThenEquipmentBeforeFire" methodname="RequiresBriefingThenEquipmentBeforeFire" classname="Rimbara.Tests.DisasterProgressTests" runstate="Runnable" seed="135979073" result="Passed" start-time="2026-11-15 23:24:32Z" end-time="2026-11-15 23:24:32Z" duration="0.000257" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1014" name="ResetClearsEquipmentAndUniqueIds" fullname="Rimbara.Tests.DisasterProgressTests.ResetClearsEquipmentAndUniqueIds" methodname="ResetClearsEquipmentAndUniqueIds" classname="Rimbara.Tests.DisasterProgressTests" runstate="Runnable" seed="1007808645" result="Passed" start-time="2026-11-15 23:24:32Z" end-time="2026-11-15 23:24:32Z" duration="0.000940" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1008" name="UniqueActionsCompleteChapterButNotWholeStory" fullname="Rimbara.Tests.DisasterProgressTests.UniqueActionsCompleteChapterButNotWholeStory" methodname="UniqueActionsCompleteChapterButNotWholeStory" classname="Rimbara.Tests.DisasterProgressTests" runstate="Runnable" seed="1961443994" result="Passed" start-time="2026-11-15 23:24:32Z" end-time="2026-11-15 23:24:32Z" duration="0.000524" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1015" name="HumanNpcTests" fullname="Rimbara.Tests.HumanNpcTests" classname="Rimbara.Tests.HumanNpcTests" runstate="Runnable" testcasecount="10" result="Passed" start-time="2026-11-15 23:24:32Z" end-time="2026-11-15 23:24:33Z" duration="0.633760" total="10" passed="10" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="ParameterizedMethod" id="1025" name="GeneratedAssetHasValidHumanAvatar" fullname="Rimbara.Tests.HumanNpcTests.GeneratedAssetHasValidHumanAvatar" classname="Rimbara.Tests.HumanNpcTests" runstate="Runnable" testcasecount="8" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.153011" total="8" passed="8" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1017" name="GeneratedAssetHasValidHumanAvatar(&quot;Coordinator&quot;)" fullname="Rimbara.Tests.HumanNpcTests.GeneratedAssetHasValidHumanAvatar(&quot;Coordinator&quot;)" methodname="GeneratedAssetHasValidHumanAvatar" classname="Rimbara.Tests.HumanNpcTests" runstate="Runnable" seed="280030368" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.008000" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1018" name="GeneratedAssetHasValidHumanAvatar(&quot;Ranger&quot;)" fullname="Rimbara.Tests.HumanNpcTests.GeneratedAssetHasValidHumanAvatar(&quot;Ranger&quot;)" methodname="GeneratedAssetHasValidHumanAvatar" classname="Rimbara.Tests.HumanNpcTests" runstate="Runnable" seed="11994251" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.001559" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1019" name="GeneratedAssetHasValidHumanAvatar(&quot;Elder&quot;)" fullname="Rimbara.Tests.HumanNpcTests.GeneratedAssetHasValidHumanAvatar(&quot;Elder&quot;)" methodname="GeneratedAssetHasValidHumanAvatar" classname="Rimbara.Tests.HumanNpcTests" runstate="Runnable" seed="1842946070" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.001756" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1020" name="GeneratedAssetHasValidHumanAvatar(&quot;Volunteer&quot;)" fullname="Rimbara.Tests.HumanNpcTests.GeneratedAssetHasValidHumanAvatar(&quot;Volunteer&quot;)" methodname="GeneratedAssetHasValidHumanAvatar" classname="Rimbara.Tests.HumanNpcTests" runstate="Runnable" seed="502995075" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.001703" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1021" name="GeneratedAssetHasValidHumanAvatar(&quot;ResidentWoman&quot;)" fullname="Rimbara.Tests.HumanNpcTests.GeneratedAssetHasValidHumanAvatar(&quot;ResidentWoman&quot;)" methodname="GeneratedAssetHasValidHumanAvatar" classname="Rimbara.Tests.HumanNpcTests" runstate="Runnable" seed="983778201" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.001592" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1022" name="GeneratedAssetHasValidHumanAvatar(&quot;VillagerMan&quot;)" fullname="Rimbara.Tests.HumanNpcTests.GeneratedAssetHasValidHumanAvatar(&quot;VillagerMan&quot;)" methodname="GeneratedAssetHasValidHumanAvatar" classname="Rimbara.Tests.HumanNpcTests" runstate="Runnable" seed="1547833397" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.001597" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1023" name="GeneratedAssetHasValidHumanAvatar(&quot;VillagerWoman&quot;)" fullname="Rimbara.Tests.HumanNpcTests.GeneratedAssetHasValidHumanAvatar(&quot;VillagerWoman&quot;)" methodname="GeneratedAssetHasValidHumanAvatar" classname="Rimbara.Tests.HumanNpcTests" runstate="Runnable" seed="1951792398" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.001815" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1024" name="GeneratedAssetHasValidHumanAvatar(&quot;VillagerSenior&quot;)" fullname="Rimbara.Tests.HumanNpcTests.GeneratedAssetHasValidHumanAvatar(&quot;VillagerSenior&quot;)" methodname="GeneratedAssetHasValidHumanAvatar" classname="Rimbara.Tests.HumanNpcTests" runstate="Runnable" seed="480115250" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.002001" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-case id="1026" name="NpcVisualsDoNotReplacePlayerOrInteractionRoots" fullname="Rimbara.Tests.HumanNpcTests.NpcVisualsDoNotReplacePlayerOrInteractionRoots" methodname="NpcVisualsDoNotReplacePlayerOrInteractionRoots" classname="Rimbara.Tests.HumanNpcTests" runstate="Runnable" seed="1315750218" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.002350" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1016" name="TenVisualsHaveEightUniqueIdentities" fullname="Rimbara.Tests.HumanNpcTests.TenVisualsHaveEightUniqueIdentities" methodname="TenVisualsHaveEightUniqueIdentities" classname="Rimbara.Tests.HumanNpcTests" runstate="Runnable" seed="1012008714" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.000668" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1027" name="IndonesianTextTests" fullname="Rimbara.Tests.IndonesianTextTests" classname="Rimbara.Tests.IndonesianTextTests" runstate="Runnable" testcasecount="9" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.005097" total="9" passed="9" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="ParameterizedMethod" id="1032" name="PrimaryScreensUseIndonesian" fullname="Rimbara.Tests.IndonesianTextTests.PrimaryScreensUseIndonesian" classname="Rimbara.Tests.IndonesianTextTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.002015" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1028" name="PrimaryScreensUseIndonesian(&quot;Start restoration label&quot;,&quot;MULAI PEMULIHAN&quot;)" fullname="Rimbara.Tests.IndonesianTextTests.PrimaryScreensUseIndonesian(&quot;Start restoration label&quot;,&quot;MULAI PEMULIHAN&quot;)" methodname="PrimaryScreensUseIndonesian" classname="Rimbara.Tests.IndonesianTextTests" runstate="Runnable" seed="1719598377" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.001283" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1029" name="PrimaryScreensUseIndonesian(&quot;Help title&quot;,&quot;CARA BERMAIN&quot;)" fullname="Rimbara.Tests.IndonesianTextTests.PrimaryScreensUseIndonesian(&quot;Help title&quot;,&quot;CARA BERMAIN&quot;)" methodname="PrimaryScreensUseIndonesian" classname="Rimbara.Tests.IndonesianTextTests" runstate="Runnable" seed="1103715423" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.000087" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1030" name="PrimaryScreensUseIndonesian(&quot;Pause title&quot;,&quot;PERMAINAN DIJEDA&quot;)" fullname="Rimbara.Tests.IndonesianTextTests.PrimaryScreensUseIndonesian(&quot;Pause title&quot;,&quot;PERMAINAN DIJEDA&quot;)" methodname="PrimaryScreensUseIndonesian" classname="Rimbara.Tests.IndonesianTextTests" runstate="Runnable" seed="1604982102" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.000042" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1031" name="PrimaryScreensUseIndonesian(&quot;Victory title&quot;,&quot;AWAL YANG BERSIH&quot;)" fullname="Rimbara.Tests.IndonesianTextTests.PrimaryScreensUseIndonesian(&quot;Victory title&quot;,&quot;AWAL YANG BERSIH&quot;)" methodname="PrimaryScreensUseIndonesian" classname="Rimbara.Tests.IndonesianTextTests" runstate="Runnable" seed="1815341301" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.000035" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-case id="1038" name="StoryAndControlsRetainScopeAndBindings" fullname="Rimbara.Tests.IndonesianTextTests.StoryAndControlsRetainScopeAndBindings" methodname="StoryAndControlsRetainScopeAndBindings" classname="Rimbara.Tests.IndonesianTextTests" runstate="Runnable" seed="1840820161" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.001027" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-suite type="ParameterizedMethod" id="1037" name="WorldLabelsTranslateWithoutChangingHierarchyNames" fullname="Rimbara.Tests.IndonesianTextTests.WorldLabelsTranslateWithoutChangingHierarchyNames" classname="Rimbara.Tests.IndonesianTextTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.000996" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1033" name="WorldLabelsTranslateWithoutChangingHierarchyNames(&quot;MISSION COORDINATOR&quot;,&quot;KOORDINATOR MISI&quot;)" fullname="Rimbara.Tests.IndonesianTextTests.WorldLabelsTranslateWithoutChangingHierarchyNames(&quot;MISSION COORDINATOR&quot;,&quot;KOORDINATOR MISI&quot;)" methodname="WorldLabelsTranslateWithoutChangingHierarchyNames" classname="Rimbara.Tests.IndonesianTextTests" runstate="Runnable" seed="59225915" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.000239" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1034" name="WorldLabelsTranslateWithoutChangingHierarchyNames(&quot;REMAINING FIRE&quot;,&quot;TITIK API&quot;)" fullname="Rimbara.Tests.IndonesianTextTests.WorldLabelsTranslateWithoutChangingHierarchyNames(&quot;REMAINING FIRE&quot;,&quot;TITIK API&quot;)" methodname="WorldLabelsTranslateWithoutChangingHierarchyNames" classname="Rimbara.Tests.IndonesianTextTests" runstate="Runnable" seed="1231709455" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.000058" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1035" name="WorldLabelsTranslateWithoutChangingHierarchyNames(&quot;DESIGNATED DEBRIS&quot;,&quot;PUING BERTANDA&quot;)" fullname="Rimbara.Tests.IndonesianTextTests.WorldLabelsTranslateWithoutChangingHierarchyNames(&quot;DESIGNATED DEBRIS&quot;,&quot;PUING BERTANDA&quot;)" methodname="WorldLabelsTranslateWithoutChangingHierarchyNames" classname="Rimbara.Tests.IndonesianTextTests" runstate="Runnable" seed="1366751591" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.000038" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1036" name="WorldLabelsTranslateWithoutChangingHierarchyNames(&quot;EMERGENCY MISSION POST&quot;,&quot;POSKO DARURAT&quot;)" fullname="Rimbara.Tests.IndonesianTextTests.WorldLabelsTranslateWithoutChangingHierarchyNames(&quot;EMERGENCY MISSION POST&quot;,&quot;POSKO DARURAT&quot;)" methodname="WorldLabelsTranslateWithoutChangingHierarchyNames" classname="Rimbara.Tests.IndonesianTextTests" runstate="Runnable" seed="906491137" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.000035" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+          </test-suite>
+          <test-suite type="TestFixture" id="1039" name="RecoveryProgressTests" fullname="Rimbara.Tests.RecoveryProgressTests" classname="Rimbara.Tests.RecoveryProgressTests" runstate="Runnable" testcasecount="18" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.008766" total="18" passed="18" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="ParameterizedMethod" id="1044" name="BeginRequiresCompletedDisasterAndRunning" fullname="Rimbara.Tests.RecoveryProgressTests.BeginRequiresCompletedDisasterAndRunning" classname="Rimbara.Tests.RecoveryProgressTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.001392" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1041" name="BeginRequiresCompletedDisasterAndRunning(False,True)" fullname="Rimbara.Tests.RecoveryProgressTests.BeginRequiresCompletedDisasterAndRunning(False,True)" methodname="BeginRequiresCompletedDisasterAndRunning" classname="Rimbara.Tests.RecoveryProgressTests" runstate="Runnable" seed="304894808" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.000757" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1042" name="BeginRequiresCompletedDisasterAndRunning(True,False)" fullname="Rimbara.Tests.RecoveryProgressTests.BeginRequiresCompletedDisasterAndRunning(True,False)" methodname="BeginRequiresCompletedDisasterAndRunning" classname="Rimbara.Tests.RecoveryProgressTests" runstate="Runnable" seed="1727441401" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.000076" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1043" name="BeginRequiresCompletedDisasterAndRunning(False,False)" fullname="Rimbara.Tests.RecoveryProgressTests.BeginRequiresCompletedDisasterAndRunning(False,False)" methodname="BeginRequiresCompletedDisasterAndRunning" classname="Rimbara.Tests.RecoveryProgressTests" runstate="Runnable" seed="582516378" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.000042" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-case id="1045" name="BriefingMustBeReadAndOnlyAcceptedOnce" fullname="Rimbara.Tests.RecoveryProgressTests.BriefingMustBeReadAndOnlyAcceptedOnce" methodname="BriefingMustBeReadAndOnlyAcceptedOnce" classname="Rimbara.Tests.RecoveryProgressTests" runstate="Runnable" seed="1361561642" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.000335" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1052" name="DuplicateActionsDoNotFarmProgress" fullname="Rimbara.Tests.RecoveryProgressTests.DuplicateActionsDoNotFarmProgress" methodname="DuplicateActionsDoNotFarmProgress" classname="Rimbara.Tests.RecoveryProgressTests" runstate="Runnable" seed="594575376" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.000486" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1057" name="EcosystemRejectsPauseUnknownAndDuplicateTargets" fullname="Rimbara.Tests.RecoveryProgressTests.EcosystemRejectsPauseUnknownAndDuplicateTargets" methodname="EcosystemRejectsPauseUnknownAndDuplicateTargets" classname="Rimbara.Tests.RecoveryProgressTests" runstate="Runnable" seed="1416161577" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.000581" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1056" name="HabitatFirstDoesNotCleanWaterAutomatically" fullname="Rimbara.Tests.RecoveryProgressTests.HabitatFirstDoesNotCleanWaterAutomatically" methodname="HabitatFirstDoesNotCleanWaterAutomatically" classname="Rimbara.Tests.RecoveryProgressTests" runstate="Runnable" seed="2130158217" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.000291" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1059" name="InvalidSupplyFailsEarly" fullname="Rimbara.Tests.RecoveryProgressTests.InvalidSupplyFailsEarly" methodname="InvalidSupplyFailsEarly" classname="Rimbara.Tests.RecoveryProgressTests" runstate="Runnable" seed="1810010122" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.000990" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1054" name="PauseBlocksEveryPlantingMutation" fullname="Rimbara.Tests.RecoveryProgressTests.PauseBlocksEveryPlantingMutation" methodname="PauseBlocksEveryPlantingMutation" classname="Rimbara.Tests.RecoveryProgressTests" runstate="Runnable" seed="830762849" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.000183" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1053" name="PlantingAllTreesWithoutWaterDoesNotUnlockEcosystem" fullname="Rimbara.Tests.RecoveryProgressTests.PlantingAllTreesWithoutWaterDoesNotUnlockEcosystem" methodname="PlantingAllTreesWithoutWaterDoesNotUnlockEcosystem" classname="Rimbara.Tests.RecoveryProgressTests" runstate="Runnable" seed="933134777" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.000352" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1050" name="PlantRequiresBothDiggingAndCarriedSeedling" fullname="Rimbara.Tests.RecoveryProgressTests.PlantRequiresBothDiggingAndCarriedSeedling" methodname="PlantRequiresBothDiggingAndCarriedSeedling" classname="Rimbara.Tests.RecoveryProgressTests" runstate="Runnable" seed="798696160" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.000216" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1058" name="ResetClearsAllProgressAndAllowsFreshSession" fullname="Rimbara.Tests.RecoveryProgressTests.ResetClearsAllProgressAndAllowsFreshSession" methodname="ResetClearsAllProgressAndAllowsFreshSession" classname="Rimbara.Tests.RecoveryProgressTests" runstate="Runnable" seed="2123484319" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.000424" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1040" name="StartsDormantWithNoInventoryOrRecovery" fullname="Rimbara.Tests.RecoveryProgressTests.StartsDormantWithNoInventoryOrRecovery" methodname="StartsDormantWithNoInventoryOrRecovery" classname="Rimbara.Tests.RecoveryProgressTests" runstate="Runnable" seed="2067865939" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.000221" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-suite type="ParameterizedMethod" id="1049" name="UnregisteredTargetsCannotEarnProgress" fullname="Rimbara.Tests.RecoveryProgressTests.UnregisteredTargetsCannotEarnProgress" classname="Rimbara.Tests.RecoveryProgressTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.000927" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1046" name="UnregisteredTargetsCannotEarnProgress(null)" fullname="Rimbara.Tests.RecoveryProgressTests.UnregisteredTargetsCannotEarnProgress(null)" methodname="UnregisteredTargetsCannotEarnProgress" classname="Rimbara.Tests.RecoveryProgressTests" runstate="Runnable" seed="313659675" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.000210" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1047" name="UnregisteredTargetsCannotEarnProgress(&quot;&quot;)" fullname="Rimbara.Tests.RecoveryProgressTests.UnregisteredTargetsCannotEarnProgress(&quot;&quot;)" methodname="UnregisteredTargetsCannotEarnProgress" classname="Rimbara.Tests.RecoveryProgressTests" runstate="Runnable" seed="1573886368" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.000059" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1048" name="UnregisteredTargetsCannotEarnProgress(&quot;unknown&quot;)" fullname="Rimbara.Tests.RecoveryProgressTests.UnregisteredTargetsCannotEarnProgress(&quot;unknown&quot;)" methodname="UnregisteredTargetsCannotEarnProgress" classname="Rimbara.Tests.RecoveryProgressTests" runstate="Runnable" seed="802862818" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.000040" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-case id="1055" name="WaterCleanupAndHabitatAreBothRequired" fullname="Rimbara.Tests.RecoveryProgressTests.WaterCleanupAndHabitatAreBothRequired" methodname="WaterCleanupAndHabitatAreBothRequired" classname="Rimbara.Tests.RecoveryProgressTests" runstate="Runnable" seed="872436343" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.000387" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1051" name="WaterRequiresSpecificPlantedTree" fullname="Rimbara.Tests.RecoveryProgressTests.WaterRequiresSpecificPlantedTree" methodname="WaterRequiresSpecificPlantedTree" classname="Rimbara.Tests.RecoveryProgressTests" runstate="Runnable" seed="847805814" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.000274" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1060" name="RecoveryRiverTests" fullname="Rimbara.Tests.RecoveryRiverTests" classname="Rimbara.Tests.RecoveryRiverTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.007513" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1063" name="ChannelLeavesOriginalPlantingClearingsOutsideBanks" fullname="Rimbara.Tests.RecoveryRiverTests.ChannelLeavesOriginalPlantingClearingsOutsideBanks" methodname="ChannelLeavesOriginalPlantingClearingsOutsideBanks" classname="Rimbara.Tests.RecoveryRiverTests" runstate="Runnable" seed="187039368" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.001319" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1062" name="NineTrashCleanupsAreNotEnough" fullname="Rimbara.Tests.RecoveryRiverTests.NineTrashCleanupsAreNotEnough" methodname="NineTrashCleanupsAreNotEnough" classname="Rimbara.Tests.RecoveryRiverTests" runstate="Runnable" seed="335066667" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.001837" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1061" name="RiverHasTenDistinctDryBankTargets" fullname="Rimbara.Tests.RecoveryRiverTests.RiverHasTenDistinctDryBankTargets" methodname="RiverHasTenDistinctDryBankTargets" classname="Rimbara.Tests.RecoveryRiverTests" runstate="Runnable" seed="383947611" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.003417" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1064" name="RestorationTests" fullname="Rimbara.Tests.RestorationTests" classname="Rimbara.Tests.RestorationTests" runstate="Runnable" testcasecount="36" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.016521" total="36" passed="36" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="ParameterizedMethod" id="1067" name="BothProfilesCompleteWithoutInventoryLoss" fullname="Rimbara.Tests.RestorationTests.BothProfilesCompleteWithoutInventoryLoss" classname="Rimbara.Tests.RestorationTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.001715" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1065" name="BothProfilesCompleteWithoutInventoryLoss(1,1,1)" fullname="Rimbara.Tests.RestorationTests.BothProfilesCompleteWithoutInventoryLoss(1,1,1)" methodname="BothProfilesCompleteWithoutInventoryLoss" classname="Rimbara.Tests.RestorationTests" runstate="Runnable" seed="1689959909" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.001125" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1066" name="BothProfilesCompleteWithoutInventoryLoss(5,5,2)" fullname="Rimbara.Tests.RestorationTests.BothProfilesCompleteWithoutInventoryLoss(5,5,2)" methodname="BothProfilesCompleteWithoutInventoryLoss" classname="Rimbara.Tests.RestorationTests" runstate="Runnable" seed="989811120" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.000098" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-case id="1095" name="DisposedSequenceStopsListeningToProgress" fullname="Rimbara.Tests.RestorationTests.DisposedSequenceStopsListeningToProgress" methodname="DisposedSequenceStopsListeningToProgress" classname="Rimbara.Tests.RestorationTests" runstate="Runnable" seed="156352036" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.000664" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1078" name="DuplicateActionsEmitNoAdditionalEvents" fullname="Rimbara.Tests.RestorationTests.DuplicateActionsEmitNoAdditionalEvents" methodname="DuplicateActionsEmitNoAdditionalEvents" classname="Rimbara.Tests.RestorationTests" runstate="Runnable" seed="1270179907" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.000609" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1073" name="EmptyInventoryCannotPlant" fullname="Rimbara.Tests.RestorationTests.EmptyInventoryCannotPlant" methodname="EmptyInventoryCannotPlant" classname="Rimbara.Tests.RestorationTests" runstate="Runnable" seed="341435022" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.000240" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1080" name="GoalsCannotOverflow" fullname="Rimbara.Tests.RestorationTests.GoalsCannotOverflow" methodname="GoalsCannotOverflow" classname="Rimbara.Tests.RestorationTests" runstate="Runnable" seed="1303142833" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.000288" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1092" name="IntermittentWaterNeverLosesProgress" fullname="Rimbara.Tests.RestorationTests.IntermittentWaterNeverLosesProgress" methodname="IntermittentWaterNeverLosesProgress" classname="Rimbara.Tests.RestorationTests" runstate="Runnable" seed="467065912" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.000489" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-suite type="ParameterizedMethod" id="1072" name="InvalidGoalCombinationsAreRejected" fullname="Rimbara.Tests.RestorationTests.InvalidGoalCombinationsAreRejected" classname="Rimbara.Tests.RestorationTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.001541" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1068" name="InvalidGoalCombinationsAreRejected(0,1,1)" fullname="Rimbara.Tests.RestorationTests.InvalidGoalCombinationsAreRejected(0,1,1)" methodname="InvalidGoalCombinationsAreRejected" classname="Rimbara.Tests.RestorationTests" runstate="Runnable" seed="1640076919" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.000415" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1069" name="InvalidGoalCombinationsAreRejected(1,2,1)" fullname="Rimbara.Tests.RestorationTests.InvalidGoalCombinationsAreRejected(1,2,1)" methodname="InvalidGoalCombinationsAreRejected" classname="Rimbara.Tests.RestorationTests" runstate="Runnable" seed="243661827" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.000121" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1070" name="InvalidGoalCombinationsAreRejected(1,0,1)" fullname="Rimbara.Tests.RestorationTests.InvalidGoalCombinationsAreRejected(1,0,1)" methodname="InvalidGoalCombinationsAreRejected" classname="Rimbara.Tests.RestorationTests" runstate="Runnable" seed="17888072" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.000087" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1071" name="InvalidGoalCombinationsAreRejected(1,1,0)" fullname="Rimbara.Tests.RestorationTests.InvalidGoalCombinationsAreRejected(1,1,0)" methodname="InvalidGoalCombinationsAreRejected" classname="Rimbara.Tests.RestorationTests" runstate="Runnable" seed="1780109097" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.000080" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="ParameterizedMethod" id="1077" name="InvalidObjectIdsNeverEarnProgress" fullname="Rimbara.Tests.RestorationTests.InvalidObjectIdsNeverEarnProgress" classname="Rimbara.Tests.RestorationTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.001116" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1074" name="InvalidObjectIdsNeverEarnProgress(null)" fullname="Rimbara.Tests.RestorationTests.InvalidObjectIdsNeverEarnProgress(null)" methodname="InvalidObjectIdsNeverEarnProgress" classname="Rimbara.Tests.RestorationTests" runstate="Runnable" seed="2114631232" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.000257" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1075" name="InvalidObjectIdsNeverEarnProgress(&quot;&quot;)" fullname="Rimbara.Tests.RestorationTests.InvalidObjectIdsNeverEarnProgress(&quot;&quot;)" methodname="InvalidObjectIdsNeverEarnProgress" classname="Rimbara.Tests.RestorationTests" runstate="Runnable" seed="1146663546" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.000060" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1076" name="InvalidObjectIdsNeverEarnProgress(&quot; &quot;)" fullname="Rimbara.Tests.RestorationTests.InvalidObjectIdsNeverEarnProgress(&quot; &quot;)" methodname="InvalidObjectIdsNeverEarnProgress" classname="Rimbara.Tests.RestorationTests" runstate="Runnable" seed="619816020" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.000041" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="ParameterizedMethod" id="1086" name="InvalidSuppressionDurationIsRejected" fullname="Rimbara.Tests.RestorationTests.InvalidSuppressionDurationIsRejected" classname="Rimbara.Tests.RestorationTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.001480" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1082" name="InvalidSuppressionDurationIsRejected(0.0f)" fullname="Rimbara.Tests.RestorationTests.InvalidSuppressionDurationIsRejected(0.0f)" methodname="InvalidSuppressionDurationIsRejected" classname="Rimbara.Tests.RestorationTests" runstate="Runnable" seed="1762841034" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.000465" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1083" name="InvalidSuppressionDurationIsRejected(-1.0f)" fullname="Rimbara.Tests.RestorationTests.InvalidSuppressionDurationIsRejected(-1.0f)" methodname="InvalidSuppressionDurationIsRejected" classname="Rimbara.Tests.RestorationTests" runstate="Runnable" seed="2121048182" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.000112" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1084" name="InvalidSuppressionDurationIsRejected(float.NaN)" fullname="Rimbara.Tests.RestorationTests.InvalidSuppressionDurationIsRejected(float.NaN)" methodname="InvalidSuppressionDurationIsRejected" classname="Rimbara.Tests.RestorationTests" runstate="Runnable" seed="1087054270" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.000159" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1085" name="InvalidSuppressionDurationIsRejected(float.PositiveInfinity)" fullname="Rimbara.Tests.RestorationTests.InvalidSuppressionDurationIsRejected(float.PositiveInfinity)" methodname="InvalidSuppressionDurationIsRejected" classname="Rimbara.Tests.RestorationTests" runstate="Runnable" seed="545785098" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.000083" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="ParameterizedMethod" id="1091" name="InvalidWaterContactDoesNotAdvanceFire" fullname="Rimbara.Tests.RestorationTests.InvalidWaterContactDoesNotAdvanceFire" classname="Rimbara.Tests.RestorationTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.000997" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1087" name="InvalidWaterContactDoesNotAdvanceFire(0.0f)" fullname="Rimbara.Tests.RestorationTests.InvalidWaterContactDoesNotAdvanceFire(0.0f)" methodname="InvalidWaterContactDoesNotAdvanceFire" classname="Rimbara.Tests.RestorationTests" runstate="Runnable" seed="1230471038" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.000230" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1088" name="InvalidWaterContactDoesNotAdvanceFire(-2.0f)" fullname="Rimbara.Tests.RestorationTests.InvalidWaterContactDoesNotAdvanceFire(-2.0f)" methodname="InvalidWaterContactDoesNotAdvanceFire" classname="Rimbara.Tests.RestorationTests" runstate="Runnable" seed="863756129" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.000054" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1089" name="InvalidWaterContactDoesNotAdvanceFire(float.NaN)" fullname="Rimbara.Tests.RestorationTests.InvalidWaterContactDoesNotAdvanceFire(float.NaN)" methodname="InvalidWaterContactDoesNotAdvanceFire" classname="Rimbara.Tests.RestorationTests" runstate="Runnable" seed="1204233949" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.000037" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1090" name="InvalidWaterContactDoesNotAdvanceFire(float.PositiveInfinity)" fullname="Rimbara.Tests.RestorationTests.InvalidWaterContactDoesNotAdvanceFire(float.PositiveInfinity)" methodname="InvalidWaterContactDoesNotAdvanceFire" classname="Rimbara.Tests.RestorationTests" runstate="Runnable" seed="701021125" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.000034" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-case id="1093" name="MissionsAdvanceInTheRequiredOrderAndWinAtPost" fullname="Rimbara.Tests.RestorationTests.MissionsAdvanceInTheRequiredOrderAndWinAtPost" methodname="MissionsAdvanceInTheRequiredOrderAndWinAtPost" classname="Rimbara.Tests.RestorationTests" runstate="Runnable" seed="1596740843" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.000742" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1094" name="PauseBlocksInspectionAndVictory" fullname="Rimbara.Tests.RestorationTests.PauseBlocksInspectionAndVictory" methodname="PauseBlocksInspectionAndVictory" classname="Rimbara.Tests.RestorationTests" runstate="Runnable" seed="41552408" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.000250" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-suite type="ParameterizedMethod" id="1107" name="ProfilesRejectNonFiniteOrNonPositiveToolSettings" fullname="Rimbara.Tests.RestorationTests.ProfilesRejectNonFiniteOrNonPositiveToolSettings" classname="Rimbara.Tests.RestorationTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.001334" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1103" name="ProfilesRejectNonFiniteOrNonPositiveToolSettings(float.NaN)" fullname="Rimbara.Tests.RestorationTests.ProfilesRejectNonFiniteOrNonPositiveToolSettings(float.NaN)" methodname="ProfilesRejectNonFiniteOrNonPositiveToolSettings" classname="Rimbara.Tests.RestorationTests" runstate="Runnable" seed="774129341" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.000459" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1104" name="ProfilesRejectNonFiniteOrNonPositiveToolSettings(float.PositiveInfinity)" fullname="Rimbara.Tests.RestorationTests.ProfilesRejectNonFiniteOrNonPositiveToolSettings(float.PositiveInfinity)" methodname="ProfilesRejectNonFiniteOrNonPositiveToolSettings" classname="Rimbara.Tests.RestorationTests" runstate="Runnable" seed="790315950" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.000097" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1105" name="ProfilesRejectNonFiniteOrNonPositiveToolSettings(0.0f)" fullname="Rimbara.Tests.RestorationTests.ProfilesRejectNonFiniteOrNonPositiveToolSettings(0.0f)" methodname="ProfilesRejectNonFiniteOrNonPositiveToolSettings" classname="Rimbara.Tests.RestorationTests" runstate="Runnable" seed="1553178596" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.000059" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1106" name="ProfilesRejectNonFiniteOrNonPositiveToolSettings(-1.0f)" fullname="Rimbara.Tests.RestorationTests.ProfilesRejectNonFiniteOrNonPositiveToolSettings(-1.0f)" methodname="ProfilesRejectNonFiniteOrNonPositiveToolSettings" classname="Rimbara.Tests.RestorationTests" runstate="Runnable" seed="1619204822" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.000053" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="ParameterizedMethod" id="1102" name="ProfilesRespectTheAuthoredMapSupply" fullname="Rimbara.Tests.RestorationTests.ProfilesRespectTheAuthoredMapSupply" classname="Rimbara.Tests.RestorationTests" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.002269" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1096" name="ProfilesRespectTheAuthoredMapSupply(1,1,1,True)" fullname="Rimbara.Tests.RestorationTests.ProfilesRespectTheAuthoredMapSupply(1,1,1,True)" methodname="ProfilesRespectTheAuthoredMapSupply" classname="Rimbara.Tests.RestorationTests" runstate="Runnable" seed="1896529632" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.001001" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1097" name="ProfilesRespectTheAuthoredMapSupply(5,5,2,True)" fullname="Rimbara.Tests.RestorationTests.ProfilesRespectTheAuthoredMapSupply(5,5,2,True)" methodname="ProfilesRespectTheAuthoredMapSupply" classname="Rimbara.Tests.RestorationTests" runstate="Runnable" seed="1521878634" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.000146" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1098" name="ProfilesRespectTheAuthoredMapSupply(5,4,2,True)" fullname="Rimbara.Tests.RestorationTests.ProfilesRespectTheAuthoredMapSupply(5,4,2,True)" methodname="ProfilesRespectTheAuthoredMapSupply" classname="Rimbara.Tests.RestorationTests" runstate="Runnable" seed="2144285259" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.000083" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1099" name="ProfilesRespectTheAuthoredMapSupply(6,5,2,False)" fullname="Rimbara.Tests.RestorationTests.ProfilesRespectTheAuthoredMapSupply(6,5,2,False)" methodname="ProfilesRespectTheAuthoredMapSupply" classname="Rimbara.Tests.RestorationTests" runstate="Runnable" seed="608358011" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.000068" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1100" name="ProfilesRespectTheAuthoredMapSupply(1,2,1,False)" fullname="Rimbara.Tests.RestorationTests.ProfilesRespectTheAuthoredMapSupply(1,2,1,False)" methodname="ProfilesRespectTheAuthoredMapSupply" classname="Rimbara.Tests.RestorationTests" runstate="Runnable" seed="1900321816" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.000075" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1101" name="ProfilesRespectTheAuthoredMapSupply(5,5,3,False)" fullname="Rimbara.Tests.RestorationTests.ProfilesRespectTheAuthoredMapSupply(5,5,3,False)" methodname="ProfilesRespectTheAuthoredMapSupply" classname="Rimbara.Tests.RestorationTests" runstate="Runnable" seed="939306111" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.000061" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-case id="1081" name="ResetMakesObjectIdsAvailableAgain" fullname="Rimbara.Tests.RestorationTests.ResetMakesObjectIdsAvailableAgain" methodname="ResetMakesObjectIdsAvailableAgain" classname="Rimbara.Tests.RestorationTests" runstate="Runnable" seed="595763678" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.000348" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1079" name="SeedlingsDoNotDoubleCountRestoration" fullname="Rimbara.Tests.RestorationTests.SeedlingsDoNotDoubleCountRestoration" methodname="SeedlingsDoNotDoubleCountRestoration" classname="Rimbara.Tests.RestorationTests" runstate="Runnable" seed="2146952660" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.000428" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1108" name="RestoredProgressTests" fullname="Rimbara.Tests.RestoredProgressTests" classname="Rimbara.Tests.RestoredProgressTests" runstate="Runnable" testcasecount="18" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.007469" total="18" passed="18" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="ParameterizedMethod" id="1113" name="BeginRequiresRecoveryCompleteAndRunning" fullname="Rimbara.Tests.RestoredProgressTests.BeginRequiresRecoveryCompleteAndRunning" classname="Rimbara.Tests.RestoredProgressTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.000987" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1110" name="BeginRequiresRecoveryCompleteAndRunning(False,True)" fullname="Rimbara.Tests.RestoredProgressTests.BeginRequiresRecoveryCompleteAndRunning(False,True)" methodname="BeginRequiresRecoveryCompleteAndRunning" classname="Rimbara.Tests.RestoredProgressTests" runstate="Runnable" seed="179914493" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.000387" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1111" name="BeginRequiresRecoveryCompleteAndRunning(True,False)" fullname="Rimbara.Tests.RestoredProgressTests.BeginRequiresRecoveryCompleteAndRunning(True,False)" methodname="BeginRequiresRecoveryCompleteAndRunning" classname="Rimbara.Tests.RestoredProgressTests" runstate="Runnable" seed="393770004" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.000064" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1112" name="BeginRequiresRecoveryCompleteAndRunning(False,False)" fullname="Rimbara.Tests.RestoredProgressTests.BeginRequiresRecoveryCompleteAndRunning(False,False)" methodname="BeginRequiresRecoveryCompleteAndRunning" classname="Rimbara.Tests.RestoredProgressTests" runstate="Runnable" seed="551774503" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.000035" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-case id="1115" name="ElderGrantsOneDedicatedSeedlingOnlyOnce" fullname="Rimbara.Tests.RestoredProgressTests.ElderGrantsOneDedicatedSeedlingOnlyOnce" methodname="ElderGrantsOneDedicatedSeedlingOnlyOnce" classname="Rimbara.Tests.RestoredProgressTests" runstate="Runnable" seed="245271874" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.000330" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1126" name="EndingIsNotVictoryUntilFinished" fullname="Rimbara.Tests.RestoredProgressTests.EndingIsNotVictoryUntilFinished" methodname="EndingIsNotVictoryUntilFinished" classname="Rimbara.Tests.RestoredProgressTests" runstate="Runnable" seed="1843539" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.000582" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1129" name="FinalMissionDoesNotConsumeRecoveryInventoryOrAlterItsTargets" fullname="Rimbara.Tests.RestoredProgressTests.FinalMissionDoesNotConsumeRecoveryInventoryOrAlterItsTargets" methodname="FinalMissionDoesNotConsumeRecoveryInventoryOrAlterItsTargets" classname="Rimbara.Tests.RestoredProgressTests" runstate="Runnable" seed="1677452651" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.000304" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1128" name="InvalidOrDuplicateTargetIdsFailEarly" fullname="Rimbara.Tests.RestoredProgressTests.InvalidOrDuplicateTargetIdsFailEarly" methodname="InvalidOrDuplicateTargetIdsFailEarly" classname="Rimbara.Tests.RestoredProgressTests" runstate="Runnable" seed="2134088407" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.000389" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-suite type="ParameterizedMethod" id="1119" name="OnlyRegisteredFinalTreeCanBePlanted" fullname="Rimbara.Tests.RestoredProgressTests.OnlyRegisteredFinalTreeCanBePlanted" classname="Rimbara.Tests.RestoredProgressTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.000864" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1116" name="OnlyRegisteredFinalTreeCanBePlanted(null)" fullname="Rimbara.Tests.RestoredProgressTests.OnlyRegisteredFinalTreeCanBePlanted(null)" methodname="OnlyRegisteredFinalTreeCanBePlanted" classname="Rimbara.Tests.RestoredProgressTests" runstate="Runnable" seed="386824797" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.000170" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1117" name="OnlyRegisteredFinalTreeCanBePlanted(&quot;&quot;)" fullname="Rimbara.Tests.RestoredProgressTests.OnlyRegisteredFinalTreeCanBePlanted(&quot;&quot;)" methodname="OnlyRegisteredFinalTreeCanBePlanted" classname="Rimbara.Tests.RestoredProgressTests" runstate="Runnable" seed="126817110" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.000052" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1118" name="OnlyRegisteredFinalTreeCanBePlanted(&quot;wrong&quot;)" fullname="Rimbara.Tests.RestoredProgressTests.OnlyRegisteredFinalTreeCanBePlanted(&quot;wrong&quot;)" methodname="OnlyRegisteredFinalTreeCanBePlanted" classname="Rimbara.Tests.RestoredProgressTests" runstate="Runnable" seed="1376808045" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.000035" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="ParameterizedMethod" id="1125" name="OnlyStartedEndingCanFinishOrSkip" fullname="Rimbara.Tests.RestoredProgressTests.OnlyStartedEndingCanFinishOrSkip" classname="Rimbara.Tests.RestoredProgressTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.001033" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1123" name="OnlyStartedEndingCanFinishOrSkip(False)" fullname="Rimbara.Tests.RestoredProgressTests.OnlyStartedEndingCanFinishOrSkip(False)" methodname="OnlyStartedEndingCanFinishOrSkip" classname="Rimbara.Tests.RestoredProgressTests" runstate="Runnable" seed="688389391" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.000476" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1124" name="OnlyStartedEndingCanFinishOrSkip(True)" fullname="Rimbara.Tests.RestoredProgressTests.OnlyStartedEndingCanFinishOrSkip(True)" methodname="OnlyStartedEndingCanFinishOrSkip" classname="Rimbara.Tests.RestoredProgressTests" runstate="Runnable" seed="1824155735" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.000068" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-case id="1120" name="PlantingConsumesExactlyOneAndRequiresRunning" fullname="Rimbara.Tests.RestoredProgressTests.PlantingConsumesExactlyOneAndRequiresRunning" methodname="PlantingConsumesExactlyOneAndRequiresRunning" classname="Rimbara.Tests.RestoredProgressTests" runstate="Runnable" seed="2104269157" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.000222" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1127" name="ResetClearsAllFinalFlagsAndSupply" fullname="Rimbara.Tests.RestoredProgressTests.ResetClearsAllFinalFlagsAndSupply" methodname="ResetClearsAllFinalFlagsAndSupply" classname="Rimbara.Tests.RestoredProgressTests" runstate="Runnable" seed="1322177578" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.000272" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1109" name="StartsDormantWithNoFinalSupply" fullname="Rimbara.Tests.RestoredProgressTests.StartsDormantWithNoFinalSupply" methodname="StartsDormantWithNoFinalSupply" classname="Rimbara.Tests.RestoredProgressTests" runstate="Runnable" seed="442183591" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.000191" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1114" name="TransitionCannotBeBypassedOrRepeated" fullname="Rimbara.Tests.RestoredProgressTests.TransitionCannotBeBypassedOrRepeated" methodname="TransitionCannotBeBypassedOrRepeated" classname="Rimbara.Tests.RestoredProgressTests" runstate="Runnable" seed="1753565353" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.000203" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1122" name="ViewpointRequiresWaterAndRegisteredId" fullname="Rimbara.Tests.RestoredProgressTests.ViewpointRequiresWaterAndRegisteredId" methodname="ViewpointRequiresWaterAndRegisteredId" classname="Rimbara.Tests.RestoredProgressTests" runstate="Runnable" seed="1142755088" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.000208" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1121" name="WaterRequiresPlantAndRejectsPauseAndWrongId" fullname="Rimbara.Tests.RestoredProgressTests.WaterRequiresPlantAndRejectsPauseAndWrongId" methodname="WaterRequiresPlantAndRejectsPauseAndWrongId" classname="Rimbara.Tests.RestoredProgressTests" runstate="Runnable" seed="619544236" result="Passed" start-time="2026-11-15 23:24:33Z" end-time="2026-11-15 23:24:33Z" duration="0.000243" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[Saving results to: C:/Users/MUHAMMAD FAHRUR ROZI/AppData/LocalLow/Rimbara/RIMBARA\TestResults.xml
+]]></output>
+            </test-case>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

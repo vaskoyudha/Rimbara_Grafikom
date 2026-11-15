@@ -56,8 +56,12 @@ namespace Rimbara.Mission
                 if (fireBeacons != null)
                     for (int i = 0; i < fireBeacons.Length; i++)
                         fireBeacons[i].SetActive(missions.DisasterChapter.CanExtinguish && !fires[i].Extinguished && fires[i].gameObject.activeInHierarchy);
-                Destination = missions.DisasterChapter.Destination(player.position);
-                DestinationName = Destination == null ? string.Empty : Destination.name;
+                RecoveryChapter recovery = missions.DisasterChapter.Recovery;
+                bool recovering = recovery != null && recovery.Active;
+                Destination = recovering ? recovery.Destination(player.position) : missions.DisasterChapter.Destination(player.position);
+                DestinationName = Destination == null ? string.Empty : recovering ? recovery.DestinationLabel(Destination) : missions.DisasterChapter.DestinationLabel(Destination);
+                if (recovery != null && recovery.Restored != null && recovery.Restored.Active)
+                { Destination = recovery.Restored.Destination; DestinationName = recovery.Restored.DestinationLabel; }
                 return;
             }
             MissionStage stage = missions.Stage;

@@ -39,6 +39,23 @@ namespace Rimbara.Editor
         }
 
         public static AudioClip Clip(string name) => AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/Audio/" + name + ".wav");
+        public static AudioClip EnsureRiverFlow()
+        {
+            Ensure("RecoveryRiverFlow", 8f, 167010, (t, noise, smooth) =>
+                noise * 0.045f + smooth * 2.2f + Mathf.Sin(t * 2f * Mathf.PI * 110f) * 0.012f);
+            return Clip("RecoveryRiverFlow");
+        }
+        public static AudioClip EnsureEndingMusic()
+        {
+            Ensure("RestoredEndingMusic", 36f, 7, (t, noise, smooth) =>
+            {
+                float[] roots = { 130.81f, 174.61f, 196f, 130.81f };
+                float hz = roots[Mathf.Min(3, (int)(t / 9f))];
+                float gain = Mathf.Min(1f, t / 2f, (36f - t) / 3f);
+                return (Tone(hz, t) * 0.08f + Tone(hz * 1.5f, t) * 0.04f + Tone(hz * 2f, t) * 0.025f) * gain;
+            });
+            return Clip("RestoredEndingMusic");
+        }
         private static float Tone(float hz, float t) => Mathf.Sin(t * hz * Mathf.PI * 2f);
         private static float Envelope(float t, float duration) => Mathf.Min(1f, t / 0.025f) * Mathf.Pow(Mathf.Clamp01(1f - t / duration), 1.5f);
 

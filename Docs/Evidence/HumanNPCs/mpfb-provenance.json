@@ -1,0 +1,24 @@
+﻿{
+    "MPFBTag":  "v2.0.18",
+    "Commit":  "d0a32e57a7f915cb2f2b95410e2117648c7bbb7e",
+    "GraphicalInputs":  [
+                            {
+                                "Path":  "src/mpfb/data/3dobjs/base.obj",
+                                "SHA256":  "bea00279464133e86b634220cd2774ebf3b470de280d11222a6b2269e4a8d950"
+                            },
+                            {
+                                "Path":  "src/mpfb/data/rigs/standard/rig.mixamo_unity.json",
+                                "SHA256":  "5c65f5a999b5e10a6be938082835c3c2c5cb349ba5cc464f35ed1bd96be0ee96"
+                            },
+                            {
+                                "Path":  "src/mpfb/data/rigs/standard/weights.mixamo_unity.json",
+                                "SHA256":  "fc82599205280ac43385679c2306eff311dc1d82f239ddca9aed46193916e08b"
+                            },
+                            {
+                                "Path":  "src/mpfb/data/poses/mixamo_unity_fk/t-pose.json",
+                                "SHA256":  "d0e6778f98e1b394cf78460f1e73bebef85b428c9bd56f18ae755296a5fc24d2"
+                            }
+                        ],
+    "MacroTargets":  "Bundled MPFB targets at pinned commit; selected phenotype in Unity manifest",
+    "ToolCodeShipped":  false
+}

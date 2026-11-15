@@ -13,6 +13,8 @@ namespace Rimbara.Interaction
         [SerializeField] private LayerMask hitLayers;
         [SerializeField] private LayerMask obstructionLayers;
         public FirePoint AimedFire { get; private set; }
+        public RecoveryPlantingPoint AimedSeedling { get; private set; }
+        public FinalPlantingPoint AimedFinalTree { get; private set; }
         public bool Spraying { get; private set; }
         public string AimHint { get; private set; }
         public Vector3 LastAimPoint { get; private set; }
@@ -31,9 +33,11 @@ namespace Rimbara.Interaction
 
         private void Update()
         {
-            if (!actor.State.SessionRunning) { SetSpraying(false); AimedFire = null; AimHint = string.Empty; return; }
+            if (!actor.State.SessionRunning) { SetSpraying(false); AimedFire = null; AimedSeedling = null; AimedFinalTree = null; AimHint = string.Empty; return; }
             UpdateAim();
-            bool useTool = input.SprayHeld && actor.Missions.CanExtinguish;
+            bool recoveryTool = actor.Missions.DisasterChapter != null && actor.Missions.DisasterChapter.Recovery != null
+                && actor.Missions.DisasterChapter.Recovery.CanPlant;
+            bool useTool = input.SprayHeld && (actor.Missions.CanExtinguish || recoveryTool || (AimedFinalTree != null && AimedFinalTree.NeedsWater));
             SetSpraying(useTool);
             if (useTool) ApplySpray(Time.deltaTime);
         }
@@ -46,7 +50,28 @@ namespace Rimbara.Interaction
             LastAimPoint = didHit ? hit.point : ray.GetPoint(30f);
             if (nozzle != null) nozzle.rotation = Quaternion.LookRotation((LastAimPoint - nozzle.position).normalized);
             AimedFire = didHit ? hit.collider.GetComponentInParent<FirePoint>() : null;
+            AimedSeedling = didHit ? hit.collider.GetComponentInParent<RecoveryPlantingPoint>() : null;
+            AimedFinalTree = didHit ? hit.collider.GetComponentInParent<FinalPlantingPoint>() : null;
             AimHint = string.Empty;
+            if (AimedFinalTree != null)
+            {
+                if (!AimedFinalTree.NeedsWater) return;
+                if (Vector3.Distance(actor.transform.position + Vector3.up, AimedFinalTree.AimPosition) > actor.State.Profile.SprayRange)
+                { AimHint = "Dekati bibit terakhir untuk menyiram"; return; }
+                if (Physics.Linecast(nozzle.position, AimedFinalTree.AimPosition, obstructionLayers, QueryTriggerInteraction.Ignore))
+                { AimHint = "Aliran air terhalang / Cari posisi lain"; return; }
+                AimHint = "TAHAN KLIK KIRI  |  Siram bibit terakhir"; return;
+            }
+            if (AimedSeedling != null)
+            {
+                if (!AimedSeedling.NeedsWater) return;
+                if (Vector3.Distance(actor.transform.position + Vector3.up, AimedSeedling.AimPosition) > actor.State.Profile.SprayRange)
+                { AimHint = "Dekati bibit untuk menyiram"; return; }
+                if (Physics.Linecast(nozzle.position, AimedSeedling.AimPosition, obstructionLayers, QueryTriggerInteraction.Ignore))
+                { AimHint = "Aliran air terhalang / Cari posisi lain"; return; }
+                AimHint = Rimbara.UI.IndonesianText.SeedlingWaterAction;
+                return;
+            }
             if (AimedFire == null || AimedFire.Extinguished) return;
             if (!actor.Missions.CanExtinguish)
             {
@@ -62,6 +87,24 @@ namespace Rimbara.Interaction
 
         public bool ApplySpray(float deltaTime)
         {
+            if (AimedFinalTree != null)
+            {
+                if (!actor.State.SessionRunning || !AimedFinalTree.NeedsWater
+                    || Vector3.Distance(actor.transform.position + Vector3.up, AimedFinalTree.AimPosition) > actor.State.Profile.SprayRange
+                    || Physics.Linecast(nozzle.position, AimedFinalTree.AimPosition, obstructionLayers, QueryTriggerInteraction.Ignore)) return false;
+                bool done = AimedFinalTree.ReceiveWater(deltaTime);
+                if (done) actor.Report(new InteractionResult(true, "Bibit terakhir telah disiram. Datangi titik pandang hutan."));
+                return done;
+            }
+            if (AimedSeedling != null)
+            {
+                if (!actor.State.SessionRunning || !AimedSeedling.NeedsWater
+                    || Vector3.Distance(actor.transform.position + Vector3.up, AimedSeedling.AimPosition) > actor.State.Profile.SprayRange
+                    || Physics.Linecast(nozzle.position, AimedSeedling.AimPosition, obstructionLayers, QueryTriggerInteraction.Ignore)) return false;
+                bool watered = AimedSeedling.ReceiveWater(deltaTime);
+                if (watered) actor.Report(new InteractionResult(true, "Bibit telah disiram. Beri waktu bagi akar muda untuk tumbuh."));
+                return watered;
+            }
             if (!actor.State.SessionRunning || !actor.Missions.CanExtinguish || AimedFire == null || AimedFire.Extinguished) return false;
             if (Vector3.Distance(actor.transform.position + Vector3.up, AimedFire.AimPosition) > actor.State.Profile.SprayRange) return false;
             if (Physics.Linecast(nozzle.position, AimedFire.AimPosition, obstructionLayers, QueryTriggerInteraction.Ignore)) return false;

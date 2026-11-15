@@ -1,0 +1,17 @@
+﻿[
+    {
+        "Path":  "Builds/Storyline-Windows/RIMBARA-FromAshes.exe",
+        "Bytes":  667648,
+        "SHA256":  "835d92352fdb672e6c667fe5398ebb2f91db9f9bdf8975dab5e6a2b85c16cead"
+    },
+    {
+        "Path":  "Builds/Storyline-Windows/UnityPlayer.dll",
+        "Bytes":  35780016,
+        "SHA256":  "40c63c999bf6169400bb84b33e22943b158132d7af7d19ee185e7ca549534f62"
+    },
+    {
+        "Path":  "Builds/Storyline-Windows/RIMBARA-FromAshes_Data/Managed/Rimbara.dll",
+        "Bytes":  210432,
+        "SHA256":  "d0e1afbd8e532d7ea6420e95b09ad44de233492258ef50c1dd2e1ba2e266842c"
+    }
+]

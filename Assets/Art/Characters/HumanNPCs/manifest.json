@@ -1,0 +1,759 @@
+{
+  "generator": "Tools/Generate-HumanNPCs.py",
+  "mpfb": "v2.0.18",
+  "characters": [
+    {
+      "id": "Coordinator",
+      "height": 1.75,
+      "triangles": 31116,
+      "phenotype": {
+        "gender": 1,
+        "age": 0.53,
+        "muscle": 0.58,
+        "weight": 0.53,
+        "proportions": 0.5,
+        "height": 0.57,
+        "cupsize": 0.5,
+        "firmness": 0.5,
+        "race": {
+          "asian": 0.8,
+          "caucasian": 0.12,
+          "african": 0.08
+        }
+      },
+      "clothes": "male_worksuit01",
+      "hair": "short01",
+      "materials": [
+        {
+          "name": "Coordinator_Skin",
+          "texture": "middleage_lightskinned_male_diffuse2-e897c4cc1b6a.png",
+          "color": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "cutout": false
+        },
+        {
+          "name": "Coordinator_Eyes",
+          "texture": "brown_eye-4659691c7295.png",
+          "color": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "cutout": false
+        },
+        {
+          "name": "Coordinator_Eyebrows",
+          "texture": "eyebrow001-9940f7d0b1b2.png",
+          "color": [
+            0.12,
+            0.1,
+            0.09,
+            1
+          ],
+          "cutout": true
+        },
+        {
+          "name": "Coordinator_Hair",
+          "texture": "short01_diffuse-f34a0957184e.png",
+          "color": [
+            0.18,
+            0.15,
+            0.12,
+            1
+          ],
+          "cutout": true
+        },
+        {
+          "name": "Coordinator_Clothes",
+          "texture": "male_worksuit01_diffuse-4b59b50f7a8a.png",
+          "color": [
+            0.95,
+            0.72,
+            0.34,
+            1
+          ],
+          "cutout": false
+        },
+        {
+          "name": "Coordinator_Shoes",
+          "texture": "shoes01_diffuse-50c9a406a7f1.png",
+          "color": [
+            0.55,
+            0.48,
+            0.4,
+            1
+          ],
+          "cutout": false
+        }
+      ]
+    },
+    {
+      "id": "Ranger",
+      "height": 1.82,
+      "triangles": 28840,
+      "phenotype": {
+        "gender": 1,
+        "age": 0.48,
+        "muscle": 0.69,
+        "weight": 0.43,
+        "proportions": 0.5,
+        "height": 0.65,
+        "cupsize": 0.5,
+        "firmness": 0.5,
+        "race": {
+          "asian": 0.8,
+          "caucasian": 0.12,
+          "african": 0.08
+        }
+      },
+      "clothes": "male_casualsuit05",
+      "hair": "short02",
+      "materials": [
+        {
+          "name": "Ranger_Skin",
+          "texture": "young_lightskinned_male_diffuse3-f50016a5507f.png",
+          "color": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "cutout": false
+        },
+        {
+          "name": "Ranger_Eyes",
+          "texture": "brown_eye-4659691c7295.png",
+          "color": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "cutout": false
+        },
+        {
+          "name": "Ranger_Eyebrows",
+          "texture": "eyebrow001-9940f7d0b1b2.png",
+          "color": [
+            0.12,
+            0.1,
+            0.09,
+            1
+          ],
+          "cutout": true
+        },
+        {
+          "name": "Ranger_Hair",
+          "texture": "short02_diffuse-47fe33831a39.png",
+          "color": [
+            0.18,
+            0.15,
+            0.12,
+            1
+          ],
+          "cutout": true
+        },
+        {
+          "name": "Ranger_Clothes",
+          "texture": "male_casualsuit05_diffuse-d4345efe9332.png",
+          "color": [
+            0.53,
+            0.68,
+            0.4,
+            1
+          ],
+          "cutout": false
+        },
+        {
+          "name": "Ranger_Shoes",
+          "texture": "shoes01_diffuse-50c9a406a7f1.png",
+          "color": [
+            0.55,
+            0.48,
+            0.4,
+            1
+          ],
+          "cutout": false
+        }
+      ]
+    },
+    {
+      "id": "Elder",
+      "height": 1.68,
+      "triangles": 39534,
+      "phenotype": {
+        "gender": 1,
+        "age": 0.94,
+        "muscle": 0.35,
+        "weight": 0.48,
+        "proportions": 0.5,
+        "height": 0.44,
+        "cupsize": 0.5,
+        "firmness": 0.5,
+        "race": {
+          "asian": 0.8,
+          "caucasian": 0.12,
+          "african": 0.08
+        }
+      },
+      "clothes": "male_casualsuit01",
+      "hair": "short01",
+      "materials": [
+        {
+          "name": "Elder_Skin",
+          "texture": "old_lightskinned_male_diffuse2-8b3232676c5b.png",
+          "color": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "cutout": false
+        },
+        {
+          "name": "Elder_Eyes",
+          "texture": "brown_eye-4659691c7295.png",
+          "color": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "cutout": false
+        },
+        {
+          "name": "Elder_Eyebrows",
+          "texture": "eyebrow001-9940f7d0b1b2.png",
+          "color": [
+            0.3,
+            0.28,
+            0.24,
+            1
+          ],
+          "cutout": true
+        },
+        {
+          "name": "Elder_Hair",
+          "texture": "",
+          "color": [
+            0.83,
+            0.81,
+            0.76,
+            1
+          ],
+          "cutout": false
+        },
+        {
+          "name": "Elder_Clothes",
+          "texture": "male_casualsuit01_diffuse-3fd0bba5dcbd.png",
+          "color": [
+            0.86,
+            0.76,
+            0.57,
+            1
+          ],
+          "cutout": false
+        },
+        {
+          "name": "Elder_Shoes",
+          "texture": "shoes01_diffuse-50c9a406a7f1.png",
+          "color": [
+            0.55,
+            0.48,
+            0.4,
+            1
+          ],
+          "cutout": false
+        }
+      ]
+    },
+    {
+      "id": "Volunteer",
+      "height": 1.66,
+      "triangles": 33406,
+      "phenotype": {
+        "gender": 0,
+        "age": 0.32,
+        "muscle": 0.55,
+        "weight": 0.44,
+        "proportions": 0.5,
+        "height": 0.53,
+        "cupsize": 0.5,
+        "firmness": 0.5,
+        "race": {
+          "asian": 0.8,
+          "caucasian": 0.12,
+          "african": 0.08
+        }
+      },
+      "clothes": "female_casualsuit01",
+      "hair": "bob01",
+      "materials": [
+        {
+          "name": "Volunteer_Skin",
+          "texture": "young_lightskinned_female_diffuse3-1d82f782b7d2.png",
+          "color": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "cutout": false
+        },
+        {
+          "name": "Volunteer_Eyes",
+          "texture": "brown_eye-4659691c7295.png",
+          "color": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "cutout": false
+        },
+        {
+          "name": "Volunteer_Eyebrows",
+          "texture": "eyebrow001-9940f7d0b1b2.png",
+          "color": [
+            0.12,
+            0.1,
+            0.09,
+            1
+          ],
+          "cutout": true
+        },
+        {
+          "name": "Volunteer_Hair",
+          "texture": "bob01_diffuse-2b38bc7a028e.png",
+          "color": [
+            0.18,
+            0.15,
+            0.12,
+            1
+          ],
+          "cutout": true
+        },
+        {
+          "name": "Volunteer_Clothes",
+          "texture": "",
+          "color": [
+            1,
+            0.57,
+            0.26,
+            1
+          ],
+          "cutout": false
+        },
+        {
+          "name": "Volunteer_Trousers",
+          "texture": "",
+          "color": [
+            0.065,
+            0.12,
+            0.18,
+            1
+          ],
+          "cutout": false
+        },
+        {
+          "name": "Volunteer_Shoes",
+          "texture": "shoes01_diffuse-50c9a406a7f1.png",
+          "color": [
+            0.55,
+            0.48,
+            0.4,
+            1
+          ],
+          "cutout": false
+        }
+      ]
+    },
+    {
+      "id": "ResidentWoman",
+      "height": 1.6,
+      "triangles": 29040,
+      "phenotype": {
+        "gender": 0,
+        "age": 0.62,
+        "muscle": 0.38,
+        "weight": 0.63,
+        "proportions": 0.5,
+        "height": 0.42,
+        "cupsize": 0.5,
+        "firmness": 0.5,
+        "race": {
+          "asian": 0.8,
+          "caucasian": 0.12,
+          "african": 0.08
+        }
+      },
+      "clothes": "female_casualsuit01",
+      "hair": "long01",
+      "materials": [
+        {
+          "name": "ResidentWoman_Skin",
+          "texture": "middleage_lightskinned_female_diffuse2-39c505ca2243.png",
+          "color": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "cutout": false
+        },
+        {
+          "name": "ResidentWoman_Eyes",
+          "texture": "brown_eye-4659691c7295.png",
+          "color": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "cutout": false
+        },
+        {
+          "name": "ResidentWoman_Eyebrows",
+          "texture": "eyebrow001-9940f7d0b1b2.png",
+          "color": [
+            0.12,
+            0.1,
+            0.09,
+            1
+          ],
+          "cutout": true
+        },
+        {
+          "name": "ResidentWoman_Hair",
+          "texture": "long01_diffuse-e8dc25d90f8f.png",
+          "color": [
+            0.18,
+            0.15,
+            0.12,
+            1
+          ],
+          "cutout": true
+        },
+        {
+          "name": "ResidentWoman_Clothes",
+          "texture": "",
+          "color": [
+            0.67,
+            0.73,
+            0.96,
+            1
+          ],
+          "cutout": false
+        },
+        {
+          "name": "ResidentWoman_Trousers",
+          "texture": "",
+          "color": [
+            0.065,
+            0.12,
+            0.18,
+            1
+          ],
+          "cutout": false
+        },
+        {
+          "name": "ResidentWoman_Shoes",
+          "texture": "shoes01_diffuse-50c9a406a7f1.png",
+          "color": [
+            0.55,
+            0.48,
+            0.4,
+            1
+          ],
+          "cutout": false
+        }
+      ]
+    },
+    {
+      "id": "VillagerMan",
+      "height": 1.76,
+      "triangles": 27644,
+      "phenotype": {
+        "gender": 1,
+        "age": 0.38,
+        "muscle": 0.52,
+        "weight": 0.59,
+        "proportions": 0.5,
+        "height": 0.59,
+        "cupsize": 0.5,
+        "firmness": 0.5,
+        "race": {
+          "asian": 0.8,
+          "caucasian": 0.12,
+          "african": 0.08
+        }
+      },
+      "clothes": "male_casualsuit03",
+      "hair": "short02",
+      "materials": [
+        {
+          "name": "VillagerMan_Skin",
+          "texture": "young_lightskinned_male_diffuse3-f50016a5507f.png",
+          "color": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "cutout": false
+        },
+        {
+          "name": "VillagerMan_Eyes",
+          "texture": "brown_eye-4659691c7295.png",
+          "color": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "cutout": false
+        },
+        {
+          "name": "VillagerMan_Eyebrows",
+          "texture": "eyebrow001-9940f7d0b1b2.png",
+          "color": [
+            0.12,
+            0.1,
+            0.09,
+            1
+          ],
+          "cutout": true
+        },
+        {
+          "name": "VillagerMan_Hair",
+          "texture": "short02_diffuse-47fe33831a39.png",
+          "color": [
+            0.18,
+            0.15,
+            0.12,
+            1
+          ],
+          "cutout": true
+        },
+        {
+          "name": "VillagerMan_Clothes",
+          "texture": "male_casualsuit03_diffuse-d9079ed2e52d.png",
+          "color": [
+            0.64,
+            0.85,
+            0.92,
+            1
+          ],
+          "cutout": false
+        },
+        {
+          "name": "VillagerMan_Shoes",
+          "texture": "shoes01_diffuse-50c9a406a7f1.png",
+          "color": [
+            0.55,
+            0.48,
+            0.4,
+            1
+          ],
+          "cutout": false
+        }
+      ]
+    },
+    {
+      "id": "VillagerWoman",
+      "height": 1.64,
+      "triangles": 30276,
+      "phenotype": {
+        "gender": 0,
+        "age": 0.43,
+        "muscle": 0.42,
+        "weight": 0.49,
+        "proportions": 0.5,
+        "height": 0.49,
+        "cupsize": 0.5,
+        "firmness": 0.5,
+        "race": {
+          "asian": 0.8,
+          "caucasian": 0.12,
+          "african": 0.08
+        }
+      },
+      "clothes": "female_casualsuit02",
+      "hair": "bob02",
+      "materials": [
+        {
+          "name": "VillagerWoman_Skin",
+          "texture": "young_lightskinned_female_diffuse3-1d82f782b7d2.png",
+          "color": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "cutout": false
+        },
+        {
+          "name": "VillagerWoman_Eyes",
+          "texture": "brown_eye-4659691c7295.png",
+          "color": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "cutout": false
+        },
+        {
+          "name": "VillagerWoman_Eyebrows",
+          "texture": "eyebrow001-9940f7d0b1b2.png",
+          "color": [
+            0.12,
+            0.1,
+            0.09,
+            1
+          ],
+          "cutout": true
+        },
+        {
+          "name": "VillagerWoman_Hair",
+          "texture": "bob02_diffuse-38c88e6f7163.png",
+          "color": [
+            0.18,
+            0.15,
+            0.12,
+            1
+          ],
+          "cutout": true
+        },
+        {
+          "name": "VillagerWoman_Clothes",
+          "texture": "",
+          "color": [
+            0.86,
+            0.53,
+            0.67,
+            1
+          ],
+          "cutout": false
+        },
+        {
+          "name": "VillagerWoman_Trousers",
+          "texture": "",
+          "color": [
+            0.065,
+            0.12,
+            0.18,
+            1
+          ],
+          "cutout": false
+        },
+        {
+          "name": "VillagerWoman_Shoes",
+          "texture": "shoes01_diffuse-50c9a406a7f1.png",
+          "color": [
+            0.55,
+            0.48,
+            0.4,
+            1
+          ],
+          "cutout": false
+        }
+      ]
+    },
+    {
+      "id": "VillagerSenior",
+      "height": 1.69,
+      "triangles": 29174,
+      "phenotype": {
+        "gender": 1,
+        "age": 0.83,
+        "muscle": 0.36,
+        "weight": 0.59,
+        "proportions": 0.5,
+        "height": 0.47,
+        "cupsize": 0.5,
+        "firmness": 0.5,
+        "race": {
+          "asian": 0.8,
+          "caucasian": 0.12,
+          "african": 0.08
+        }
+      },
+      "clothes": "male_casualsuit05",
+      "hair": "short01",
+      "materials": [
+        {
+          "name": "VillagerSenior_Skin",
+          "texture": "old_lightskinned_male_diffuse2-8b3232676c5b.png",
+          "color": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "cutout": false
+        },
+        {
+          "name": "VillagerSenior_Eyes",
+          "texture": "brown_eye-4659691c7295.png",
+          "color": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "cutout": false
+        },
+        {
+          "name": "VillagerSenior_Eyebrows",
+          "texture": "eyebrow001-9940f7d0b1b2.png",
+          "color": [
+            0.3,
+            0.28,
+            0.24,
+            1
+          ],
+          "cutout": true
+        },
+        {
+          "name": "VillagerSenior_Hair",
+          "texture": "",
+          "color": [
+            0.83,
+            0.81,
+            0.76,
+            1
+          ],
+          "cutout": false
+        },
+        {
+          "name": "VillagerSenior_Clothes",
+          "texture": "male_casualsuit05_diffuse-d4345efe9332.png",
+          "color": [
+            0.64,
+            0.73,
+            0.87,
+            1
+          ],
+          "cutout": false
+        },
+        {
+          "name": "VillagerSenior_Shoes",
+          "texture": "shoes01_diffuse-50c9a406a7f1.png",
+          "color": [
+            0.55,
+            0.48,
+            0.4,
+            1
+          ],
+          "cutout": false
+        }
+      ]
+    }
+  ]
+}
