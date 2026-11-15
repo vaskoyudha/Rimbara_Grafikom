@@ -62,6 +62,13 @@ namespace Rimbara.Mission
         public void Resume() { if (Mode == ScreenMode.Paused) SetMode(ScreenMode.Playing); }
         private void ShowVictory() { SetMode(ScreenMode.Victory); }
 
+        public void CompleteDisasterChapter()
+        {
+            DisasterChapter chapter = missions.DisasterChapter;
+            if (Mode == ScreenMode.Playing && chapter != null && chapter.Progress.Stage == DisasterStage.RecoveryReady)
+                SetMode(ScreenMode.Victory);
+        }
+
         public void Replay()
         {
             nextLaunchMode = ScreenMode.Briefing;

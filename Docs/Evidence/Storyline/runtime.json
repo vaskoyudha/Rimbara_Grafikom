@@ -1,0 +1,275 @@
+{
+    "Passed": true,
+    "Unity": "6000.3.6f1",
+    "Profile": "From Ashes / Disaster chapter / local interaction fixtures",
+    "Utc": "2026-11-15T17:22:47.6513909Z",
+    "GraphicsDevice": "AMD Radeon RX 6600 / Direct3D11",
+    "Width": 1600,
+    "Height": 900,
+    "MeanFrameMilliseconds": 10.055740356445313,
+    "P95FrameMilliseconds": 10.00979995727539,
+    "Checks": [
+        {
+            "Name": "Story starts in menu with chapter briefing pending",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Authored Disaster object supply",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Original Disaster map uses kit resources, not demo village layout",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Emergency post inscription is attached to board, not a billboard",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Emergency post inscription stays aligned and fits board",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Menu is Indonesian",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Indonesian controls screen opens",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Pointer opens storyline briefing",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Pointer begins Disaster chapter",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Early planting is locked",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Water locked before equipment",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Original arrival road reaches emergency post without teleport",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Nearby unobstructed interaction selects Mission coordinator - emergency post",
+            "Passed": true,
+            "Detail": "player=(3.00, 0.03, -12.76) target=(3.00, 0.06, -11.00) focus=Mission coordinator - emergency post"
+        },
+        {
+            "Name": "E opens coordinator dialogue and pauses gameplay",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Paused dialogue cannot mutate chapter",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Coordinator dialogue uses Indonesian",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "First pointer advances dialogue without accepting early",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Final pointer accepts emergency briefing",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Nearby unobstructed interaction selects Firefighting equipment",
+            "Passed": true,
+            "Detail": "player=(10.00, 0.03, -15.76) target=(10.00, 0.06, -14.00) focus=Firefighting equipment"
+        },
+        {
+            "Name": "E collects equipment once and enables water",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "HUD and action feedback use Indonesian",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Equipment cannot be collected twice",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Cleanup blocked before fires",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Nearby unobstructed interaction selects Mission coordinator - emergency post",
+            "Passed": true,
+            "Detail": "player=(3.00, 0.03, -12.76) target=(3.00, 0.06, -11.00) focus=Mission coordinator - emergency post"
+        },
+        {
+            "Name": "Coordinator can repeat current objective",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Escape closes dialogue without losing equipment",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Authored forest corridor reaches first fire without disabling collision",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Crosshair selects chapter fire fire-01",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Water contact completes fire-01",
+            "Passed": true,
+            "Detail": "Contact 1.000 /  / player=(-12.02, 0.03, 12.50) / target=(-12.00, 0.05, 16.00)"
+        },
+        {
+            "Name": "Crosshair selects chapter fire fire-02",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Water contact completes fire-02",
+            "Passed": true,
+            "Detail": "Contact 1.000 /  / player=(13.00, 0.20, 25.50) / target=(13.00, 0.05, 29.00)"
+        },
+        {
+            "Name": "Containment unlocks cleanup without advancing legacy missions",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Debris cannot be cleared out of range",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Pause blocks cleanup progress",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Nearby unobstructed interaction selects Designated debris 01",
+            "Passed": true,
+            "Detail": "player=(-7.00, 0.03, 4.24) target=(-7.00, 0.06, 6.00) focus=Designated debris 01"
+        },
+        {
+            "Name": "E clears disaster-debris-0",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Cleared debris cannot earn duplicate progress disaster-debris-0",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Nearby unobstructed interaction selects Designated debris 02",
+            "Passed": true,
+            "Detail": "player=(8.00, 0.10, 8.24) target=(8.00, 0.06, 10.00) focus=Designated debris 02"
+        },
+        {
+            "Name": "E clears disaster-debris-1",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Cleared debris cannot earn duplicate progress disaster-debris-1",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Nearby unobstructed interaction selects Designated debris 03",
+            "Passed": true,
+            "Detail": "player=(-8.00, 0.05, 25.24) target=(-8.00, 0.06, 27.00) focus=Designated debris 03"
+        },
+        {
+            "Name": "E clears disaster-debris-2",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Cleared debris cannot earn duplicate progress disaster-debris-2",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Nearby unobstructed interaction selects Designated debris 04",
+            "Passed": true,
+            "Detail": "player=(7.00, 0.03, 36.24) target=(7.00, 0.06, 38.00) focus=Designated debris 04"
+        },
+        {
+            "Name": "E clears disaster-debris-3",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Cleared debris cannot earn duplicate progress disaster-debris-3",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Disaster percentage reaches 100 without final-story victory",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Nearby unobstructed interaction selects Mission coordinator - emergency post",
+            "Passed": true,
+            "Detail": "player=(3.00, 0.03, -12.76) target=(3.00, 0.06, -11.00) focus=Mission coordinator - emergency post"
+        },
+        {
+            "Name": "Coordinator closes chapter with honest milestone screen",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Replay restores chapter equipment, fires and debris",
+            "Passed": true,
+            "Detail": ""
+        }
+    ],
+    "Captures": [
+        "01c-post-board.png",
+        "01-story-menu.png",
+        "01a-controls-id.png",
+        "01b-briefing-id.png",
+        "02-coordinator.png",
+        "02a-pause-id.png",
+        "03-fires-contained.png",
+        "04-clean-start.png",
+        "05-chapter-complete.png"
+    ],
+    "Errors": []
+}

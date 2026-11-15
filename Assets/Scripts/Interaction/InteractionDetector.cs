@@ -55,7 +55,7 @@ namespace Rimbara.Interaction
         public InteractionResult InteractFocused()
         {
             InteractionResult result = Focused == null
-                ? new InteractionResult(false, "Move near a seedling, planting bed, or mission board.")
+                ? new InteractionResult(false, "Dekati objek bertanda untuk berinteraksi.")
                 : Focused.Interact(actor);
             actor.Report(result);
             if (Focused != null && !Focused.Available) SetFocus(null);

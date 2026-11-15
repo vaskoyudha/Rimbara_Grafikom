@@ -14,6 +14,9 @@ namespace Rimbara.Mission
         [SerializeField] private Transform volunteerPost;
         [SerializeField] private Transform plantingZone;
         [SerializeField] private Transform fireZone;
+        [SerializeField] private DisasterChapter disasterChapter;
+        public DisasterChapter DisasterChapter => disasterChapter;
+        public void ConfigureDisaster(DisasterChapter chapter) { disasterChapter = chapter; }
         private MissionSequence sequence;
         public MissionStage Stage => sequence == null ? MissionStage.FirstSteps : sequence.Stage;
         public GameState State => state;
@@ -22,8 +25,8 @@ namespace Rimbara.Mission
             : Stage == MissionStage.StopTheFire ? fireZone : volunteerPost;
         public event Action<MissionStage> MissionChanged;
         public event Action Completed;
-        public bool CanCollectOrPlant => state.SessionRunning && Stage == MissionStage.SeedsOfHope;
-        public bool CanExtinguish => state.SessionRunning && Stage == MissionStage.StopTheFire;
+        public bool CanCollectOrPlant => disasterChapter == null && state.SessionRunning && Stage == MissionStage.SeedsOfHope;
+        public bool CanExtinguish => disasterChapter != null ? disasterChapter.CanExtinguish : state.SessionRunning && Stage == MissionStage.StopTheFire;
 
         public void Configure(GameState gameState, Transform inspection, Transform post, Transform planting, Transform fire)
         {
@@ -49,21 +52,23 @@ namespace Rimbara.Mission
 
         public bool ReachInspectionMarker()
         {
+            if (disasterChapter != null) return false;
             return sequence.TryInspect(state.SessionRunning);
         }
 
         public bool ReturnToPost()
         {
+            if (disasterChapter != null) return false;
             return sequence.TryReturn(state.SessionRunning);
         }
 
         private void OnMissionChanged(MissionStage stage) { MissionChanged?.Invoke(stage); }
         private void OnCompleted() { Completed?.Invoke(); }
 
-        public string Title => Stage == MissionStage.FirstSteps ? "FIRST STEPS"
-            : Stage == MissionStage.SeedsOfHope ? "SEEDS OF HOPE"
-            : Stage == MissionStage.StopTheFire ? "STOP THE FIRE"
-            : Stage == MissionStage.ANewBeginning ? "A NEW BEGINNING" : "ARUNIKA RESTORED";
+        public string Title => Stage == MissionStage.FirstSteps ? "LANGKAH PERTAMA"
+            : Stage == MissionStage.SeedsOfHope ? "BENIH HARAPAN"
+            : Stage == MissionStage.StopTheFire ? "PADAMKAN API"
+            : Stage == MissionStage.ANewBeginning ? "AWAL YANG BARU" : "ARUNIKA PULIH";
 
         public string Instruction
         {
@@ -72,13 +77,13 @@ namespace Rimbara.Mission
                 ProgressSnapshot progress = state.Snapshot;
                 switch (Stage)
                 {
-                    case MissionStage.FirstSteps: return "Walk to the amber marker and inspect the damaged forest.";
+                    case MissionStage.FirstSteps: return "Datangi penanda kuning dan periksa hutan yang terdampak.";
                     case MissionStage.SeedsOfHope:
-                        return "Collect " + progress.SeedlingGoal + " native seedlings and plant " + progress.TreeGoal + " trees. Press E near an object.";
+                        return "Ambil " + progress.SeedlingGoal + " bibit lokal dan tanam " + progress.TreeGoal + " pohon. Tekan E di dekat objek.";
                     case MissionStage.StopTheFire:
-                        return "Approach the " + progress.FireGoal + " remaining fires. Aim the crosshair and hold the left mouse button to spray.";
-                    case MissionStage.ANewBeginning: return "Every fire is out. Return to the volunteer post to finish your work.";
-                    default: return "One act of care became a new beginning for Arunika.";
+                        return "Dekati " + progress.FireGoal + " titik api. Arahkan bidikan dan tahan klik kiri untuk menyemprot.";
+                    case MissionStage.ANewBeginning: return "Semua api telah padam. Kembali ke posko relawan untuk menyelesaikan tugas.";
+                    default: return "Kepedulianmu menjadi awal yang baru bagi Arunika.";
                 }
             }
         }

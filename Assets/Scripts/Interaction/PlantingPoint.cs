@@ -24,25 +24,25 @@ namespace Rimbara.Interaction
 
         public override string GetPrompt(VolunteerActor actor)
         {
-            if (!actor.Missions.CanCollectOrPlant) return "Follow the active mission before planting";
-            return actor.State.Snapshot.CarriedSeedlings > 0 ? "[E]  Plant native tree" : "Collect a seedling before planting";
+            if (!actor.Missions.CanCollectOrPlant) return "Ikuti misi aktif sebelum menanam";
+            return actor.State.Snapshot.CarriedSeedlings > 0 ? "[E]  Tanam pohon lokal" : "Ambil bibit sebelum menanam";
         }
 
         public override InteractionResult Interact(VolunteerActor actor)
         {
-            if (!Available || !InRange(actor)) return new InteractionResult(false, "Move closer to a planting bed.");
-            if (!actor.Missions.CanCollectOrPlant) return new InteractionResult(false, "Planting belongs to Seeds of Hope.");
+            if (!Available || !InRange(actor)) return new InteractionResult(false, "Dekati lahan tanam.");
+            if (!actor.Missions.CanCollectOrPlant) return new InteractionResult(false, "Penanaman dilakukan dalam misi Benih Harapan.");
             if (actor.State.Snapshot.CarriedSeedlings <= 0)
-                return new InteractionResult(false, "You are not carrying a seedling. Look for the small nursery pots.");
-            if (treePrefab == null) return new InteractionResult(false, "The tree prefab is missing from this planting point.");
-            if (!actor.State.PlantTree(objectId)) return new InteractionResult(false, "This planting bed is already restored.");
+                return new InteractionResult(false, "Kamu belum membawa bibit. Cari pot bibit di persemaian.");
+            if (treePrefab == null) return new InteractionResult(false, "Pohon untuk lahan tanam ini belum tersedia.");
+            if (!actor.State.PlantTree(objectId)) return new InteractionResult(false, "Lahan tanam ini sudah dipulihkan.");
             Planted = true;
             SetFocused(false);
             if (emptyBed != null) emptyBed.SetActive(false);
             PlantedTree = Instantiate(treePrefab, transform.position, Quaternion.Euler(0f, slot * 73f, 0f), transform);
             PlantedTree.name = "Restored native tree " + (slot + 1);
             StartCoroutine(GrowTree(PlantedTree.transform));
-            return new InteractionResult(true, "Roots take hold. One more tree returns to Arunika.");
+            return new InteractionResult(true, "Akar mulai tumbuh. Satu pohon lagi kembali ke Arunika.");
         }
 
         private static IEnumerator GrowTree(Transform tree)

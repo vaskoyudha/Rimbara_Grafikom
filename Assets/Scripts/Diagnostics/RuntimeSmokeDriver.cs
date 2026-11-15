@@ -141,6 +141,11 @@ namespace Rimbara.Diagnostics
             spawn = rig.transform.position;
             originalVolume = audioSystem.Volume;
             volumeCaptured = true;
+            if (missions.DisasterChapter != null)
+            {
+                yield return RunDisaster();
+                yield break;
+            }
             stages.Add(missions.Stage);
             missions.MissionChanged += stage => stages.Add(stage);
             missions.Completed += () => completedEvents++;
@@ -164,7 +169,7 @@ namespace Rimbara.Diagnostics
             hud.View.Volume.value = originalVolume;
             yield return Click(hud.View.Start);
             Check("Mouse click opens profile-specific briefing", flow.Mode == ScreenMode.Briefing && hud.View.Briefing.activeInHierarchy
-                && hud.View.BriefingTargets.text.Contains(state.Profile.Seedlings + " NATIVE SEEDLINGS"));
+                && hud.View.BriefingTargets.text.Contains(state.Profile.Seedlings + " BIBIT LOKAL"));
             QueueKeys(Key.W, Key.LeftShift);
             yield return new WaitForSecondsRealtime(0.25f);
             Check("Briefing ignores movement input", HorizontalDistance(spawn, rig.transform.position) < 0.04f && !state.SessionRunning);
@@ -339,7 +344,7 @@ namespace Rimbara.Diagnostics
             yield return AimAt(fires[0]);
             Check("Camera crosshair selects the distant fire", water.AimedFire == fires[0]);
             yield return SprayFor(0.3f);
-            Check("Water range prevents distant suppression", fires[0].SuppressionFraction == 0f && water.AimHint.Contains("Move closer"));
+            Check("Water range prevents distant suppression", fires[0].SuppressionFraction == 0f && water.AimHint.Contains("Dekati"));
             yield return MoveTo(Ground(fires[0].transform.position + Vector3.back * 4.5f), 0.25f);
             yield return AimAt(fires[0]);
             Check("Near fire is aimable through Cinemachine", water.AimedFire == fires[0]);
@@ -362,7 +367,7 @@ namespace Rimbara.Diagnostics
             Check("Nozzle-only obstruction fixture leaves the crosshair clear", water.AimedFire == fires[0]
                 && Physics.Linecast(nozzle.position, fires[0].AimPosition, 1 << 8, QueryTriggerInteraction.Ignore));
             Check("Nozzle linecast independently blocks water", !water.ApplySpray(0.5f) && fires[0].SuppressionFraction == 0f
-                && water.AimHint.Contains("blocked"));
+                && water.AimHint.Contains("terhalang"));
             Destroy(obstacle);
             yield return new WaitForSecondsRealtime(0.1f);
             yield return AimAt(fires[0]);
@@ -407,7 +412,7 @@ namespace Rimbara.Diagnostics
             yield return new WaitForSecondsRealtime(0.2f);
             Check("100 percent requires returning to the post", state.Snapshot.Restored && state.Snapshot.Restoration == 1f
                 && missions.Stage == MissionStage.ANewBeginning && flow.Mode == ScreenMode.Playing && completedEvents == 0);
-            Check("HUD and guidance reflect full restoration", hud.View.Restoration.text == "100% RESTORED"
+            Check("HUD and guidance reflect full restoration", hud.View.Restoration.text == "100% DIPULIHKAN"
                 && hud.View.RestorationFill.fillAmount == 1f && guide.Destination == missions.ActiveDestination);
             yield return Capture("07-restored-forest.png");
             Vector3 post = missions.ActiveDestination.position;
@@ -465,6 +470,199 @@ namespace Rimbara.Diagnostics
             fires = FindObjectsByType<FirePoint>(FindObjectsInactive.Include, FindObjectsSortMode.None).OrderBy(f => f.Slot).ToArray();
         }
 
+        private IEnumerator RunDisaster()
+        {
+            DisasterChapter chapter = missions.DisasterChapter;
+            DisasterHud storyHud = FindFirstObjectByType<DisasterHud>();
+            CoordinatorDialogue coordinator = FindFirstObjectByType<CoordinatorDialogue>();
+            EquipmentPickup equipment = FindFirstObjectByType<EquipmentPickup>();
+            DebrisPickup[] piles = FindObjectsByType<DebrisPickup>(FindObjectsSortMode.None).OrderBy(p => p.ObjectId).ToArray();
+            profileName = "From Ashes / Disaster chapter / local interaction fixtures";
+            Check("Story starts in menu with chapter briefing pending", flow.Mode == ScreenMode.Menu
+                && chapter.Progress.Stage == DisasterStage.Briefing && !state.SessionRunning);
+            Check("Authored Disaster object supply", fires.Length == 2 && piles.Length == 4);
+            Check("Original Disaster map uses kit resources, not demo village layout", UnityEngine.SceneManagement.SceneManager.GetActiveScene().GetRootGameObjects()
+                .Any(r => r.name == "Environment - RIMBARA Disaster Zone (EmaceArt resources)")
+                && !UnityEngine.SceneManagement.SceneManager.GetActiveScene().GetRootGameObjects().Any(r => r.name == "Environment - EmaceArt Slavic Village"));
+            Transform postBoard = GameObject.Find("Mission map board").transform;
+            TMPro.TextMeshPro postSign = postBoard.GetComponentInChildren<TMPro.TextMeshPro>();
+            Check("Emergency post inscription is attached to board, not a billboard", postSign != null
+                && postSign.text == "POSKO DARURAT" && postSign.transform.parent == postBoard
+                && postSign.GetComponent<Rimbara.World.Billboard>() == null);
+            Quaternion signRotation = postSign.transform.rotation;
+            yield return CapturePostBoard(postBoard);
+            Check("Emergency post inscription stays aligned and fits board", Quaternion.Angle(signRotation, postSign.transform.rotation) < 0.1f
+                && Quaternion.Angle(postSign.transform.rotation, postBoard.rotation) < 0.1f && !postSign.isTextOverflowing);
+            yield return Capture("01-story-menu.png");
+            Check("Menu is Indonesian", hud.View.Start.GetComponentInChildren<TMPro.TMP_Text>().text == "MULAI PEMULIHAN");
+            yield return Click(hud.View.OpenControls);
+            Check("Indonesian controls screen opens", flow.Mode == ScreenMode.Controls
+                && hud.View.Controls.GetComponentsInChildren<TMPro.TMP_Text>().Any(t => t.text.Contains("SPASI / Melompat")));
+            yield return Capture("01a-controls-id.png");
+            yield return Click(hud.View.ControlsBack);
+            yield return Click(hud.View.Start);
+            Check("Pointer opens storyline briefing", flow.Mode == ScreenMode.Briefing);
+            yield return Capture("01b-briefing-id.png");
+            yield return Click(hud.View.Begin);
+            Check("Pointer begins Disaster chapter", flow.Mode == ScreenMode.Playing && state.SessionRunning);
+            Check("Early planting is locked", !missions.CanCollectOrPlant);
+            Check("Water locked before equipment", !missions.CanExtinguish);
+            // Our original map reserves a central arrival road. Traverse it with
+            // the actual motor instead of teleporting the prologue approach.
+            yield return MoveTo(Ground(new Vector3(0f, 0f, -15f)), 0.65f);
+            yield return MoveTo(Ground(new Vector3(1.5f, 0f, -12.2f)), 0.45f);
+            Check("Original arrival road reaches emergency post without teleport", HorizontalDistance(rig.transform.position, coordinator.transform.position) < 2.5f);
+            // Teleport only to isolate each interaction fixture; final approach uses
+            // the real motor. This does not certify an unobstructed full-map route.
+            yield return Approach(coordinator.transform);
+            yield return PressE();
+            Check("E opens coordinator dialogue and pauses gameplay", storyHud.DialogueOpen && flow.Mode == ScreenMode.Paused
+                && !state.SessionRunning && Time.timeScale == 0f);
+            Check("Paused dialogue cannot mutate chapter", !chapter.AcceptBriefing());
+            Check("Coordinator dialogue uses Indonesian", storyHud.GetComponentsInChildren<TMPro.TMP_Text>(true)
+                .Any(t => t.text.Contains("Selamat datang di posko darurat")));
+            yield return Capture("02-coordinator.png");
+            yield return AdvanceDialogue(storyHud);
+            Check("First pointer advances dialogue without accepting early", chapter.Progress.Stage == DisasterStage.Briefing && storyHud.DialogueOpen);
+            yield return AdvanceDialogue(storyHud);
+            yield return AdvanceDialogue(storyHud);
+            Check("Final pointer accepts emergency briefing", chapter.Progress.Stage == DisasterStage.Equipment
+                && !storyHud.DialogueOpen && state.SessionRunning);
+            yield return Approach(equipment.transform);
+            yield return PressE();
+            Check("E collects equipment once and enables water", chapter.Progress.HasEquipment && missions.CanExtinguish && !equipment.Available);
+            Check("HUD and action feedback use Indonesian", hud.View.Seedlings.text.Contains("PERLENGKAPAN")
+                && hud.View.Toast.text.Contains("Perlengkapan siap"));
+            flow.Pause();
+            yield return Capture("02a-pause-id.png");
+            yield return Click(hud.View.Resume);
+            Check("Equipment cannot be collected twice", !chapter.CollectEquipment());
+            Check("Cleanup blocked before fires", !chapter.ClearDebris(piles[0].ObjectId));
+            yield return Approach(coordinator.transform);
+            yield return PressE();
+            Check("Coordinator can repeat current objective", storyHud.DialogueOpen && flow.Mode == ScreenMode.Paused);
+            input.EnableTestDriver(false);
+            QueueKeys(Key.Escape);
+            yield return new WaitForSecondsRealtime(0.15f);
+            QueueKeys();
+            yield return new WaitForSecondsRealtime(0.15f);
+            Check("Escape closes dialogue without losing equipment", !storyHud.DialogueOpen && flow.Mode == ScreenMode.Playing && chapter.Progress.HasEquipment);
+            yield return MoveTo(Ground(new Vector3(0f, 0f, -5f)), 0.6f);
+            yield return MoveTo(Ground(new Vector3(0f, 0f, 16f)), 0.6f);
+            yield return MoveTo(Ground(new Vector3(-9f, 0f, 16f)), 0.6f);
+            Check("Authored forest corridor reaches first fire without disabling collision", HorizontalDistance(rig.transform.position, fires[0].transform.position) < 4f);
+            foreach (FirePoint fire in fires)
+            {
+                yield return ApproachFire(fire);
+                Check("Crosshair selects chapter fire " + fire.ObjectId, water.AimedFire == fire);
+                yield return Extinguish(fire);
+            }
+            Check("Containment unlocks cleanup without advancing legacy missions", chapter.Progress.Stage == DisasterStage.CleanTheWasteland
+                && state.Snapshot.Fires == 2 && missions.Stage == MissionStage.FirstSteps && !missions.CanCollectOrPlant);
+            yield return Capture("03-fires-contained.png");
+            foreach (DebrisPickup pile in piles)
+            {
+                if (pile == piles[0])
+                {
+                    rig.Teleport(Ground(pile.transform.position + Vector3.back * 6f));
+                    yield return new WaitForSecondsRealtime(0.15f);
+                    Check("Debris cannot be cleared out of range", !pile.Interact(actor).Success && !pile.Cleared);
+                    flow.Pause();
+                    Check("Pause blocks cleanup progress", !chapter.ClearDebris(pile.ObjectId));
+                    flow.Resume();
+                }
+                yield return Approach(pile.transform);
+                yield return PressE();
+                Check("E clears " + pile.ObjectId, pile.Cleared && !pile.Available);
+                Check("Cleared debris cannot earn duplicate progress " + pile.ObjectId, !chapter.ClearDebris(pile.ObjectId));
+            }
+            Check("Disaster percentage reaches 100 without final-story victory", chapter.Progress.Stage == DisasterStage.RecoveryReady
+                && flow.Mode == ScreenMode.Playing && chapter.Progress.ChapterFraction == 1f);
+            yield return Capture("04-clean-start.png");
+            yield return Approach(coordinator.transform);
+            yield return PressE();
+            yield return AdvanceDialogue(storyHud);
+            yield return AdvanceDialogue(storyHud);
+            Check("Coordinator closes chapter with honest milestone screen", flow.Mode == ScreenMode.Victory
+                && hud.View.VictoryResult.text.Contains(IndonesianText.ChapterPending) && !state.SessionRunning);
+            yield return Capture("05-chapter-complete.png");
+            yield return Click(hud.View.Replay);
+            yield return new WaitForSecondsRealtime(0.6f);
+            FindScene();
+            Check("Replay restores chapter equipment, fires and debris", flow.Mode == ScreenMode.Briefing
+                && missions.DisasterChapter.Progress.Stage == DisasterStage.Briefing && !missions.DisasterChapter.Progress.HasEquipment
+                && fires.All(f => !f.Extinguished) && FindObjectsByType<DebrisPickup>(FindObjectsSortMode.None).All(p => !p.Cleared));
+        }
+
+        private IEnumerator Approach(Transform target)
+        {
+            Vector3 approach = Vector3.zero;
+            Vector3 start = Vector3.zero;
+            bool found = false;
+            for (int i = 0; i < 16; i++)
+            {
+                float angle = i * Mathf.PI * 2f / 16f;
+                Vector3 direction = new Vector3(Mathf.Sin(angle), 0f, -Mathf.Cos(angle));
+                approach = Ground(target.position + direction * 1.4f);
+                start = Ground(target.position + direction * 2.2f);
+                if (!ClearCapsule(approach) || !ClearCapsule(start)) continue;
+                if (FindObjectsByType<InteractableBehaviour>(FindObjectsSortMode.None).Any(other => other.Available && other.transform != target
+                    && HorizontalDistance(other.transform.position, start) < HorizontalDistance(target.position, start) + 0.2f)) continue;
+                if (Physics.Linecast(approach + Vector3.up * 0.8f, target.position + Vector3.up * 0.55f, 1 << 8, QueryTriggerInteraction.Ignore)) continue;
+                found = true;
+                break;
+            }
+            if (!found) throw new InvalidOperationException("No clear motor approach around " + target.name);
+            rig.Teleport(start);
+            yield return new WaitForSecondsRealtime(0.2f);
+            yield return MoveTo(approach, 0.55f);
+            detector.Scan();
+            Check("Nearby unobstructed interaction selects " + target.name, detector.Focused != null && detector.Focused.transform == target,
+                "player=" + rig.transform.position + " target=" + target.position + " focus=" + (detector.Focused == null ? "none" : detector.Focused.name));
+        }
+
+        private IEnumerator AdvanceDialogue(DisasterHud storyHud)
+        {
+            int before = storyHud.DialoguePage;
+            for (int attempt = 0; attempt < 3; attempt++)
+            {
+                yield return Click(storyHud.DialogueNext);
+                if (!storyHud.DialogueOpen || storyHud.DialoguePage != before) yield break;
+                yield return new WaitForSecondsRealtime(0.2f);
+            }
+            throw new InvalidOperationException("UI pointer did not advance dialogue page " + before);
+        }
+
+        private IEnumerator ApproachFire(FirePoint fire)
+        {
+            for (int i = 0; i < 16; i++)
+            {
+                float angle = i * Mathf.PI * 2f / 16f;
+                Vector3 candidate = fire.transform.position + new Vector3(Mathf.Sin(angle), 0f, -Mathf.Cos(angle)) * 3.5f;
+                RaycastHit surface;
+                if (!Physics.Raycast(candidate + Vector3.up * 0.6f, Vector3.down, out surface, 12f, 1 << 8, QueryTriggerInteraction.Ignore)) continue;
+                candidate.y = surface.point.y + 0.06f;
+                if (!ClearCapsule(candidate)) continue;
+                rig.Teleport(candidate);
+                yield return new WaitForSecondsRealtime(0.25f);
+                yield return AimAt(fire);
+                rig.transform.rotation = Quaternion.Euler(0f, rig.ViewCamera.transform.eulerAngles.y, 0f);
+                yield return new WaitForSecondsRealtime(0.4f);
+                yield return AimAt(fire);
+                if (water.AimedFire == fire && water.AimHint == IndonesianText.WaterAction) yield break;
+            }
+            throw new InvalidOperationException("No clear Slavic water approach to " + fire.ObjectId + " / " + water.AimHint
+                + " / player " + rig.transform.position + " / fire " + fire.transform.position);
+        }
+
+        private static bool ClearCapsule(Vector3 point)
+        {
+            // Some team scenery uses Default rather than World. Include both;
+            // exclude only the player, and keep solid obstacle collision intact.
+            return Physics.OverlapCapsule(point + Vector3.up * 0.65f, point + Vector3.up * 1.5f, 0.4f,
+                ~(1 << 9), QueryTriggerInteraction.Ignore).All(c => c is TerrainCollider);
+        }
+
         private IEnumerator MoveTo(Vector3 destination, float radius = 0.5f, bool stopAtVictory = false)
         {
             input.EnableTestDriver(true);
@@ -508,12 +706,18 @@ namespace Rimbara.Diagnostics
         private IEnumerator ClickAt(Vector2 position)
         {
             input.EnableTestDriver(false);
-            QueueMouse(position: position);
-            yield return new WaitForSecondsRealtime(0.08f);
-            QueueMouse(left: true, position: position);
-            yield return new WaitForSecondsRealtime(0.1f);
-            QueueMouse(position: position);
-            yield return new WaitForSecondsRealtime(0.1f);
+            // Keep the pointer stable across actual update frames. A one-shot
+            // event followed by a timed wait can race UI layout and real mice.
+            yield return PointerFrames(position, false, 0.2f);
+            yield return PointerFrames(position, true, 0.2f);
+            yield return PointerFrames(position, false, 0.2f);
+        }
+
+        private IEnumerator PointerFrames(Vector2 position, bool pressed, float seconds)
+        {
+            float until = Time.realtimeSinceStartup + seconds;
+            do { QueueMouse(left: pressed, position: position); yield return null; }
+            while (Time.realtimeSinceStartup < until);
         }
 
         private IEnumerator AimAt(FirePoint target)
@@ -547,11 +751,62 @@ namespace Rimbara.Diagnostics
             QueueKeys();
             QueueMouse(default, true);
             float deadline = Time.realtimeSinceStartup + state.Profile.ExtinguishSeconds + 5f;
-            while (!target.Extinguished && Time.realtimeSinceStartup < deadline) yield return null;
+            while (!target.Extinguished && Time.realtimeSinceStartup < deadline)
+            {
+                if (missions.DisasterChapter != null)
+                {
+                    // Holding water turns the volunteer/nozzle toward the camera.
+                    // Track the target through the resulting Cinemachine movement
+                    // rather than assuming a fixed camera on uneven kit ground.
+                    Quaternion rotation = Quaternion.LookRotation(target.AimPosition - rig.ViewCamera.transform.position);
+                    float pitch = Mathf.DeltaAngle(0f, rotation.eulerAngles.x) - rig.OfficialController.CameraAngleOverride;
+                    rig.SetCameraOrbit(rotation.eulerAngles.y, pitch);
+                    QueueMouse(default, true);
+                }
+                yield return null;
+            }
             QueueMouse();
             yield return new WaitForSecondsRealtime(0.15f);
-            Check("Water contact completes " + target.ObjectId, target.Extinguished, "Contact " + target.SuppressionFraction.ToString("0.000"));
+            if (!target.Extinguished && missions.DisasterChapter != null) yield return Capture("water-failure.png");
+            Check("Water contact completes " + target.ObjectId, target.Extinguished, "Contact " + target.SuppressionFraction.ToString("0.000")
+                + " / " + water.AimHint + " / player=" + rig.transform.position + " / target=" + target.transform.position);
             input.EnableTestDriver(true);
+        }
+
+        private IEnumerator CapturePostBoard(Transform board)
+        {
+            // Diagnostic-only close-up. No changes to player/camera/gameplay state.
+            yield return new WaitForEndOfFrame();
+            var cameraObject = new GameObject("Smoke-only board evidence camera", typeof(Camera));
+            Camera camera = cameraObject.GetComponent<Camera>();
+            camera.enabled = false;
+            camera.fieldOfView = 48f;
+            camera.transform.position = board.position - board.forward * 3.5f + board.up * 0.15f;
+            camera.transform.LookAt(board.position - board.up * 0.1f, board.up);
+            RenderTexture target = RenderTexture.GetTemporary(1280, 720, 24, RenderTextureFormat.ARGB32);
+            RenderTexture previous = RenderTexture.active;
+            Texture2D image = new Texture2D(1280, 720, TextureFormat.RGB24, false);
+            try
+            {
+                camera.targetTexture = target;
+                // Let URP render this auxiliary camera through its normal frame loop.
+                camera.enabled = true;
+                yield return new WaitForEndOfFrame();
+                RenderTexture.active = target;
+                image.ReadPixels(new Rect(0f, 0f, 1280f, 720f), 0, 0);
+                image.Apply();
+                File.WriteAllBytes(Path.Combine(output, "01c-post-board.png"), image.EncodeToPNG());
+                captures.Add("01c-post-board.png");
+            }
+            finally
+            {
+                camera.enabled = false;
+                camera.targetTexture = null;
+                RenderTexture.active = previous;
+                RenderTexture.ReleaseTemporary(target);
+                Destroy(image);
+                Destroy(cameraObject);
+            }
         }
 
         private IEnumerator Capture(string filename)
@@ -566,6 +821,17 @@ namespace Rimbara.Diagnostics
         private static Vector3 Ground(Vector3 position)
         {
             Terrain terrain = Terrain.activeTerrain;
+            if (terrain == null)
+            {
+                RaycastHit hit;
+                // The kit has stacked mesh surfaces: roads beneath roofs/bridges.
+                // Ground the fixture near the authored target's elevation, not
+                // onto the highest rooftop hit by a ray from the sky.
+                if (!Physics.Raycast(position + Vector3.up * 0.6f, Vector3.down, out hit, 12f, 1 << 8, QueryTriggerInteraction.Ignore))
+                    throw new InvalidOperationException("No Slavic world surface beneath runtime fixture: " + position);
+                position.y = hit.point.y + 0.06f;
+                return position;
+            }
             position.y = terrain.SampleHeight(position) + terrain.transform.position.y + 0.06f;
             return position;
         }

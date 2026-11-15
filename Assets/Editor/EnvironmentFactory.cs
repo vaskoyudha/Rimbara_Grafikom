@@ -261,7 +261,7 @@ namespace Rimbara.Editor
             label.fontSize = size;
             label.fontStyle = FontStyles.Bold;
             label.color = color;
-            label.text = text;
+            label.text = Rimbara.UI.IndonesianText.WorldLabel(text);
             label.alignment = TextAlignmentOptions.Center;
             label.textWrappingMode = TextWrappingModes.NoWrap;
             label.rectTransform.sizeDelta = new Vector2(width, 1.5f);

@@ -19,22 +19,22 @@ namespace Rimbara.Interaction
 
         public override string GetPrompt(VolunteerActor actor)
         {
-            return actor.Missions.CanCollectOrPlant ? "[E]  Collect native seedling"
-                : "Inspect the amber forest marker first";
+            return actor.Missions.CanCollectOrPlant ? "[E]  Ambil bibit pohon lokal"
+                : "Periksa penanda kuning di hutan terlebih dahulu";
         }
 
         public override InteractionResult Interact(VolunteerActor actor)
         {
-            if (!Available || !InRange(actor)) return new InteractionResult(false, "Move closer to the seedling.");
+            if (!Available || !InRange(actor)) return new InteractionResult(false, "Dekati bibit pohon.");
             if (!actor.Missions.CanCollectOrPlant)
-                return new InteractionResult(false, "Follow your current mission before collecting seedlings.");
-            if (!actor.State.CollectSeedling(objectId)) return new InteractionResult(false, "This seedling is already collected.");
+                return new InteractionResult(false, "Ikuti misi aktif sebelum mengambil bibit.");
+            if (!actor.State.CollectSeedling(objectId)) return new InteractionResult(false, "Bibit ini sudah diambil.");
             Collected = true;
             if (seedlingVisual != null) seedlingVisual.SetActive(false);
             SetFocused(false);
             foreach (Collider collider in GetComponentsInChildren<Collider>()) collider.enabled = false;
             Debug.Log("RIMBARA: seedling collected (" + objectId + ").");
-            return new InteractionResult(true, "A native seedling collected. Carry it to a marked planting bed.");
+            return new InteractionResult(true, "Bibit pohon lokal berhasil diambil. Bawa ke lahan tanam bertanda.");
         }
     }
 }

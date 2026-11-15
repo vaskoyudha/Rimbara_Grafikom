@@ -70,7 +70,11 @@ namespace Rimbara.Audio
             PlayerPrefs.SetFloat("Rimbara.MasterVolume", Volume);
         }
 
-        private void RefreshBirds(ProgressSnapshot progress) { birdTarget = Mathf.Lerp(0.04f, 0.28f, progress.Restoration); }
+        private void RefreshBirds(ProgressSnapshot progress)
+        {
+            // Fire containment alone is not ecosystem recovery in the new story.
+            birdTarget = missions.DisasterChapter != null ? 0.04f : Mathf.Lerp(0.04f, 0.28f, progress.Restoration);
+        }
         private void PlayCollect(string id) { feedback.PlayOneShot(collect, 0.5f); }
         private void PlayPlant(string id) { feedback.PlayOneShot(plant, 0.6f); }
         private void PlayOut(string id) { feedback.PlayOneShot(extinguish, 0.55f); }

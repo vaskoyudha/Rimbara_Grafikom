@@ -1,6 +1,6 @@
 # Third-party assets and licences
 
-This private Unity project includes both CC0 and licensed assets. No blanket
+This Unity project includes both CC0 and licensed assets. No blanket
 open-source licence is applied to all repository content. Third-party rights
 remain with their respective owners.
 
@@ -48,6 +48,24 @@ dependencies are resolved through Unity Package Manager. Their package
 licences and notices remain authoritative. Package caches are not committed.
 TextMeshPro essential resources include their supplied font notices/licences,
 which are preserved in the imported `Assets/TextMesh Pro` content.
+
+## Team-added assets (source licence review required)
+
+- Mixamo **Ch42**, its textures and Humanoid import are now also present under
+  `Assets/Art/Characters/Mixamo`. The same Adobe terms apply; no CC0 claim is made.
+- Additional Kenney Fantasy Town, Nature, Food, Furniture and Survival notices
+  are preserved under `Assets/RIMBARA/Licenses`. Kenney UI/font pack notices
+  remain under `Assets/External`.
+- `Assets/EmaceArt/Slavic World Free` and
+  `Assets/maanetorn/Farm Game UI - Simple 2D UI` were added by the team. Retain
+  vendor notices; verify their Asset Store/source redistribution terms before
+  distributing raw assets. "Free" does not imply public-domain licensing.
+- These additions were already in team commit `3611552`; storyline development
+  does not assert that their public source redistribution has been authorized.
+- The selected environment base is **Slavic Medieval Village Free – Modular
+  Environment Kit**, product **167010**, EmacEArt. Its official listing specifies
+  **Standard Unity Asset Store EULA**, not CC0. Existing imported content is used;
+  no claim is made that it matches the latest Marketplace release.
 
 ## Original project content
 
