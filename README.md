@@ -1,4 +1,45 @@
 # RIMBARA
+
+## Team collaboration
+
+The team has chosen **Unity Version Control as the primary collaboration system**,
+with GitHub retained as a **manual mirror**, not an automatic second source of truth.
+Cloud organization: **RIMBARA Team**; project/repository: **Rimbara_Grafikom**.
+Initial upload is confirmed as UVCS **cs:1** and the local workspace is connected.
+A teammate's fresh download and round-trip check-in still need verification.
+See [setup and team workflow](Docs/Unity-Version-Control.md).
+
+## Team storyline development — From Ashes to Life
+
+**Bahasa game: Indonesia.** Menu, misi, dialog, kontrol dan feedback dalam build
+storyline menggunakan Bahasa Indonesia. Lihat [ketentuan bahasa](Docs/Bahasa-Game.md).
+
+The next plan is **Disaster → Recovery → Restored**, with five missions. See
+[the approved storyline plan](Docs/Storyline-Plan.md). The first development
+slice adds coordinator dialogue, equipment pickup, fire suppression and designated
+debris cleanup in `Assets/Scenes/FromAshes.unity`. Recovery/Restored gameplay and
+the cinematics are not implemented yet. Existing MVP evidence below is historical.
+
+Use **Unity 6000.3.6f1**, matching `ProjectSettings/ProjectVersion.txt`.
+Asset library: **EmaceArt Slavic Medieval Village Free**, Marketplace **167010**.
+The map is an **original RIMBARA Disaster Zone**, assembled from individual kit
+resources—not the vendor demo layout or the team's VillageRestoration composition.
+See [the required base](Docs/Slavic-Base.md).
+The team-authored Main, Arunika and VillageRestoration maps are preserved.
+Open FromAshes and press Play; use E at the emergency coordinator, collect the
+equipment, extinguish the two fires, clear four marked debris piles, then return
+to the coordinator. Dialogue uses BERIKUTNYA/LANJUTKAN buttons; Escape closes it.
+
+Storyline build: `RIMBARA > Storyline > Build Disaster Windows x64`, or
+`powershell -File Tools/Invoke-Storyline.ps1 -Command build` with Unity closed.
+Output: `Builds/Storyline-Windows/RIMBARA-FromAshes.exe`.
+The legacy `RIMBARA > Build Windows x64` still targets Main, not FromAshes.
+Do not regenerate Main or run the environment generators to import this project.
+See [new storyline verification](Docs/Storyline-Verification.md) for actual tests
+and remaining scope. This working branch has not been merged into team main.
+
+Zone 2 is currently a source-document design study, not implemented gameplay:
+see [Zona 2 — konsep pemulihan](Docs/Zone2-Concept.md).
 ## Rise of the Forgotten Forest
 
 A small third-person restoration game set in Arunika Forest. A young volunteer
@@ -12,7 +53,7 @@ This is the separate **solo RIMBARA project**. It does not modify the earlier
 
 ## Open and play
 
-1. Install **Unity 6000.3.27f2 (Unity 6.3 LTS)** through Unity Hub, including
+1. Install **Unity 6000.3.6f1 (Unity 6.3 LTS)** through Unity Hub, including
    Windows Build Support (Mono).
 2. Clone the repository (if it is private, use an account with access):
 

@@ -47,6 +47,19 @@ namespace Rimbara.Mission
 
         private void Update()
         {
+            if (missions.DisasterChapter != null)
+            {
+                inspectionBeacon.SetActive(false);
+                returnBeacon.SetActive(false);
+                foreach (GameObject marker in seedlingBeacons) marker.SetActive(false);
+                foreach (GameObject marker in plantingBeacons) marker.SetActive(false);
+                if (fireBeacons != null)
+                    for (int i = 0; i < fireBeacons.Length; i++)
+                        fireBeacons[i].SetActive(missions.DisasterChapter.CanExtinguish && !fires[i].Extinguished && fires[i].gameObject.activeInHierarchy);
+                Destination = missions.DisasterChapter.Destination(player.position);
+                DestinationName = Destination == null ? string.Empty : Destination.name;
+                return;
+            }
             MissionStage stage = missions.Stage;
             inspectionBeacon.SetActive(stage == MissionStage.FirstSteps);
             returnBeacon.SetActive(stage == MissionStage.ANewBeginning);
@@ -58,8 +71,8 @@ namespace Rimbara.Mission
                 for (int i = 0; i < fireBeacons.Length; i++)
                     fireBeacons[i].SetActive(stage == MissionStage.StopTheFire && fires[i].gameObject.activeInHierarchy && !fires[i].Extinguished);
             Destination = missions.ActiveDestination;
-            DestinationName = stage == MissionStage.FirstSteps ? "Inspect the forest"
-                : stage == MissionStage.ANewBeginning ? "Volunteer post" : missions.Title;
+            DestinationName = stage == MissionStage.FirstSteps ? "Periksa hutan"
+                : stage == MissionStage.ANewBeginning ? "Posko relawan" : missions.Title;
             float nearest = float.MaxValue;
             if (stage == MissionStage.SeedsOfHope)
             {
@@ -67,18 +80,18 @@ namespace Rimbara.Mission
                 if (carrying)
                 {
                     foreach (PlantingPoint bed in plantingPoints)
-                        if (bed.Available) Consider(bed.transform, "Planting bed", ref nearest);
+                        if (bed.Available) Consider(bed.transform, "Lahan tanam", ref nearest);
                 }
                 else
                 {
                     foreach (SeedlingPickup seedling in seedlings)
-                        if (seedling.Available) Consider(seedling.transform, "Native seedling", ref nearest);
+                        if (seedling.Available) Consider(seedling.transform, "Bibit pohon lokal", ref nearest);
                 }
             }
             else if (stage == MissionStage.StopTheFire)
             {
                 foreach (FirePoint fire in fires)
-                    if (fire.gameObject.activeInHierarchy && !fire.Extinguished) Consider(fire.transform, "Remaining fire", ref nearest);
+                    if (fire.gameObject.activeInHierarchy && !fire.Extinguished) Consider(fire.transform, "Titik api", ref nearest);
             }
         }
 

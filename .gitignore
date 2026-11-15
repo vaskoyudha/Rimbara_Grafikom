@@ -11,6 +11,7 @@
 /.vs/
 /.idea/
 /.vscode/
+/.plastic/
 
 # Generated IDE/build files.
 *.csproj
@@ -37,13 +38,10 @@ Thumbs.db
 # Keep Unity asset metadata: it preserves scene/prefab references.
 !/[Aa]ssets/**/*.meta
 
-<<<<<<< HEAD
 # Local backups, screenshots, and OpenCode configuration
 /Backups/
 /Screenshots/
 /opencode.json
-=======
 # Unity crash artifacts
 mono_crash.*.blob
 /[Aa]ssets/_Recovery/
->>>>>>> village-scenery

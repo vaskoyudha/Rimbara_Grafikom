@@ -79,8 +79,8 @@ namespace Rimbara.UI
                 Vector3 forward = rig.ViewCamera.transform.forward;
                 forward.y = 0f;
                 float angle = Vector3.SignedAngle(forward, toTarget, Vector3.up);
-                string direction = angle > 35f ? "RIGHT" : angle < -35f ? "LEFT" : "AHEAD";
-                if (Mathf.Abs(angle) > 140f) direction = "BEHIND";
+                string direction = angle > 35f ? "KANAN" : angle < -35f ? "KIRI" : "DEPAN";
+                if (Mathf.Abs(angle) > 140f) direction = "BELAKANG";
                 view.Waypoint.text = guide.DestinationName.ToUpperInvariant() + "   " + guide.Distance.ToString("0") + " m  /  " + direction;
             }
             view.PlayerDot.anchoredPosition = MapPosition(actor.transform.position);
@@ -100,23 +100,25 @@ namespace Rimbara.UI
 
         private void RefreshProgress(ProgressSnapshot progress)
         {
-            view.Seedlings.text = "SEEDLINGS   <b>" + progress.Seedlings + " / " + progress.SeedlingGoal + "</b>"
-                + "  <color=#8A6242>(carrying " + progress.CarriedSeedlings + ")</color>";
-            view.Trees.text = "TREES PLANTED   <b>" + progress.Trees + " / " + progress.TreeGoal + "</b>";
-            view.Fires.text = "FIRES OUT   <b>" + progress.Fires + " / " + progress.FireGoal + "</b>";
-            view.Restoration.text = Mathf.RoundToInt(progress.Restoration * 100f) + "% RESTORED";
+            if (missions.DisasterChapter != null) return;
+            view.Seedlings.text = "BIBIT   <b>" + progress.Seedlings + " / " + progress.SeedlingGoal + "</b>"
+                + "  <color=#8A6242>(dibawa " + progress.CarriedSeedlings + ")</color>";
+            view.Trees.text = "POHON DITANAM   <b>" + progress.Trees + " / " + progress.TreeGoal + "</b>";
+            view.Fires.text = "API PADAM   <b>" + progress.Fires + " / " + progress.FireGoal + "</b>";
+            view.Restoration.text = Mathf.RoundToInt(progress.Restoration * 100f) + "% DIPULIHKAN";
             view.RestorationFill.fillAmount = progress.Restoration;
-            view.BriefingTargets.text = progress.SeedlingGoal + " NATIVE SEEDLINGS   /   " + progress.TreeGoal + " TREES   /   " + progress.FireGoal + " FIRES";
+            view.BriefingTargets.text = progress.SeedlingGoal + " BIBIT LOKAL   /   " + progress.TreeGoal + " POHON   /   " + progress.FireGoal + " TITIK API";
         }
 
         private void RefreshMission(MissionStage stage)
         {
+            if (missions.DisasterChapter != null) return;
             int index = Mathf.Min(4, (int)stage + 1);
-            view.MissionNumber.text = "FIELD ASSIGNMENT    " + index.ToString("00") + " / 04";
+            view.MissionNumber.text = "MISI LAPANGAN    " + index.ToString("00") + " / 04";
             view.MissionTitle.text = missions.Title;
             view.MissionDescription.text = missions.Instruction;
             if (flow.Mode == ScreenMode.Playing)
-                ShowToast("MISSION " + index + "  /  " + missions.Title, true);
+                ShowToast("MISI " + index + "  /  " + missions.Title, true);
         }
 
         private void RefreshMode(ScreenMode mode)
@@ -133,8 +135,8 @@ namespace Rimbara.UI
                 ProgressSnapshot progress = state.Snapshot;
                 int minutes = Mathf.FloorToInt(flow.ElapsedSeconds / 60f);
                 int seconds = Mathf.FloorToInt(flow.ElapsedSeconds % 60f);
-                view.VictoryResult.text = "<b>" + progress.Trees + " trees planted   /   " + progress.Fires + " fires extinguished</b>\n"
-                    + "100% of your restoration mission complete\n\nField time  " + minutes.ToString("00") + ":" + seconds.ToString("00");
+                view.VictoryResult.text = "<b>" + progress.Trees + " pohon ditanam   /   " + progress.Fires + " titik api dipadamkan</b>\n"
+                    + "Seluruh misi pemulihan selesai\n\nWaktu di lapangan  " + minutes.ToString("00") + ":" + seconds.ToString("00");
             }
         }
 

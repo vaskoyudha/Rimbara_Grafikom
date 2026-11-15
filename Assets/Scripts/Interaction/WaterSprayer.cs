@@ -48,12 +48,16 @@ namespace Rimbara.Interaction
             AimedFire = didHit ? hit.collider.GetComponentInParent<FirePoint>() : null;
             AimHint = string.Empty;
             if (AimedFire == null || AimedFire.Extinguished) return;
-            if (!actor.Missions.CanExtinguish) { AimHint = "Finish Seeds of Hope before using the water tool"; return; }
+            if (!actor.Missions.CanExtinguish)
+            {
+                AimHint = actor.Missions.DisasterChapter != null ? "Baca pengarahan darurat dan ambil perlengkapan pemadaman" : "Selesaikan Benih Harapan sebelum menyemprot air";
+                return;
+            }
             float distance = Vector3.Distance(actor.transform.position + Vector3.up, AimedFire.AimPosition);
-            if (distance > actor.State.Profile.SprayRange) { AimHint = "Move closer to the fire  |  range " + actor.State.Profile.SprayRange.ToString("0") + " m"; return; }
+            if (distance > actor.State.Profile.SprayRange) { AimHint = "Dekati api  |  jangkauan " + actor.State.Profile.SprayRange.ToString("0") + " m"; return; }
             if (Physics.Linecast(nozzle.position, AimedFire.AimPosition, obstructionLayers, QueryTriggerInteraction.Ignore))
-            { AimHint = "Water stream blocked  |  move around the obstacle"; return; }
-            AimHint = "HOLD LEFT MOUSE  |  Extinguish fire";
+            { AimHint = "Aliran air terhalang  |  cari posisi lain"; return; }
+            AimHint = Rimbara.UI.IndonesianText.WaterAction;
         }
 
         public bool ApplySpray(float deltaTime)
@@ -62,7 +66,7 @@ namespace Rimbara.Interaction
             if (Vector3.Distance(actor.transform.position + Vector3.up, AimedFire.AimPosition) > actor.State.Profile.SprayRange) return false;
             if (Physics.Linecast(nozzle.position, AimedFire.AimPosition, obstructionLayers, QueryTriggerInteraction.Ignore)) return false;
             bool extinguished = AimedFire.ReceiveWater(deltaTime);
-            if (extinguished) actor.Report(new InteractionResult(true, "The flames are out. Arunika can breathe again."));
+            if (extinguished) actor.Report(new InteractionResult(true, "Api telah padam. Arunika dapat bernapas kembali."));
             return extinguished;
         }
 

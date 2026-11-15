@@ -24,6 +24,8 @@ namespace Rimbara.Player
         [SerializeField] private CinemachineCamera gameplayCamera;
         [SerializeField] private CinemachineCamera overviewCamera;
         [SerializeField] private Vector3 spawnPosition = new Vector3(0f, 0.1f, -21f);
+        [SerializeField] private float recoveryRadius = 60f;
+        [SerializeField] private float recoveryFloor = -8f;
         private CharacterController capsule;
         public bool ControlsEnabled { get; private set; }
         public Camera ViewCamera => viewCamera;
@@ -88,7 +90,7 @@ namespace Rimbara.Player
                 transform.rotation = Quaternion.Euler(0f, viewCamera.transform.eulerAngles.y, 0f);
             // Recovery, not a fail condition. Counters and mission state are untouched.
             // Bound the play space around the spawn so moved restoration grounds stay valid.
-            if (transform.position.y < -8f || (transform.position - spawnPosition).sqrMagnitude > 3600f)
+            if (transform.position.y < recoveryFloor || (transform.position - spawnPosition).sqrMagnitude > recoveryRadius * recoveryRadius)
                 Teleport(spawnPosition);
         }
 
