@@ -16,6 +16,12 @@ namespace Rimbara.Editor
         public static void Inspect() { Run(false, false); }
         public static void Stage() { Run(false, true); }
         public static void Publish() { Run(true, false); }
+        public static void VerifyServer()
+        {
+            if (!Application.isBatchMode) throw new InvalidOperationException("Batch only.");
+            operation = ReadServer();
+            EditorApplication.update += Finish;
+        }
         private static void Run(bool publish, bool stage)
         {
             if (!Application.isBatchMode) throw new InvalidOperationException("Use explicit batch operation with a reviewed allow-list.");
@@ -95,6 +101,25 @@ namespace Rimbara.Editor
             if (blocked.Contains(top, StringComparer.OrdinalIgnoreCase) || relative.EndsWith(".log", StringComparison.OrdinalIgnoreCase))
                 throw new InvalidOperationException("Generated/private path not publishable: " + relative);
             return full;
+        }
+        private static async Task ReadServer()
+        {
+            Assembly assembly = AppDomain.CurrentDomain.GetAssemblies().Single(a => a.GetType("Unity.PlasticSCM.Editor.Api.UnityVersionControlApi") != null);
+            assembly.GetType("Unity.PlasticSCM.Editor.PlasticApp").GetMethod("InitializeIfNeeded", BindingFlags.Static | BindingFlags.NonPublic).Invoke(null, null);
+            Type contract = assembly.GetType("Unity.PlasticSCM.Editor.Api.IUnityVersionControlApi");
+            object api = Activator.CreateInstance(assembly.GetType("Unity.PlasticSCM.Editor.Api.UnityVersionControlApi"), true);
+            object workspace = await Call(api, contract, "GetWorkspaceFromPath", Directory.GetCurrentDirectory());
+            long changeset = long.Parse(File.ReadAllText("Artifacts/uvcs-published.txt"));
+            object info = await Call(api, contract, "GetChangesetInfo", workspace, changeset);
+            var differences = ((IEnumerable)await Call(api, contract, "GetChangesetDifferences", workspace, changeset)).Cast<object>().ToArray();
+            Directory.CreateDirectory("Artifacts");
+            File.WriteAllLines("Artifacts/uvcs-server-verification.txt", new[] { "Changeset=" + changeset, "Info=" + Describe(info), "Remote differences=" + differences.Length }
+                .Concat(differences.Select(Describe)));
+            Debug.Log("UVCS_SERVER_VERIFIED " + changeset + " remote differences=" + differences.Length);
+        }
+        private static string Describe(object value)
+        {
+            return string.Join("; ", value.GetType().GetFields().Select(f => f.Name + "=" + f.GetValue(value)));
         }
     }
 }

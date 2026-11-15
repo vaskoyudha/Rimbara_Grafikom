@@ -10,9 +10,21 @@ Baseline: Git `f4ec160` / upload UVCS awal `cs:1`. Build/evidence akhir:
 105/105 EditMode, 238/238 normal runtime, 237/237 skip runtime, 0 runtime errors,
 Windows build 0 error / 0 warning.
 
-Status operasi: **sedang dipublikasikan**. Catatan commit/changeset dan hasil
-verifikasi akan diperbarui setelah server mengonfirmasi; jangan menyamakan
-file lokal, commit lokal, upload LFS, push branch, merge main dan check-in UVCS.
+## Identitas dan hasil
+
+- Commit implementasi Git: **`30a0e1329b54cb0403f8dade2d9013ee5904ad69`**.
+- UVCS snapshot implementasi: **`cs:2`**, branch `/main`, dikonfirmasi oleh
+  check-in API. Update dokumentasi/sync verifier terakhir masuk changeset lanjutan.
+- GitHub implementasi berhasil push ke **`feature/restored-zone3`**, termasuk
+  **75 object LFS / sekitar 345 MB**. Branch tidak auto-merge ke main.
+- Readback UVCS mengonfirmasi `cs:2` complete, parent `cs:1`, GUID
+  `5a19da90-a630-4215-b0d7-0aa73c3f0a30`, 442 remote diff entries.
+  Bukti: `Docs/Evidence/HumanNPCs/publication-uvcs.json`.
+- Verifikasi download GitHub dilakukan pada clone baru; dokumentasi update akhir
+  masuk commit/check-in lanjutan setelah identitas implementasi ini.
+
+Jangan menyamakan file lokal, commit lokal, upload LFS, push branch, merge main
+dan check-in UVCS. Catatan akhir memakai changeset/commit server aktual.
 
 GitHub repository: `https://github.com/vaskoyudha/Rimbara_Grafikom`.
 Branch publikasi: `feature/restored-zone3` (tidak auto-merge ke `main`).
