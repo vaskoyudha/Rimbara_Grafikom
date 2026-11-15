@@ -20,8 +20,9 @@
   Workspace lokal **Rimbara_Grafikom-Rombel2** menggunakan mode Standard dan
   repository `Rimbara_Grafikom/Rimbara_Grafikom`. Akses/download serta pertukaran
   perubahan dengan workspace rekan belum terverifikasi.
-- Snapshot tiga zona/NPC dan panduan presentasi sudah check-in sebagai **cs:2**;
-  pembaruan dokumentasi final dan GitHub mirror dicatat di `Publication-Status.md`.
+- Snapshot tiga zona/NPC sudah check-in sebagai **cs:2**, panduan/dokumentasi
+  sebagai **cs:3**. GitHub branch `feature/restored-zone3` berhasil push beserta
+  asset LFS; fresh clone/LFS fsck OK. Rincian ada di `Publication-Status.md`.
 - Paket sudah di-resolve oleh Unity dan **56/56 EditMode tests lolos** setelah
   pemasangan. Editor telah dibuka, tetapi koneksi tool Editor tidak terautentikasi;
   pemilik menyelesaikan setup workspace melalui Window > Unity Version Control.

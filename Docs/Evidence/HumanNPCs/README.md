@@ -43,6 +43,9 @@ tetap berada pada folder historis, tidak dipakai untuk menyatakan model baru lul
   Descendant visual Ch42 yang memang diganti tidak termasuk hitungan ini.
 - `player-preservation.json`: actual serialized player PrefabInstance
   `1819549308`, source GUID dan avatar override tetap sama persis dengan backup.
+- `publication-uvcs.json`: implementasi remote UVCS cs:2 complete/readback.
+- `publication-github.json`: push branch + fresh clone/LFS fsck + binary hashes.
+  Status/changeset dokumentasi selanjutnya: `Docs/Publication-Status.md`.
 
 Runtime menggunakan fixture untuk interaksi dan rute tertentu; ini bukan
 sertifikasi human playtest seluruh map, performance lintas perangkat, atau
