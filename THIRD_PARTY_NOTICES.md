@@ -67,6 +67,23 @@ which are preserved in the imported `Assets/TextMesh Pro` content.
   **Standard Unity Asset Store EULA**, not CC0. Existing imported content is used;
   no claim is made that it matches the latest Marketplace release.
 
+## MakeHuman / MPFB human NPC graphical assets
+
+- Eight generated human-proportioned NPC identities, authored with MPFB
+  **v2.0.18**, using bundled MakeHuman **1.3.0+20240427162744** graphical assets
+  from the official `makehuman-official` PPA source distribution.
+- Bundled base mesh, targets, rig, eyes, eyebrows, hair, clothing, shoes and skin
+  data/output are **CC0 1.0**. This does not relicense the game, existing Mixamo
+  animations, Unity assets, or third-party tools.
+- Source archive SHA-256:
+  `f9b8c4b3167b49fbeb3f231ca3c77e88b8e379bb72ffd0d5f30002e84b9490ae`.
+- MakeHuman Team; asset notice also names Data Collection AB, Joel Palmius,
+  and Jonas Hauquier. No trademark/endorsement rights are claimed.
+- Licences/provenance: `Docs/Licenses/HumanNPCs/` and
+  `Docs/Human-NPC-Implementation.md`.
+- MakeHuman/MPFB program code is used externally for authoring, not shipped in
+  Unity. Its separate AGPL/GPL terms remain unchanged.
+
 ## Original project content
 
 RIMBARA's gameplay scripts, mission/profile setup, scene/UI/effect generators,

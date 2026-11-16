@@ -1,0 +1,12 @@
+﻿{
+    "Repository":  "Rimbara_Grafikom/Rimbara_Grafikom@18968548628243@cloud",
+    "Branch":  "/main",
+    "ImplementationChangeset":  2,
+    "ParentChangeset":  1,
+    "Complete":  true,
+    "ChangesetGuid":  "5a19da90-a630-4215-b0d7-0aa73c3f0a30",
+    "RemoteDiffEntries":  442,
+    "GitImplementationCommit":  "30a0e1329b54cb0403f8dade2d9013ee5904ad69",
+    "Verification":  "ChangesetInfo and GetChangesetDifferences returned by remote API after check-in",
+    "CachesExcluded":  true
+}

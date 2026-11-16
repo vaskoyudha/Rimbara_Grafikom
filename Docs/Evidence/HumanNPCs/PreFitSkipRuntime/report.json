@@ -1,0 +1,1238 @@
+{
+    "Passed": true,
+    "Unity": "6000.3.6f1",
+    "Profile": "From Ashes / Three zones / physical final route and riverbanks",
+    "Utc": "2026-11-15T23:20:10.2334803Z",
+    "GraphicsDevice": "AMD Radeon RX 6600 / Direct3D11",
+    "Width": 1600,
+    "Height": 900,
+    "MeanFrameMilliseconds": 10.122418403625489,
+    "P95FrameMilliseconds": 10.009900093078614,
+    "Checks": [
+        {
+            "Name": "Story starts in menu with chapter briefing pending",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Authored Disaster object supply",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Ten NPCs use eight distinct human characters",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "NPC Humanoid avatar and controller: Restored villager ambient 1",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "NPC visual preserves player and physics: Restored villager ambient 1",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "NPC Humanoid avatar and controller: Restored villager ambient 2",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "NPC visual preserves player and physics: Restored villager ambient 2",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "NPC Humanoid avatar and controller: Evacuated villager at relief post",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "NPC visual preserves player and physics: Evacuated villager at relief post",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "NPC Humanoid avatar and controller: Ranger visual - Ch42 placeholder",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "NPC visual preserves player and physics: Ranger visual - Ch42 placeholder",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "NPC Humanoid avatar and controller: Elder visual - existing character placeholder",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "NPC visual preserves player and physics: Elder visual - existing character placeholder",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "NPC Humanoid avatar and controller: Volunteer awaiting orders",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "NPC visual preserves player and physics: Volunteer awaiting orders",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "NPC Humanoid avatar and controller: Restored villager ambient 4",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "NPC visual preserves player and physics: Restored villager ambient 4",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "NPC Humanoid avatar and controller: Restored villager ambient 3",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "NPC visual preserves player and physics: Restored villager ambient 3",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "NPC Humanoid avatar and controller: Coordinator visual - Ch42",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "NPC visual preserves player and physics: Coordinator visual - Ch42",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "NPC Humanoid avatar and controller: Restored villager ambient 0",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "NPC visual preserves player and physics: Restored villager ambient 0",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Original Disaster map uses kit resources, not demo village layout",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Emergency post inscription is attached to board, not a billboard",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Emergency post inscription stays aligned and fits board",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Menu is Indonesian",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Indonesian controls screen opens",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Pointer opens storyline briefing",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Pointer begins Disaster chapter",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Early planting is locked",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Water locked before equipment",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Original arrival road reaches emergency post without teleport",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Nearby unobstructed interaction selects Mission coordinator - emergency post",
+            "Passed": true,
+            "Detail": "player=(3.00, 0.04, -12.76) target=(3.00, 0.06, -11.00) focus=Mission coordinator - emergency post"
+        },
+        {
+            "Name": "E opens coordinator dialogue and pauses gameplay",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Paused dialogue cannot mutate chapter",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Coordinator dialogue uses Indonesian",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "First pointer advances dialogue without accepting early",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Final pointer accepts emergency briefing",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Nearby unobstructed interaction selects Firefighting equipment",
+            "Passed": true,
+            "Detail": "player=(10.00, 0.04, -15.76) target=(10.00, 0.06, -14.00) focus=Firefighting equipment"
+        },
+        {
+            "Name": "E collects equipment once and enables water",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "HUD and action feedback use Indonesian",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Equipment cannot be collected twice",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Cleanup blocked before fires",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Nearby unobstructed interaction selects Mission coordinator - emergency post",
+            "Passed": true,
+            "Detail": "player=(3.00, 0.04, -12.76) target=(3.00, 0.06, -11.00) focus=Mission coordinator - emergency post"
+        },
+        {
+            "Name": "Coordinator can repeat current objective",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Escape closes dialogue without losing equipment",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Authored forest corridor reaches first fire without disabling collision",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Crosshair selects chapter fire fire-01",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Water contact completes fire-01",
+            "Passed": true,
+            "Detail": "Contact 1.000 /  / player=(-12.03, 0.04, 12.50) / target=(-12.00, 0.05, 16.00)"
+        },
+        {
+            "Name": "Crosshair selects chapter fire fire-02",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Water contact completes fire-02",
+            "Passed": true,
+            "Detail": "Contact 1.000 /  / player=(13.00, 0.20, 25.50) / target=(13.00, 0.05, 29.00)"
+        },
+        {
+            "Name": "Containment unlocks cleanup without advancing legacy missions",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Debris cannot be cleared out of range",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Pause blocks cleanup progress",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Nearby unobstructed interaction selects Designated debris 01",
+            "Passed": true,
+            "Detail": "player=(-7.00, 0.04, 4.24) target=(-7.00, 0.06, 6.00) focus=Designated debris 01"
+        },
+        {
+            "Name": "E clears disaster-debris-0",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Cleared debris cannot earn duplicate progress disaster-debris-0",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Nearby unobstructed interaction selects Designated debris 02",
+            "Passed": true,
+            "Detail": "player=(8.00, 0.10, 8.24) target=(8.00, 0.06, 10.00) focus=Designated debris 02"
+        },
+        {
+            "Name": "E clears disaster-debris-1",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Cleared debris cannot earn duplicate progress disaster-debris-1",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Nearby unobstructed interaction selects Designated debris 03",
+            "Passed": true,
+            "Detail": "player=(-8.00, 0.05, 25.24) target=(-8.00, 0.06, 27.00) focus=Designated debris 03"
+        },
+        {
+            "Name": "E clears disaster-debris-2",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Cleared debris cannot earn duplicate progress disaster-debris-2",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Nearby unobstructed interaction selects Designated debris 04",
+            "Passed": true,
+            "Detail": "player=(7.00, 0.04, 36.24) target=(7.00, 0.06, 38.00) focus=Designated debris 04"
+        },
+        {
+            "Name": "E clears disaster-debris-3",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Cleared debris cannot earn duplicate progress disaster-debris-3",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Disaster percentage reaches 100 without final-story victory",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Nearby unobstructed interaction selects Mission coordinator - emergency post",
+            "Passed": true,
+            "Detail": "player=(3.00, 0.04, -12.76) target=(3.00, 0.06, -11.00) focus=Mission coordinator - emergency post"
+        },
+        {
+            "Name": "Zone 1 dialogue transitions to Recovery without victory or reset",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Recovery supply and initially unplanted trees",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Recovery atmosphere changes without mature forest",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Planting and ecosystem locked before ranger briefing",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Physical route from post reaches ranger without teleport",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Ranger opens Indonesian ecological briefing",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Paused ranger cannot accept briefing",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Escape dismisses ranger without accepting mission",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Ranger enables planting after complete dialogue",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Nearby unobstructed interaction selects Recovery seedling 1",
+            "Passed": true,
+            "Detail": "player=(-15.00, 0.04, -12.26) target=(-15.00, 0.06, -10.50) focus=Recovery seedling 1"
+        },
+        {
+            "Name": "E picks up Recovery seed recovery-seed-0",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Seed pickup cannot duplicate inventory recovery-seed-0",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Nearby unobstructed interaction selects Recovery seedling 2",
+            "Passed": true,
+            "Detail": "player=(-12.80, 0.04, -12.26) target=(-12.80, 0.06, -10.50) focus=Recovery seedling 2"
+        },
+        {
+            "Name": "E picks up Recovery seed recovery-seed-1",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Seed pickup cannot duplicate inventory recovery-seed-1",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Nearby unobstructed interaction selects Recovery seedling 3",
+            "Passed": true,
+            "Detail": "player=(-10.60, 0.04, -12.26) target=(-10.60, 0.06, -10.50) focus=Recovery seedling 3"
+        },
+        {
+            "Name": "E picks up Recovery seed recovery-seed-2",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Seed pickup cannot duplicate inventory recovery-seed-2",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Nearby unobstructed interaction selects Recovery seedling 4",
+            "Passed": true,
+            "Detail": "player=(-8.40, 0.04, -12.26) target=(-8.40, 0.06, -10.50) focus=Recovery seedling 4"
+        },
+        {
+            "Name": "E picks up Recovery seed recovery-seed-3",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Seed pickup cannot duplicate inventory recovery-seed-3",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Recovery inventory does not advance legacy MVP",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Nearby unobstructed interaction selects Recovery planting bed 1",
+            "Passed": true,
+            "Detail": "player=(-7.00, 0.04, 4.24) target=(-7.00, 0.06, 6.00) focus=Recovery planting bed 1"
+        },
+        {
+            "Name": "Cannot water before specific bed is planted recovery-bed-0",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "E digs bed without consuming seed recovery-bed-0",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Second E plants young tree recovery-bed-0",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "No duplicate planting recovery-bed-0",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Nearby unobstructed interaction selects Recovery planting bed 2",
+            "Passed": true,
+            "Detail": "player=(8.00, 0.10, 8.24) target=(8.00, 0.15, 10.00) focus=Recovery planting bed 2"
+        },
+        {
+            "Name": "Cannot water before specific bed is planted recovery-bed-1",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "E digs bed without consuming seed recovery-bed-1",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Second E plants young tree recovery-bed-1",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "No duplicate planting recovery-bed-1",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Nearby unobstructed interaction selects Recovery planting bed 3",
+            "Passed": true,
+            "Detail": "player=(-8.00, 0.05, 25.24) target=(-8.00, 0.06, 27.00) focus=Recovery planting bed 3"
+        },
+        {
+            "Name": "Cannot water before specific bed is planted recovery-bed-2",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "E digs bed without consuming seed recovery-bed-2",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Second E plants young tree recovery-bed-2",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "No duplicate planting recovery-bed-2",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Nearby unobstructed interaction selects Recovery planting bed 4",
+            "Passed": true,
+            "Detail": "player=(7.00, 0.04, 36.24) target=(7.00, 0.06, 38.00) focus=Recovery planting bed 4"
+        },
+        {
+            "Name": "Cannot water before specific bed is planted recovery-bed-3",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "E digs bed without consuming seed recovery-bed-3",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Second E plants young tree recovery-bed-3",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "No duplicate planting recovery-bed-3",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "All planting still requires all watering",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Crosshair identifies planted seedling recovery-bed-0",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Range prevents distant seedling watering",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Obstruction blocks seedling water",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Pause blocks seedling watering",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Partial water does not complete tree",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Held mouse waters registered bed recovery-bed-0",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Watering completed bed cannot duplicate progress recovery-bed-0",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Tree remains a young sapling recovery-bed-0",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Crosshair identifies planted seedling recovery-bed-1",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Held mouse waters registered bed recovery-bed-1",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Watering completed bed cannot duplicate progress recovery-bed-1",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Tree remains a young sapling recovery-bed-1",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Crosshair identifies planted seedling recovery-bed-2",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Held mouse waters registered bed recovery-bed-2",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Watering completed bed cannot duplicate progress recovery-bed-2",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Tree remains a young sapling recovery-bed-2",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Crosshair identifies planted seedling recovery-bed-3",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Held mouse waters registered bed recovery-bed-3",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Watering completed bed cannot duplicate progress recovery-bed-3",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Tree remains a young sapling recovery-bed-3",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "All watered trees require ranger debrief before ecosystem",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Nearby unobstructed interaction selects Forest ranger - Recovery guide",
+            "Passed": true,
+            "Detail": "player=(-6.00, 0.04, -10.76) target=(-6.00, 0.06, -9.00) focus=Forest ranger - Recovery guide"
+        },
+        {
+            "Name": "Debrief activates ecosystem recovery",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Winding river has ten registered trash clusters and flow audio",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "River surface remains above its carved channel throughout",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Physical bank route selects river trash recovery-water-waste-0",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Pause blocks ecosystem task recovery-water-waste-0",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "E cleans waste recovery-water-waste-0",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Waste cannot be cleaned twice recovery-water-waste-0",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "River stays unfinished until final trash recovery-water-waste-0",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Physical bank route selects river trash recovery-water-waste-1",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Pause blocks ecosystem task recovery-water-waste-1",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "E cleans waste recovery-water-waste-1",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Waste cannot be cleaned twice recovery-water-waste-1",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "River stays unfinished until final trash recovery-water-waste-1",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Physical bank route selects river trash recovery-water-waste-2",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Pause blocks ecosystem task recovery-water-waste-2",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "E cleans waste recovery-water-waste-2",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Waste cannot be cleaned twice recovery-water-waste-2",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "River stays unfinished until final trash recovery-water-waste-2",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Physical bank route selects river trash recovery-water-waste-3",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Pause blocks ecosystem task recovery-water-waste-3",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "E cleans waste recovery-water-waste-3",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Waste cannot be cleaned twice recovery-water-waste-3",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "River stays unfinished until final trash recovery-water-waste-3",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Physical bank route selects river trash recovery-water-waste-4",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Pause blocks ecosystem task recovery-water-waste-4",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "E cleans waste recovery-water-waste-4",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Waste cannot be cleaned twice recovery-water-waste-4",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "River stays unfinished until final trash recovery-water-waste-4",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Physical river crossing uses solid bridge deck",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Physical bank route selects river trash recovery-water-waste-5",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Pause blocks ecosystem task recovery-water-waste-5",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "E cleans waste recovery-water-waste-5",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Waste cannot be cleaned twice recovery-water-waste-5",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "River stays unfinished until final trash recovery-water-waste-5",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Physical bank route selects river trash recovery-water-waste-6",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Pause blocks ecosystem task recovery-water-waste-6",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "E cleans waste recovery-water-waste-6",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Waste cannot be cleaned twice recovery-water-waste-6",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "River stays unfinished until final trash recovery-water-waste-6",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Physical bank route selects river trash recovery-water-waste-7",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Pause blocks ecosystem task recovery-water-waste-7",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "E cleans waste recovery-water-waste-7",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Waste cannot be cleaned twice recovery-water-waste-7",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "River stays unfinished until final trash recovery-water-waste-7",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Physical bank route selects river trash recovery-water-waste-8",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Pause blocks ecosystem task recovery-water-waste-8",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "E cleans waste recovery-water-waste-8",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Waste cannot be cleaned twice recovery-water-waste-8",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "River stays unfinished until final trash recovery-water-waste-8",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Physical bank route selects river trash recovery-water-waste-9",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Pause blocks ecosystem task recovery-water-waste-9",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "E cleans waste recovery-water-waste-9",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Waste cannot be cleaned twice recovery-water-waste-9",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Water cleaner does not mean habitats restored",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Water material follows cleaned source targets",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Ten cleanups restore riverbanks without completing habitats",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Nearby unobstructed interaction selects Small wildlife habitat 1",
+            "Passed": true,
+            "Detail": "player=(-4.89, 0.11, 15.24) target=(-4.89, 0.14, 17.00) focus=Small wildlife habitat 1"
+        },
+        {
+            "Name": "E restores habitat recovery-habitat-0",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Habitat cannot be restored twice recovery-habitat-0",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Nearby unobstructed interaction selects Small wildlife habitat 2",
+            "Passed": true,
+            "Detail": "player=(-5.49, 0.04, 39.24) target=(-5.49, 0.11, 41.00) focus=Small wildlife habitat 2"
+        },
+        {
+            "Name": "E restores habitat recovery-habitat-1",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Habitat cannot be restored twice recovery-habitat-1",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Wildlife signs only return after water and habitats",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Nearby unobstructed interaction selects Forest ranger - Recovery guide",
+            "Passed": true,
+            "Detail": "player=(-6.00, 0.04, -10.76) target=(-6.00, 0.06, -9.00) focus=Forest ranger - Recovery guide"
+        },
+        {
+            "Name": "Recovery routes to time transition not victory",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Time transition pauses without gameplay mutation",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Resume returns to transition rather than playing",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Time jump preserves prior missions and applies restored world",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Recovered environment owns sun fog and river",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Human elder becomes visible only after time transition",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Animated NPC human proportions: VillagerWoman",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Animated NPC human proportions: Volunteer",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Animated NPC human proportions: ResidentWoman",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Animated NPC human proportions: Ranger",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Animated NPC human proportions: Elder",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Animated NPC human proportions: VillagerSenior",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Animated NPC human proportions: Coordinator",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Animated NPC human proportions: VillagerMan",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Early final actions are locked",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Final viewpoint rejects out of range",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Physical route finds village elder",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Elder has Indonesian recognition dialogue",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Dismissing elder does not grant final seedling",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Elder grants one dedicated final seedling",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Physical final bed approach uses E target",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Final planting consumes the dedicated seed only",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Viewpoint cannot end story before final watering",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Final sapling is camera aimable",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Range blocks final tree watering",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Obstacle blocks final tree watering",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Pause blocks final water",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Held mouse waters final sapling once",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Final planting does not instantly grow a mature tree",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Physical route reaches viewpoint after final tree",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Viewpoint starts cinematic with gameplay locked",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Ending pause freezes camera sequence",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Confirmed cinematic skip gives same final result",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Final result recognizes five missions not chapter-only completion",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Replay pointer reloads the authored scene",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Replay restores chapter equipment, fires and debris",
+            "Passed": true,
+            "Detail": "mode=Briefing stage=Briefing equipment=False"
+        },
+        {
+            "Name": "Replay clears Recovery inventory, digging, watering and ecosystem",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Replay resets all ten river trash targets and recovered banks",
+            "Passed": true,
+            "Detail": ""
+        },
+        {
+            "Name": "Replay resets final mission and restored world",
+            "Passed": true,
+            "Detail": ""
+        }
+    ],
+    "Captures": [
+        "01c-post-board.png",
+        "01-story-menu.png",
+        "01a-controls-id.png",
+        "01b-briefing-id.png",
+        "npc-coordinator.png",
+        "npc-resident.png",
+        "00-disaster-same-view.png",
+        "02-coordinator.png",
+        "02a-pause-id.png",
+        "03-fires-contained.png",
+        "04-clean-start.png",
+        "npc-ranger.png",
+        "00-recovery-same-view.png",
+        "06-ranger-briefing.png",
+        "07-nursery.png",
+        "08-seedling-watering.png",
+        "09b-river-before-cleanup.png",
+        "09-water-cleanup.png",
+        "09a-water-source-detail.png",
+        "10-recovery-habitat.png",
+        "10a-habitat-detail.png",
+        "12-time-transition.png",
+        "13-restored-overview.png",
+        "npc-elder.png",
+        "npc-villager-woman.png",
+        "npc-portrait-VillagerWoman.png",
+        "npc-portrait-Volunteer.png",
+        "npc-portrait-ResidentWoman.png",
+        "npc-portrait-Ranger.png",
+        "npc-portrait-Elder.png",
+        "npc-portrait-VillagerSenior.png",
+        "npc-portrait-Coordinator.png",
+        "npc-portrait-VillagerMan.png",
+        "14-elder-dialogue.png",
+        "15-final-tree-watered.png",
+        "16-ending-first-shot.png",
+        "18-story-complete.png"
+    ],
+    "Errors": []
+}

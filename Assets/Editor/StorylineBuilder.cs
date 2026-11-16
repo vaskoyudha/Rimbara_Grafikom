@@ -206,6 +206,8 @@ namespace Rimbara.Editor
                 throw new InvalidOperationException("Missing script in storyline scene: " + string.Join(", ", missing.Select(t => t.name)));
             DisasterChapter chapter = Find<DisasterChapter>();
             DisasterMapBuilder.VerifyMap();
+            if (Find<DisasterChapter>().Recovery != null) RecoveryMapBuilder.VerifyRecovery();
+            if (UnityEngine.Object.FindFirstObjectByType<RestoredChapter>() != null) RestoredMapBuilder.VerifyRestored();
             if (Find<MissionSystem>().DisasterChapter != chapter || Find<GameState>().Profile.Fires != 2
                 || UnityEngine.Object.FindObjectsByType<DebrisPickup>(FindObjectsSortMode.None).Length != 4
                 || UnityEngine.Object.FindObjectsByType<FirePoint>(FindObjectsSortMode.None).Length != 2)
@@ -261,6 +263,7 @@ namespace Rimbara.Editor
             VerifyChapter();
             DisasterMapBuilder.VerifyMap();
             IndonesianSceneLocalization.Verify();
+            HumanNpcBuilder.Verify();
             ConfigureCompatibleRendering();
             string output = Path.GetFullPath("Builds/Storyline-Windows/RIMBARA-FromAshes.exe");
             Directory.CreateDirectory(Path.GetDirectoryName(output));
@@ -282,6 +285,10 @@ namespace Rimbara.Editor
             foreach (string notice in Directory.GetFiles("Assets/TextMesh Pro/Fonts", "*.txt"))
                 File.Copy(notice, Path.Combine(licences, Path.GetFileName(notice)), true);
             File.Copy("Docs/Slavic-Base.md", Path.Combine(licences, "EmaceArt-Slavic-Base.md"), true);
+            string npcLicences = Path.Combine(licences, "HumanNPCs");
+            Directory.CreateDirectory(npcLicences);
+            foreach (string notice in Directory.GetFiles("Docs/Licenses/HumanNPCs"))
+                File.Copy(notice, Path.Combine(npcLicences, Path.GetFileName(notice)), true);
         }
 
         private static void ConfigureCompatibleRendering()

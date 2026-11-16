@@ -8,7 +8,12 @@ namespace Rimbara.Interaction
     {
         [SerializeField] private DisasterChapter chapter;
         [SerializeField] private DisasterHud hud;
-        public override bool Available => true;
+        public override bool Available => chapter.Recovery == null || !chapter.Recovery.Active;
+        private void Update()
+        {
+            Transform beacon = transform.Find("Beacon - MISSION COORDINATOR");
+            if (beacon != null) beacon.gameObject.SetActive(Available);
+        }
 
         public void Configure(DisasterChapter owner, DisasterHud view, GameObject ring)
         {

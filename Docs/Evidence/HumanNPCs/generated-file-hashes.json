@@ -1,0 +1,147 @@
+﻿[
+    {
+        "Path":  "Assets/Art/Characters/HumanNPCs/Coordinator.fbx",
+        "SHA256":  "076551c47c93fde86a7f442e789e5a640755630fb456f795b9301e8423ebec0b",
+        "Bytes":  1536892
+    },
+    {
+        "Path":  "Assets/Art/Characters/HumanNPCs/Elder.fbx",
+        "SHA256":  "d107282cb401e11dfa4f4c111205a5e2a03ba80c24c7ceb366f822f77c2ccaf6",
+        "Bytes":  1809164
+    },
+    {
+        "Path":  "Assets/Art/Characters/HumanNPCs/manifest.json",
+        "SHA256":  "849217c96e54c4f9225c1434cab8009992f414bbac68a2be18ae696fc0dc203d",
+        "Bytes":  17053
+    },
+    {
+        "Path":  "Assets/Art/Characters/HumanNPCs/Ranger.fbx",
+        "SHA256":  "4dde783a828cdb424b2d81004270cd4d2855e9f20e3ed6cf4aa335dfe7b5d2a1",
+        "Bytes":  1437548
+    },
+    {
+        "Path":  "Assets/Art/Characters/HumanNPCs/ResidentWoman.fbx",
+        "SHA256":  "07eb822c62640bc51056aa933685a5b1e0e8e25de9e5918d8f4cee0faa181a51",
+        "Bytes":  1502572
+    },
+    {
+        "Path":  "Assets/Art/Characters/HumanNPCs/source-hashes.json",
+        "SHA256":  "b1a4557fbe397bdf49442767848d2ee5c99feef366014623b731933706b5290a",
+        "Bytes":  10829
+    },
+    {
+        "Path":  "Assets/Art/Characters/HumanNPCs/VillagerMan.fbx",
+        "SHA256":  "6622c4e91efcf3e8c3d21a591bd2196fcd9784ca349dc651bacf2cf40c4ff584",
+        "Bytes":  1376780
+    },
+    {
+        "Path":  "Assets/Art/Characters/HumanNPCs/VillagerSenior.fbx",
+        "SHA256":  "cbe76ad735adc83ec5279b9aa00e7746fdcae0a234170adf76e1131dcf4a851d",
+        "Bytes":  1474380
+    },
+    {
+        "Path":  "Assets/Art/Characters/HumanNPCs/VillagerWoman.fbx",
+        "SHA256":  "21a0bef67216cbdc091acf0e7506b1158aacded5c6602a78aee06b233bfcda3e",
+        "Bytes":  1499340
+    },
+    {
+        "Path":  "Assets/Art/Characters/HumanNPCs/Volunteer.fbx",
+        "SHA256":  "4a4077d932a86763168656d18845e884fb2974fdd9974cc1eb071da3ad39fe00",
+        "Bytes":  1586460
+    },
+    {
+        "Path":  "Assets/Art/Characters/HumanNPCs/Textures/bob01_diffuse-2b38bc7a028e.png",
+        "SHA256":  "a6b86e8e3b65f04f6fa78835d7b78699107e36bd27018ceb56b63e4ffdb0f14a",
+        "Bytes":  1085406
+    },
+    {
+        "Path":  "Assets/Art/Characters/HumanNPCs/Textures/bob02_diffuse-38c88e6f7163.png",
+        "SHA256":  "412920560c240fef5f206eea79e5d9d8c797a5b96cadeb091035b5ca2ab52fd1",
+        "Bytes":  862268
+    },
+    {
+        "Path":  "Assets/Art/Characters/HumanNPCs/Textures/brown_eye-4659691c7295.png",
+        "SHA256":  "90bc09811585d48b016d546a1b30b2e60aed4d2f46e4e0e261b9591f32292379",
+        "Bytes":  816106
+    },
+    {
+        "Path":  "Assets/Art/Characters/HumanNPCs/Textures/eyebrow001-9940f7d0b1b2.png",
+        "SHA256":  "1b1f509b428528a42a4941b49ffd83924c96414b2f1d135879e175daa3d0e750",
+        "Bytes":  100186
+    },
+    {
+        "Path":  "Assets/Art/Characters/HumanNPCs/Textures/female_casualsuit01_diffuse-414d46afa55f.png",
+        "SHA256":  "56dd2c583c63fc3488f95a9291426e774d59dd4b7cf5c64841dc99fd19cc8c11",
+        "Bytes":  1014495
+    },
+    {
+        "Path":  "Assets/Art/Characters/HumanNPCs/Textures/female_casualsuit02_diffuse-23bd3c8e4df3.png",
+        "SHA256":  "fe70402a71d54b0c46b5f9f1eb8bae7bc07961621bf8a64266753263cfe3b1dc",
+        "Bytes":  1168343
+    },
+    {
+        "Path":  "Assets/Art/Characters/HumanNPCs/Textures/long01_diffuse-e8dc25d90f8f.png",
+        "SHA256":  "570af6d522fbe6581c37d929af9bc419bd5b3c5761e8c9616198e8acce3129ac",
+        "Bytes":  1065694
+    },
+    {
+        "Path":  "Assets/Art/Characters/HumanNPCs/Textures/male_casualsuit01_diffuse-3fd0bba5dcbd.png",
+        "SHA256":  "331bebf941ea02af33d145989633a337e551d3dd70586bef510761d1d8852b94",
+        "Bytes":  1278648
+    },
+    {
+        "Path":  "Assets/Art/Characters/HumanNPCs/Textures/male_casualsuit03_diffuse-d9079ed2e52d.png",
+        "SHA256":  "ffee1368be400afc2d4502c6103c3fcf6f266a557cfa7010e290533feb33e90c",
+        "Bytes":  1175880
+    },
+    {
+        "Path":  "Assets/Art/Characters/HumanNPCs/Textures/male_casualsuit05_diffuse-d4345efe9332.png",
+        "SHA256":  "a7e5b71799cc9788aa707820656ab3476c8e6a01ffb720d3e64159d967fe7db3",
+        "Bytes":  973382
+    },
+    {
+        "Path":  "Assets/Art/Characters/HumanNPCs/Textures/male_worksuit01_diffuse-4b59b50f7a8a.png",
+        "SHA256":  "b6a06c487eb38b84eb0ed2f097ab8d063f82157f2de96b9a6601af94d88460c1",
+        "Bytes":  1025997
+    },
+    {
+        "Path":  "Assets/Art/Characters/HumanNPCs/Textures/middleage_lightskinned_female_diffuse2-39c505ca2243.png",
+        "SHA256":  "f929d545691703e68957cd94c1a7e8917838317c75b0f72028c2e0aba9de8810",
+        "Bytes":  1105544
+    },
+    {
+        "Path":  "Assets/Art/Characters/HumanNPCs/Textures/middleage_lightskinned_male_diffuse2-e897c4cc1b6a.png",
+        "SHA256":  "c80bc30fe2f3259f13fea5dddb3940a003577c1c240f39faf41336e91f47259d",
+        "Bytes":  1118533
+    },
+    {
+        "Path":  "Assets/Art/Characters/HumanNPCs/Textures/old_lightskinned_male_diffuse2-8b3232676c5b.png",
+        "SHA256":  "047bcda2d419eb330f1fb36876cb0d5c6d74d158401a1d51612f3d58f5861ea9",
+        "Bytes":  1186732
+    },
+    {
+        "Path":  "Assets/Art/Characters/HumanNPCs/Textures/shoes01_diffuse-50c9a406a7f1.png",
+        "SHA256":  "49e2114ef411bf5f874713c1d27149ec9fa75251115b3923daf97fc40a7c98ea",
+        "Bytes":  1438984
+    },
+    {
+        "Path":  "Assets/Art/Characters/HumanNPCs/Textures/short01_diffuse-f34a0957184e.png",
+        "SHA256":  "fbaccde879dceabb241fe3016b0ff4ff7758a04956aa4d497d57f57cbf642aaa",
+        "Bytes":  998699
+    },
+    {
+        "Path":  "Assets/Art/Characters/HumanNPCs/Textures/short02_diffuse-47fe33831a39.png",
+        "SHA256":  "69dcd6061fe18615fc2e2f65d346992e2b513ebd96010a5be07294d81c1534ab",
+        "Bytes":  1027321
+    },
+    {
+        "Path":  "Assets/Art/Characters/HumanNPCs/Textures/young_lightskinned_female_diffuse3-1d82f782b7d2.png",
+        "SHA256":  "362e074c02cd00ae9a2dbdf6a2bf2c3559661ee34f50476660794b12fd14406e",
+        "Bytes":  1193135
+    },
+    {
+        "Path":  "Assets/Art/Characters/HumanNPCs/Textures/young_lightskinned_male_diffuse3-f50016a5507f.png",
+        "SHA256":  "2c3e3bae72b3b6a523dd89f44253d7b24fb5f31aa9470cb00ccaabff0b865dd3",
+        "Bytes":  1089649
+    }
+]

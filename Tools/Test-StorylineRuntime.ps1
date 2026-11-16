@@ -1,16 +1,18 @@
 param(
     [string]$Executable = (Join-Path (Split-Path -Parent $PSScriptRoot) 'Builds\Storyline-Windows\RIMBARA-FromAshes.exe'),
-    [int]$TimeoutSeconds = 240
+    [int]$TimeoutSeconds = 600,
+    [switch]$SkipEnding
 )
 $ErrorActionPreference = 'Stop'
 $root = Split-Path -Parent $PSScriptRoot
-$output = Join-Path $root 'Artifacts\storyline-runtime'
+$output = Join-Path $root $(if ($SkipEnding) { 'Artifacts\storyline-runtime-skip' } else { 'Artifacts\storyline-runtime' })
 if (!(Test-Path -LiteralPath $Executable)) { throw 'Build the Disaster Windows executable first.' }
 New-Item -ItemType Directory -Force -Path $output | Out-Null
 $log = Join-Path $output 'player.log'
 $reportPath = Join-Path $output 'report.json'
 $arguments = @('--rimbara-smoke', ('--rimbara-output="' + $output + '"'),
     '-screen-width', '1600', '-screen-height', '900', '-screen-fullscreen', '0', '-logFile', ('"' + $log + '"'))
+if ($SkipEnding) { $arguments += '--rimbara-ending-skip' }
 $started = [DateTime]::UtcNow
 $process = Start-Process -FilePath $Executable -ArgumentList $arguments -PassThru
 if (!$process.WaitForExit($TimeoutSeconds * 1000)) {

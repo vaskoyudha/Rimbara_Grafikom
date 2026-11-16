@@ -1,5 +1,5 @@
 param(
-    [ValidateSet('create', 'verify', 'build', 'presentation', 'author-map', 'soil', 'corridor', 'indonesian', 'post-sign')]
+    [ValidateSet('create', 'verify', 'build', 'presentation', 'author-map', 'soil', 'corridor', 'indonesian', 'post-sign', 'recovery', 'recovery-repair', 'river', 'river-terrain', 'restored', 'restored-polish', 'human-npcs', 'verify-npcs', 'npc-imports')]
     [string]$Command = 'verify',
     [string]$Unity = 'C:\Program Files\Unity\Hub\Editor\6000.3.6f1\Editor\Unity.exe',
     [int]$TimeoutSeconds = 1800
@@ -11,7 +11,15 @@ $open = Get-CimInstance Win32_Process -Filter "Name='Unity.exe'" |
     Where-Object { $_.CommandLine -and $_.CommandLine.Contains($project) }
 if ($open) { throw 'Close this project in Unity before running the batch storyline command.' }
 $methods = @{ create = 'CreateChapter'; verify = 'VerifyChapter'; build = 'BuildChapter'; presentation = 'UpdatePresentation' }
-$operation = if ($Command -eq 'author-map') { 'DisasterMapBuilder.BuildMap' } elseif ($Command -eq 'soil') { 'DisasterMapBuilder.RepairTerrainPalette' } elseif ($Command -eq 'corridor') { 'DisasterMapBuilder.ClearArrivalCorridor' } elseif ($Command -eq 'indonesian') { 'IndonesianSceneLocalization.Apply' } elseif ($Command -eq 'post-sign') { 'DisasterMapBuilder.RepairPostSign' } else { 'StorylineBuilder.' + $methods[$Command] }
+$operation = if ($Command -eq 'author-map') { 'DisasterMapBuilder.BuildMap' } elseif ($Command -eq 'soil') { 'DisasterMapBuilder.RepairTerrainPalette' } elseif ($Command -eq 'corridor') { 'DisasterMapBuilder.ClearArrivalCorridor' } elseif ($Command -eq 'indonesian') { 'IndonesianSceneLocalization.Apply' } elseif ($Command -eq 'post-sign') { 'DisasterMapBuilder.RepairPostSign' } elseif ($Command -eq 'recovery') { 'RecoveryMapBuilder.AddRecovery' } else { 'StorylineBuilder.' + $methods[$Command] }
+if ($Command -eq 'recovery-repair') { $operation = 'RecoveryMapBuilder.RepairRecoveryPresentation' }
+if ($Command -eq 'river') { $operation = 'RecoveryRiverBuilder.ReplacePool' }
+if ($Command -eq 'river-terrain') { $operation = 'RecoveryRiverBuilder.RepairChannel' }
+if ($Command -eq 'restored') { $operation = 'RestoredMapBuilder.AddRestored' }
+if ($Command -eq 'restored-polish') { $operation = 'RestoredMapBuilder.PolishRestored' }
+if ($Command -eq 'human-npcs') { $operation = 'HumanNpcBuilder.Install' }
+if ($Command -eq 'verify-npcs') { $operation = 'HumanNpcBuilder.Verify' }
+if ($Command -eq 'npc-imports') { $operation = 'HumanNpcBuilder.RefreshImports' }
 $artifacts = Join-Path $project 'Artifacts'
 New-Item -ItemType Directory -Force -Path $artifacts | Out-Null
 $log = Join-Path $artifacts ('storyline-' + $Command + '.log')

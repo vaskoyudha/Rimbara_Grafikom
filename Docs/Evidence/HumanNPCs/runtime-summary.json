@@ -1,0 +1,16 @@
+﻿{
+    "Normal":  {
+                   "Passed":  true,
+                   "Checks":  238,
+                   "Errors":  0,
+                   "MeanFrameMs":  10.281530380249024,
+                   "P95FrameMs":  10.009503364562989
+               },
+    "Skip":  {
+                 "Passed":  true,
+                 "Checks":  237,
+                 "Errors":  0
+             },
+    "Device":  "AMD Radeon RX 6600 / Direct3D11",
+    "Resolution":  "1600x900"
+}

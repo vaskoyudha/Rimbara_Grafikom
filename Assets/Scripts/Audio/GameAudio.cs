@@ -18,6 +18,8 @@ namespace Rimbara.Audio
         [SerializeField] private AudioClip extinguish;
         [SerializeField] private AudioClip complete;
         private float birdTarget;
+        private RecoveryChapter recovery;
+        private RestoredChapter restored;
         public float Volume { get; private set; } = 0.65f;
 
         public void Configure(GameState gameState, MissionSystem system, WaterSprayer tool, AudioSource windSource,
@@ -46,6 +48,10 @@ namespace Rimbara.Audio
             state.FireExtinguished += PlayOut;
             state.ProgressChanged += RefreshBirds;
             missions.Completed += PlayComplete;
+            recovery = missions.DisasterChapter == null ? null : missions.DisasterChapter.Recovery;
+            if (recovery != null) recovery.Changed += RefreshRecoveryBirds;
+            restored = recovery == null ? null : recovery.Restored;
+            if (restored != null) restored.Changed += RefreshRestoredBirds;
         }
 
         private void Start()
@@ -76,7 +82,12 @@ namespace Rimbara.Audio
             birdTarget = missions.DisasterChapter != null ? 0.04f : Mathf.Lerp(0.04f, 0.28f, progress.Restoration);
         }
         private void PlayCollect(string id) { feedback.PlayOneShot(collect, 0.5f); }
+        private void RefreshRecoveryBirds()
+        {
+            birdTarget = recovery.Progress.WaterClean && recovery.Progress.Habitats == recovery.Progress.HabitatGoal ? 0.18f : 0.04f;
+        }
         private void PlayPlant(string id) { feedback.PlayOneShot(plant, 0.6f); }
+        private void RefreshRestoredBirds() { if (restored.EnvironmentReady) birdTarget = 0.25f; }
         private void PlayOut(string id) { feedback.PlayOneShot(extinguish, 0.55f); }
         private void PlayComplete() { feedback.PlayOneShot(complete, 0.75f); }
 
@@ -90,6 +101,8 @@ namespace Rimbara.Audio
                 state.ProgressChanged -= RefreshBirds;
             }
             if (missions != null) missions.Completed -= PlayComplete;
+            if (recovery != null) recovery.Changed -= RefreshRecoveryBirds;
+            if (restored != null) restored.Changed -= RefreshRestoredBirds;
         }
     }
 }

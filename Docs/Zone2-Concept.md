@@ -1,6 +1,8 @@
 # Zona 2 — Konsep Pemulihan
 
 Status: **kajian konsep sebelum implementasi**, 16 November 2026.
+Implementasi berikutnya dicatat terpisah dalam [Zone2-Implementation.md](Zone2-Implementation.md);
+dokumen ini tetap membedakan kebutuhan sumber dari usulan desain.
 Sumber utama: `Rimbaraku_Storyline_From_Ashes_to_Life.docx` yang dikirim tim,
 bagian 5 (Zone Two — The Recovery), 7 (Mission Flow), 8 (Perubahan Lingkungan),
 dan 11 (Rekomendasi Implementasi). Bagian 4 dan 6 menentukan batas transisi.

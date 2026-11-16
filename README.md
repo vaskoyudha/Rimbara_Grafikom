@@ -14,11 +14,12 @@ See [setup and team workflow](Docs/Unity-Version-Control.md).
 **Bahasa game: Indonesia.** Menu, misi, dialog, kontrol dan feedback dalam build
 storyline menggunakan Bahasa Indonesia. Lihat [ketentuan bahasa](Docs/Bahasa-Game.md).
 
-The next plan is **Disaster → Recovery → Restored**, with five missions. See
-[the approved storyline plan](Docs/Storyline-Plan.md). The first development
-slice adds coordinator dialogue, equipment pickup, fire suppression and designated
-debris cleanup in `Assets/Scenes/FromAshes.unity`. Recovery/Restored gameplay and
-the cinematics are not implemented yet. Existing MVP evidence below is historical.
+The story follows **Disaster → Recovery → Restored**, with five missions. See
+[the approved storyline plan](Docs/Storyline-Plan.md). The current development
+scene includes the Disaster chapter, Recovery M03/M04, and Restored M05:
+seedlings, digging/planting/watering, river cleanup, habitats, a time transition,
+elder briefing, final tree/viewpoint and ending cinematic. The opening cinematic
+and escort remain unimplemented. Existing MVP evidence below is historical.
 
 Use **Unity 6000.3.6f1**, matching `ProjectSettings/ProjectVersion.txt`.
 Asset library: **EmaceArt Slavic Medieval Village Free**, Marketplace **167010**.
@@ -28,18 +29,39 @@ See [the required base](Docs/Slavic-Base.md).
 The team-authored Main, Arunika and VillageRestoration maps are preserved.
 Open FromAshes and press Play; use E at the emergency coordinator, collect the
 equipment, extinguish the two fires, clear four marked debris piles, then return
-to the coordinator. Dialogue uses BERIKUTNYA/LANJUTKAN buttons; Escape closes it.
+to the coordinator. Next, meet the forest ranger at the nursery to collect,
+dig, plant and water four seedlings, then collect ten trash clusters from both
+riverbanks and restore two habitats. After a narrative time transition, meet the
+village elder, plant/water the dedicated final sapling, and visit the viewpoint
+to start the ending. Dialogue uses BERIKUTNYA/LANJUTKAN; Escape closes dialogue
+or pauses cinematics.
 
 Storyline build: `RIMBARA > Storyline > Build Disaster Windows x64`, or
 `powershell -File Tools/Invoke-Storyline.ps1 -Command build` with Unity closed.
 Output: `Builds/Storyline-Windows/RIMBARA-FromAshes.exe`.
 The legacy `RIMBARA > Build Windows x64` still targets Main, not FromAshes.
 Do not regenerate Main or run the environment generators to import this project.
-See [new storyline verification](Docs/Storyline-Verification.md) for actual tests
-and remaining scope. This working branch has not been merged into team main.
+See [Zone 1 baseline verification](Docs/Storyline-Verification.md) and
+[current Recovery validation](Docs/Zone2-Implementation.md) and
+[Restored implementation](Docs/Zone3-Implementation.md). Zone 1 was merged
+by the team; Zone 2/3 and NPC publication status is in
+[publication record](Docs/Publication-Status.md).
 
-Zone 2 is currently a source-document design study, not implemented gameplay:
-see [Zona 2 — konsep pemulihan](Docs/Zone2-Concept.md).
+Zone 2 source-document concept: [konsep pemulihan](Docs/Zone2-Concept.md).
+Current implementation and limitations: [Zona 2](Docs/Zone2-Implementation.md).
+
+### NPC manusia
+
+FromAshes memakai **10 NPC dengan 8 model berproporsi manusia**: koordinator,
+petugas hutan, tetua, relawan dan warga pria/wanita/senior. Model dibuat memakai
+MakeHuman/MPFB bundled CC0; player Ch42 tidak diganti. Visual NPC berada di
+`Assets/Art/Characters/HumanNPCs`, sumber editable di `SourceArt/HumanNPCs`.
+Lihat [implementasi/lisensi](Docs/Human-NPC-Implementation.md) dan
+[evidence pengujian NPC](Docs/Evidence/HumanNPCs/README.md).
+Blender/MPFB hanya diperlukan untuk mengedit sumber, bukan untuk membuka atau
+menjalankan Unity/build. Lihat [panduan presentasi dosen](Docs/Panduan-Presentasi-Dosen.md)
+untuk progres, pembagian tanggung jawab A/B/C, file fitur dan demo Unity.
+
 ## Rise of the Forgotten Forest
 
 A small third-person restoration game set in Arunika Forest. A young volunteer

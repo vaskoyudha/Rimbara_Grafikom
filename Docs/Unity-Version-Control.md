@@ -20,6 +20,9 @@
   Workspace lokal **Rimbara_Grafikom-Rombel2** menggunakan mode Standard dan
   repository `Rimbara_Grafikom/Rimbara_Grafikom`. Akses/download serta pertukaran
   perubahan dengan workspace rekan belum terverifikasi.
+- Snapshot tiga zona/NPC sudah check-in sebagai **cs:2**, panduan/dokumentasi
+  sebagai **cs:3**. GitHub branch `feature/restored-zone3` berhasil push beserta
+  asset LFS; fresh clone/LFS fsck OK. Rincian ada di `Publication-Status.md`.
 - Paket sudah di-resolve oleh Unity dan **56/56 EditMode tests lolos** setelah
   pemasangan. Editor telah dibuka, tetapi koneksi tool Editor tidak terautentikasi;
   pemilik menyelesaikan setup workspace melalui Window > Unity Version Control.
@@ -65,8 +68,8 @@ https://cloud.unity.com/organizations/18968548628243/projects/39c9aaf1-2979-4d0c
    wizard sebelum file, izin asset, kuota, dan upload awal disetujui. Gunakan
    repository existing agar tidak membuat repository duplikat tanpa sengaja.
 8. UVCS menyimpan binary asset secara native. Upload file binary asli, bukan
-   pointer Git LFS. GitHub masih mempunyai masalah object LFS upstream yang belum
-   diperbaiki; upload UVCS tidak memperbaiki penyimpanan LFS GitHub.
+   pointer Git LFS. Masalah object Git LFS historis telah diperbaiki dan fresh clone
+   berhasil; upload UVCS sendiri tetap tidak memperbaiki storage GitHub.
 9. Tinjau license resource pihak ketiga dan batasi akses pada anggota tim yang
    berhak. Jangan menjadikan raw asset/repository publik. UVCS untuk kolaborasi
    bukan izin redistribusi asset.
@@ -91,6 +94,17 @@ https://cloud.unity.com/organizations/18968548628243/projects/39c9aaf1-2979-4d0c
    Baru setelah itu nyatakan kolaborasi aktif.
 
 ## Cara kerja harian
+
+### Batch publisher untuk snapshot presentasi
+
+`Assets/Editor/UvcsSyncBridge.cs` adalah utility **batch-only** untuk paket UVCS
+yang sudah terpasang, bukan gameplay atau tombol demo. Ia membaca allow-list
+source lokal dari `Artifacts/uvcs-approved-files.txt`, menolak cache/credential/
+path di luar project, dan Stage hanya menambahkan file yang ditinjau tanpa
+workspace Update/Switch. Publish menolak pending file di luar allow-list lalu
+memakai check-in API paket. Comment/pending/result lokal tidak masuk repository.
+Tool mengandalkan API internal paket 2.14.0; jangan dianggap CLI lintas versi
+yang stabil. Workflow harian tim tetap UI Pending Changes/check-in/review.
 
 - Update workspace sebelum mulai, setelah menyimpan/check-in/shelve pekerjaan sendiri.
   Gunakan satu branch per tugas, misalnya `/main/feature/zona2-penanaman`.

@@ -1,5 +1,9 @@
 # Disaster Zone development slice — verification
 
+**Historical Zone 1 baseline:** this report/evidence applies to the published
+`096d8e9` milestone, before Recovery was added. For the current two-zone build,
+use [Zone2-Implementation.md](Zone2-Implementation.md) and its new Recovery reports.
+
 Workspace: `vaskoyudha/Rimbara_Grafikom`, branch `feature/from-ashes-zone1`.
 Team baseline: `3611552b646e002b22bc903f21e38c3682000a09`.
 New scene: `Assets/Scenes/FromAshes.unity`.
@@ -88,8 +92,8 @@ Builds and raw logs are ignored. Evidence here is new storyline evidence; old
 MVP verification counts elsewhere do not validate the new chapter.
 
 Remote Git LFS initially lacked 126 baseline paths. Exact-hash local recovery
-made this workspace complete but did not upload missing objects to GitHub.
-Publishing a branch requires a separate authorized push and complete LFS upload.
+made this workspace complete. A later authorized upload and push of `096d8e9`
+completed the LFS storage; a fresh GitHub clone and `git lfs fsck` passed.
 
 ## Original-map authoring findings
 

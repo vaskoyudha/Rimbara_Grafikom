@@ -1,0 +1,10 @@
+﻿{
+    "Branch":  "feature/restored-zone3",
+    "ImplementationCommit":  "30a0e1329b54cb0403f8dade2d9013ee5904ad69",
+    "VerifiedDocumentationCommit":  "055da6d5f0ed46bcf77e63be1301730e52a9ff58",
+    "FreshClone":  true,
+    "LfsFsck":  "OK",
+    "GeneratedBinarySHA256Verified":  27,
+    "GeneratedTextContentVerifiedIgnoringCRLF":  2,
+    "UnityImportOnClone":  "Not tested; local post-publication EditMode 105/105 passed"
+}

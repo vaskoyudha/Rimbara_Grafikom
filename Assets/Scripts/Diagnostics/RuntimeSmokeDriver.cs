@@ -8,6 +8,7 @@ using Rimbara.Interaction;
 using Rimbara.Mission;
 using Rimbara.Player;
 using Rimbara.UI;
+using Rimbara.World;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.LowLevel;
@@ -51,6 +52,7 @@ namespace Rimbara.Diagnostics
         private readonly List<MissionStage> stages = new List<MissionStage>();
         private Keyboard keyboard;
         private Mouse mouse;
+        private readonly List<InputDevice> temporarilyDisabledDevices = new List<InputDevice>();
         private GameState state;
         private MissionSystem missions;
         private GameFlow flow;
@@ -96,6 +98,14 @@ namespace Rimbara.Diagnostics
             Directory.CreateDirectory(output);
             keyboard = InputSystem.AddDevice<Keyboard>("RimbaraSmokeKeyboard");
             mouse = InputSystem.AddDevice<Mouse>("RimbaraSmokeMouse");
+            // Native pointer events must not overwrite our virtual UI pointer between
+            // press/release frames. This affects this opt-in game process only, not OS input.
+            foreach (InputDevice device in InputSystem.devices.ToArray())
+                if (device.enabled && device != keyboard && device != mouse && (device is Mouse || device is Keyboard))
+                {
+                    temporarilyDisabledDevices.Add(device);
+                    InputSystem.DisableDevice(device);
+                }
         }
 
         // Flatten nested iterators so exceptions in every fixture/action write a
@@ -481,6 +491,17 @@ namespace Rimbara.Diagnostics
             Check("Story starts in menu with chapter briefing pending", flow.Mode == ScreenMode.Menu
                 && chapter.Progress.Stage == DisasterStage.Briefing && !state.SessionRunning);
             Check("Authored Disaster object supply", fires.Length == 2 && piles.Length == 4);
+            HumanNpcVisual[] humanNpcs = FindObjectsByType<HumanNpcVisual>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+            Check("Ten NPCs use eight distinct human characters", humanNpcs.Length == 10 && humanNpcs.Select(n => n.CharacterId).Distinct().Count() == 8);
+            foreach (HumanNpcVisual npc in humanNpcs)
+            {
+                Animator animator = npc.GetComponentInChildren<Animator>(true);
+                Check("NPC Humanoid avatar and controller: " + npc.name, animator != null && animator.isHuman
+                    && animator.avatar.isValid && animator.runtimeAnimatorController != null && !animator.applyRootMotion);
+                Check("NPC visual preserves player and physics: " + npc.name, npc.GetComponentInParent<VolunteerRig>() == null
+                    && npc.GetComponentsInChildren<Collider>(true).Length == 0
+                    && npc.GetComponentsInChildren<SkinnedMeshRenderer>(true).All(r => r.sharedMesh != null && r.bones.Length > 0));
+            }
             Check("Original Disaster map uses kit resources, not demo village layout", UnityEngine.SceneManagement.SceneManager.GetActiveScene().GetRootGameObjects()
                 .Any(r => r.name == "Environment - RIMBARA Disaster Zone (EmaceArt resources)")
                 && !UnityEngine.SceneManagement.SceneManager.GetActiveScene().GetRootGameObjects().Any(r => r.name == "Environment - EmaceArt Slavic Village"));
@@ -505,7 +526,11 @@ namespace Rimbara.Diagnostics
             yield return Capture("01b-briefing-id.png");
             yield return Click(hud.View.Begin);
             Check("Pointer begins Disaster chapter", flow.Mode == ScreenMode.Playing && state.SessionRunning);
+            yield return CaptureWorldDetail(humanNpcs.Single(n => n.CharacterId == "Coordinator").transform, "npc-coordinator.png", 3f, human: true);
+            yield return CaptureWorldDetail(humanNpcs.First(n => n.CharacterId == "ResidentWoman").transform, "npc-resident.png", 3f, human: true);
             Check("Early planting is locked", !missions.CanCollectOrPlant);
+            if (FindFirstObjectByType<RestoredChapter>() != null)
+                yield return CaptureWorldDetail(chapter.transform, "00-disaster-same-view.png", 35f);
             Check("Water locked before equipment", !missions.CanExtinguish);
             // Our original map reserves a central arrival road. Traverse it with
             // the actual motor instead of teleporting the prologue approach.
@@ -583,15 +608,336 @@ namespace Rimbara.Diagnostics
             yield return PressE();
             yield return AdvanceDialogue(storyHud);
             yield return AdvanceDialogue(storyHud);
-            Check("Coordinator closes chapter with honest milestone screen", flow.Mode == ScreenMode.Victory
-                && hud.View.VictoryResult.text.Contains(IndonesianText.ChapterPending) && !state.SessionRunning);
-            yield return Capture("05-chapter-complete.png");
+            if (chapter.Recovery != null) yield return RunRecovery(chapter.Recovery, storyHud);
+            else
+            {
+                Check("Coordinator closes chapter with honest milestone screen", flow.Mode == ScreenMode.Victory
+                    && hud.View.VictoryResult.text.Contains(IndonesianText.ChapterPending) && !state.SessionRunning);
+                yield return Capture("05-chapter-complete.png");
+            }
+            int completedScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().handle;
             yield return Click(hud.View.Replay);
-            yield return new WaitForSecondsRealtime(0.6f);
+            float reloadDeadline = Time.realtimeSinceStartup + 12f;
+            while (UnityEngine.SceneManagement.SceneManager.GetActiveScene().handle == completedScene && Time.realtimeSinceStartup < reloadDeadline)
+                yield return null;
+            Check("Replay pointer reloads the authored scene", UnityEngine.SceneManagement.SceneManager.GetActiveScene().handle != completedScene);
+            // Scene import/instantiation now includes eight human avatars. Give Start
+            // two actual update frames instead of assuming a 0.6 s wall-clock wait.
+            yield return null; yield return null;
             FindScene();
             Check("Replay restores chapter equipment, fires and debris", flow.Mode == ScreenMode.Briefing
                 && missions.DisasterChapter.Progress.Stage == DisasterStage.Briefing && !missions.DisasterChapter.Progress.HasEquipment
-                && fires.All(f => !f.Extinguished) && FindObjectsByType<DebrisPickup>(FindObjectsSortMode.None).All(p => !p.Cleared));
+                && fires.All(f => !f.Extinguished) && FindObjectsByType<DebrisPickup>(FindObjectsSortMode.None).All(p => !p.Cleared),
+                "mode=" + flow.Mode + " stage=" + missions.DisasterChapter.Progress.Stage + " equipment=" + missions.DisasterChapter.Progress.HasEquipment);
+            RecoveryChapter resetRecovery = missions.DisasterChapter.Recovery;
+            if (resetRecovery != null)
+                Check("Replay clears Recovery inventory, digging, watering and ecosystem", resetRecovery.Progress.Stage == RecoveryStage.Dormant
+                    && resetRecovery.Progress.Fraction == 0f && resetRecovery.Progress.Carried == 0 && resetRecovery.Progress.Dug == 0
+                    && !FindFirstObjectByType<RecoveryEnvironment>().WildlifeReturned);
+            RecoveryRiver resetRiver = FindFirstObjectByType<RecoveryRiver>();
+            if (resetRiver != null)
+            {
+                yield return null;
+                Check("Replay resets all ten river trash targets and recovered banks", resetRecovery.Progress.WasteGoal == 10
+                    && FindObjectsByType<RecoveryTask>(FindObjectsSortMode.None).Where(t => t.Kind == RecoveryTaskKind.Waste).All(t => !t.Done)
+                    && resetRiver.CleanupFraction == 0f && !resetRiver.BanksRecovered);
+            }
+            RestoredChapter resetRestored = FindFirstObjectByType<RestoredChapter>();
+            if (resetRestored != null) Check("Replay resets final mission and restored world", resetRestored.Progress.Stage == RestoredStage.Dormant
+                && !resetRestored.Progress.HasSeedling && !FindFirstObjectByType<RestoredEnvironment>().Applied);
+        }
+
+        private IEnumerator RunRecovery(RecoveryChapter recovery, DisasterHud storyHud)
+        {
+            profileName = "From Ashes / Disaster + Recovery / local fixtures and physical corridors";
+            RecoveryProgress p = recovery.Progress;
+            RangerDialogue ranger = FindFirstObjectByType<RangerDialogue>();
+            yield return CaptureWorldDetail(ranger.GetComponentInChildren<HumanNpcVisual>(true).transform, "npc-ranger.png", 3f, human: true);
+            RecoverySeedling[] supply = FindObjectsByType<RecoverySeedling>(FindObjectsSortMode.None).OrderBy(s => s.ObjectId).ToArray();
+            RecoveryPlantingPoint[] targets = FindObjectsByType<RecoveryPlantingPoint>(FindObjectsSortMode.None).OrderBy(b => b.Slot).ToArray();
+            RecoveryTask[] tasks = FindObjectsByType<RecoveryTask>(FindObjectsSortMode.None).OrderBy(t => t.ObjectId).ToArray();
+            Check("Zone 1 dialogue transitions to Recovery without victory or reset", p.Stage == RecoveryStage.Briefing && state.SessionRunning
+                && flow.Mode == ScreenMode.Playing && missions.DisasterChapter.Progress.Fires == 2 && missions.DisasterChapter.Progress.Debris == 4);
+            RecoveryRiver river = FindFirstObjectByType<RecoveryRiver>();
+            int wasteGoal = river == null ? 3 : RecoveryRiverLayout.TrashCount;
+            Check("Recovery supply and initially unplanted trees", supply.Length == 4 && targets.Length == 4 && tasks.Length == wasteGoal + 2
+                && targets.All(b => !b.Planted && !b.Watered) && !FindFirstObjectByType<RecoveryEnvironment>().WildlifeReturned);
+            yield return null;
+            if (recovery.Restored != null) yield return CaptureWorldDetail(recovery.transform, "00-recovery-same-view.png", 35f);
+            Check("Recovery atmosphere changes without mature forest", FindFirstObjectByType<RecoveryEnvironment>().RecoverySkyActive
+                && RenderSettings.fogDensity < 0.008f && targets.All(b => !b.transform.Find("Young planted tree").gameObject.activeSelf));
+            Check("Planting and ecosystem locked before ranger briefing", !recovery.CanPlant && !recovery.CanRestore
+                && !p.Collect(supply[0].ObjectId, true) && !p.RestoreHabitat("recovery-habitat-0", true));
+            yield return MoveTo(Ground(new Vector3(0f, 0f, -15f)), 0.6f);
+            yield return MoveTo(Ground(new Vector3(-6f, 0f, -13f)), 0.6f);
+            yield return MoveTo(Ground(ranger.transform.position + Vector3.back * 1.7f), 0.5f);
+            detector.Scan();
+            Check("Physical route from post reaches ranger without teleport", detector.Focused == ranger);
+            yield return PressE();
+            Check("Ranger opens Indonesian ecological briefing", storyHud.DialogueOpen && !state.SessionRunning
+                && storyHud.GetComponentsInChildren<TMPro.TMP_Text>(true).Any(t => t.text.Contains("hutan adalah rumah")));
+            Check("Paused ranger cannot accept briefing", !recovery.AcceptBriefing());
+            yield return Capture("06-ranger-briefing.png");
+            input.EnableTestDriver(false); QueueKeys(Key.Escape); yield return new WaitForSecondsRealtime(0.15f); QueueKeys(); yield return new WaitForSecondsRealtime(0.15f);
+            Check("Escape dismisses ranger without accepting mission", !storyHud.DialogueOpen && p.Stage == RecoveryStage.Briefing && state.SessionRunning);
+            yield return PressE(); yield return AdvanceDialogue(storyHud); yield return AdvanceDialogue(storyHud);
+            Check("Ranger enables planting after complete dialogue", p.Stage == RecoveryStage.Planting && recovery.CanPlant && !recovery.CanRestore);
+            foreach (RecoverySeedling seed in supply)
+            {
+                yield return Approach(seed.transform); yield return PressE();
+                Check("E picks up Recovery seed " + seed.ObjectId, seed.Collected && !seed.Available);
+                Check("Seed pickup cannot duplicate inventory " + seed.ObjectId, !p.Collect(seed.ObjectId, true));
+            }
+            Check("Recovery inventory does not advance legacy MVP", p.Carried == 4 && state.Snapshot.Seedlings == 0 && missions.Stage == MissionStage.FirstSteps);
+            yield return Capture("07-nursery.png");
+            foreach (RecoveryPlantingPoint bed in targets)
+            {
+                yield return Approach(bed.transform);
+                Check("Cannot water before specific bed is planted " + bed.ObjectId, !bed.ReceiveWater(1f));
+                yield return PressE();
+                Check("E digs bed without consuming seed " + bed.ObjectId, bed.Dug && !bed.Planted);
+                yield return PressE();
+                Check("Second E plants young tree " + bed.ObjectId, bed.Planted && !bed.Watered);
+                Check("No duplicate planting " + bed.ObjectId, !p.Plant(bed.ObjectId, true));
+            }
+            Check("All planting still requires all watering", p.Planted == 4 && p.Carried == 0 && p.Stage == RecoveryStage.Planting && !p.AcceptPlantingDebrief(true));
+            foreach (RecoveryPlantingPoint bed in targets)
+            {
+                yield return ApproachSeedlingForWater(bed);
+                Check("Crosshair identifies planted seedling " + bed.ObjectId, water.AimedSeedling == bed && water.AimHint == IndonesianText.SeedlingWaterAction);
+                if (bed == targets[0])
+                {
+                    Vector3 nearPosition = rig.transform.position;
+                    rig.Teleport(Ground(bed.transform.position + Vector3.back * 11f));
+                    yield return new WaitForSecondsRealtime(0.2f);
+                    yield return AimAtPoint(bed.AimPosition);
+                    Check("Range prevents distant seedling watering", water.AimedSeedling == bed && !water.ApplySpray(0.5f) && bed.WaterFraction == 0f);
+                    rig.Teleport(nearPosition); yield return new WaitForSecondsRealtime(0.2f);
+                    yield return AimAtPoint(bed.AimPosition);
+                    Transform nozzle = rig.transform.Find("Water nozzle");
+                    GameObject blocker = Blocker((nozzle.position + bed.AimPosition) * 0.5f, Vector3.one * 0.35f);
+                    Check("Obstruction blocks seedling water", !water.ApplySpray(0.5f) && bed.WaterFraction == 0f);
+                    Destroy(blocker); yield return new WaitForSecondsRealtime(0.2f);
+                    yield return AimAtPoint(bed.AimPosition);
+                    flow.Pause(); Check("Pause blocks seedling watering", !bed.ReceiveWater(0.5f) && bed.WaterFraction == 0f); flow.Resume();
+                    yield return AimAtPoint(bed.AimPosition);
+                    yield return SprayFor(0.35f);
+                    Check("Partial water does not complete tree", bed.WaterFraction > 0f && bed.WaterFraction < 1f && p.Watered == 0);
+                    yield return Capture("08-seedling-watering.png");
+                }
+                input.EnableTestDriver(false);
+                float deadline = Time.realtimeSinceStartup + 8f;
+                while (!bed.Watered && Time.realtimeSinceStartup < deadline)
+                {
+                    SetCameraAtPoint(bed.AimPosition); QueueMouse(default, true); yield return null;
+                }
+                QueueMouse(); input.EnableTestDriver(true); yield return new WaitForSecondsRealtime(0.15f);
+                Check("Held mouse waters registered bed " + bed.ObjectId, bed.Watered);
+                Check("Watering completed bed cannot duplicate progress " + bed.ObjectId, !bed.ReceiveWater(0.5f));
+                Check("Tree remains a young sapling " + bed.ObjectId, bed.transform.Find("Young planted tree").GetComponentsInChildren<Renderer>()
+                    .Max(r => r.bounds.max.y) - bed.transform.position.y < 1.6f);
+            }
+            Check("All watered trees require ranger debrief before ecosystem", p.Stage == RecoveryStage.PlantingDebrief && !recovery.CanRestore);
+            yield return Approach(ranger.transform); yield return PressE();
+            yield return AdvanceDialogue(storyHud); yield return AdvanceDialogue(storyHud);
+            Check("Debrief activates ecosystem recovery", p.Stage == RecoveryStage.Ecosystem && recovery.CanRestore && !recovery.CanPlant);
+            RecoveryTask[] waste = tasks.Where(t => t.Kind == RecoveryTaskKind.Waste).ToArray();
+            if (river != null)
+            {
+                Check("Winding river has ten registered trash clusters and flow audio", waste.Length == 10 && p.WasteGoal == 10
+                    && river.FlowAudible && river.transform.Find("River water surface").GetComponent<MeshFilter>().sharedMesh.vertexCount > 100);
+                bool channelVisible = true;
+                for (float z = RecoveryRiverLayout.StartZ + 1f; z < RecoveryRiverLayout.EndZ - 1f; z += 1f)
+                {
+                    Vector3 point = new Vector3(RecoveryRiverLayout.CenterX(z), 0f, z);
+                    channelVisible &= Terrain.activeTerrain.SampleHeight(point) + Terrain.activeTerrain.transform.position.y < RecoveryRiverLayout.WaterY - 0.02f;
+                }
+                Check("River surface remains above its carved channel throughout", channelVisible);
+                yield return CaptureWorldDetail(river.transform.Find("River water surface"), "09b-river-before-cleanup.png", 22f);
+                yield return MoveTo(Ground(new Vector3(-6f, 0f, -13f)), 0.7f);
+                yield return MoveTo(Ground(new Vector3(-4.3f, 0f, 14f)), 0.65f);
+                yield return MoveTo(Ground(RecoveryRiverLayout.BankPoint(20f, -1, 3.15f)), 0.5f);
+            }
+            foreach (RecoveryTask task in waste)
+            {
+                if (river == null) yield return Approach(task.transform);
+                else
+                {
+                    int index = Array.IndexOf(waste, task);
+                    if (index == 5)
+                    {
+                        yield return MoveTo(Ground(RecoveryRiverLayout.BankPoint(RecoveryRiverLayout.BridgeZ, -1)), 0.6f);
+                        yield return MoveTo(Ground(new Vector3(RecoveryRiverLayout.CenterX(RecoveryRiverLayout.BridgeZ), 0f, RecoveryRiverLayout.BridgeZ)), 0.6f);
+                        Check("Physical river crossing uses solid bridge deck", rig.transform.position.y > 0.12f);
+                        yield return MoveTo(Ground(RecoveryRiverLayout.BankPoint(RecoveryRiverLayout.BridgeZ, 1)), 0.6f);
+                    }
+                    yield return MoveTo(Ground(task.transform.position + Vector3.back * 1.3f), 0.4f);
+                    detector.Scan();
+                    Check("Physical bank route selects river trash " + task.ObjectId, detector.Focused == task);
+                }
+                flow.Pause(); Check("Pause blocks ecosystem task " + task.ObjectId, !task.Interact(actor).Success); flow.Resume();
+                yield return PressE(); Check("E cleans waste " + task.ObjectId, task.Done);
+                Check("Waste cannot be cleaned twice " + task.ObjectId, !p.CleanWaste(task.ObjectId, true));
+                if (river != null && p.Waste < wasteGoal)
+                    Check("River stays unfinished until final trash " + task.ObjectId, !p.WaterClean && !river.BanksRecovered);
+            }
+            Check("Water cleaner does not mean habitats restored", p.WaterClean && p.Habitats == 0 && p.Stage == RecoveryStage.Ecosystem
+                && !FindFirstObjectByType<RecoveryEnvironment>().WildlifeReturned);
+            yield return null;
+            Renderer sourceWater = river == null ? GameObject.Find("Recovery water source").GetComponent<Renderer>() : river.transform.Find("River water surface").GetComponent<Renderer>();
+            Check("Water material follows cleaned source targets", sourceWater.sharedMaterial.name.Contains("Cleaner recovery water"));
+            if (river != null) Check("Ten cleanups restore riverbanks without completing habitats", river.CleanupFraction == 1f && river.BanksRecovered && p.Habitats == 0);
+            yield return Capture("09-water-cleanup.png");
+            yield return CaptureWorldDetail(sourceWater.transform, "09a-water-source-detail.png", river == null ? 7f : 22f);
+            foreach (RecoveryTask task in tasks.Where(t => t.Kind == RecoveryTaskKind.Habitat))
+            {
+                yield return Approach(task.transform); yield return PressE(); Check("E restores habitat " + task.ObjectId, task.Done);
+                Check("Habitat cannot be restored twice " + task.ObjectId, !p.RestoreHabitat(task.ObjectId, true));
+            }
+            yield return new WaitForSecondsRealtime(0.2f);
+            Check("Wildlife signs only return after water and habitats", p.Stage == RecoveryStage.EcosystemDebrief && p.Fraction == 1f
+                && FindFirstObjectByType<RecoveryEnvironment>().WildlifeReturned && flow.Mode == ScreenMode.Playing);
+            yield return Capture("10-recovery-habitat.png");
+            yield return CaptureWorldDetail(tasks.First(t => t.Kind == RecoveryTaskKind.Habitat).transform, "10a-habitat-detail.png", 4.5f);
+            yield return Approach(ranger.transform); yield return PressE();
+            yield return AdvanceDialogue(storyHud); yield return AdvanceDialogue(storyHud);
+            if (recovery.Restored != null) yield return RunRestored(recovery.Restored, storyHud);
+            else
+            {
+                Check("Recovery closes with milestone not final-story ending", p.Stage == RecoveryStage.Complete && flow.Mode == ScreenMode.Victory
+                    && !state.SessionRunning && hud.View.VictoryResult.text.Contains("Zona 1 dan Zona 2 selesai") && hud.View.VictoryResult.text.Contains(IndonesianText.ChapterPending));
+                yield return Capture("11-recovery-complete.png");
+            }
+        }
+
+        private IEnumerator RunRestored(RestoredChapter restored, DisasterHud storyHud)
+        {
+            profileName = "From Ashes / Three zones / physical final route and riverbanks";
+            RestoredProgress p = restored.Progress;
+            EndingDirector director = restored.Director;
+            RestoredEnvironment world = FindFirstObjectByType<RestoredEnvironment>();
+            Check("Recovery routes to time transition not victory", p.Stage == RestoredStage.TimeTransition && flow.Mode == ScreenMode.Transition
+                && !state.SessionRunning && !p.HasSeedling && missions.DisasterChapter.Progress.Fires == 2);
+            float before = director.SequenceSeconds;
+            flow.Pause(); yield return new WaitForSecondsRealtime(0.4f);
+            Check("Time transition pauses without gameplay mutation", director.SequenceSeconds <= before + 0.02f && !restored.AcceptBriefing());
+            yield return Click(hud.View.Resume);
+            Check("Resume returns to transition rather than playing", flow.Mode == ScreenMode.Transition);
+            yield return new WaitForSecondsRealtime(3f); yield return Capture("12-time-transition.png");
+            float deadline = Time.realtimeSinceStartup + 12f;
+            while (!restored.EnvironmentReady && Time.realtimeSinceStartup < deadline) yield return null;
+            Check("Time jump preserves prior missions and applies restored world", restored.EnvironmentReady && world.Applied && flow.Mode == ScreenMode.Playing
+                && restored.Recovery.Progress.Watered == 4 && restored.Recovery.Progress.Waste == 10 && restored.Recovery.Progress.Habitats == 2);
+            Check("Recovered environment owns sun fog and river", RenderSettings.fogDensity < 0.002f && RenderSettings.sun.intensity > 1.4f
+                && FindFirstObjectByType<RecoveryRiver>().transform.Find("River water surface").GetComponent<Renderer>().sharedMaterial.name.Contains("RestoredRiver"));
+            yield return CaptureWorldDetail(restored.transform, "13-restored-overview.png", 35f);
+            ElderDialogue elder = FindFirstObjectByType<ElderDialogue>();
+            HumanNpcVisual elderVisual = elder.GetComponentInChildren<HumanNpcVisual>(true);
+            Check("Human elder becomes visible only after time transition", elderVisual != null && elderVisual.gameObject.activeInHierarchy
+                && elderVisual.GetComponentsInChildren<Renderer>().All(r => r.enabled));
+            yield return CaptureWorldDetail(elderVisual.transform, "npc-elder.png", 3f, human: true);
+            HumanNpcVisual villager = FindObjectsByType<HumanNpcVisual>(FindObjectsInactive.Include, FindObjectsSortMode.None).First(n => n.CharacterId == "VillagerWoman");
+            yield return CaptureWorldDetail(villager.transform, "npc-villager-woman.png", 3f, human: true);
+            foreach (HumanNpcVisual npc in FindObjectsByType<HumanNpcVisual>(FindObjectsInactive.Include, FindObjectsSortMode.None)
+                .GroupBy(n => n.CharacterId).Select(g => g.First()))
+                yield return CaptureNpcPortrait(npc);
+            FinalPlantingPoint finalBed = restored.FinalBed;
+            RestoredViewpoint panorama = restored.Viewpoint;
+            Check("Early final actions are locked", !finalBed.Interact(actor).Success && !finalBed.ReceiveWater(3f) && !restored.VisitViewpoint(panorama.ObjectId));
+            Check("Final viewpoint rejects out of range", !panorama.Interact(actor).Success);
+            yield return MoveTo(Ground(new Vector3(0f, 0f, -33f)), 0.7f);
+            yield return MoveTo(Ground(elder.transform.position + Vector3.back * 1.7f), 0.4f);
+            detector.Scan(); Check("Physical route finds village elder", detector.Focused == elder);
+            yield return PressE();
+            Check("Elder has Indonesian recognition dialogue", storyHud.DialogueOpen && storyHud.GetComponentsInChildren<TMPro.TMP_Text>(true).Any(t => t.text.Contains("hutan ini dipenuhi api dan abu")));
+            yield return Capture("14-elder-dialogue.png");
+            input.EnableTestDriver(false); QueueKeys(Key.Escape); yield return new WaitForSecondsRealtime(0.15f); QueueKeys(); yield return new WaitForSecondsRealtime(0.15f);
+            Check("Dismissing elder does not grant final seedling", p.Stage == RestoredStage.ElderBriefing && !p.HasSeedling);
+            yield return PressE(); yield return AdvanceDialogue(storyHud); yield return AdvanceDialogue(storyHud); yield return AdvanceDialogue(storyHud);
+            Check("Elder grants one dedicated final seedling", p.Stage == RestoredStage.FinalPlanting && p.HasSeedling && restored.Recovery.Progress.Carried == 0
+                && !restored.AcceptBriefing());
+            yield return MoveTo(Ground(new Vector3(-4f, 0f, -24f)), 0.45f);
+            detector.Scan(); Check("Physical final bed approach uses E target", detector.Focused == finalBed);
+            yield return PressE(); Check("Final planting consumes the dedicated seed only", p.Planted && !p.HasSeedling && p.Stage == RestoredStage.FinalWatering);
+            Check("Viewpoint cannot end story before final watering", !restored.VisitViewpoint(panorama.ObjectId));
+            yield return MoveTo(Ground(new Vector3(-4f, 0f, -25.2f)), 0.4f);
+            yield return AimAtPoint(finalBed.AimPosition);
+            Check("Final sapling is camera aimable", water.AimedFinalTree == finalBed);
+            Vector3 nearFinalTree = rig.transform.position;
+            rig.Teleport(Ground(finalBed.transform.position + Vector3.back * 11f));
+            yield return new WaitForSecondsRealtime(0.2f); yield return AimAtPoint(finalBed.AimPosition);
+            Check("Range blocks final tree watering", !water.ApplySpray(0.5f) && finalBed.WaterFraction == 0f);
+            rig.Teleport(nearFinalTree); yield return new WaitForSecondsRealtime(0.2f); yield return AimAtPoint(finalBed.AimPosition);
+            Transform nozzle = rig.transform.Find("Water nozzle");
+            GameObject waterBlock = Blocker((nozzle.position + finalBed.AimPosition) * 0.5f, Vector3.one * 0.35f);
+            Check("Obstacle blocks final tree watering", !water.ApplySpray(0.5f) && finalBed.WaterFraction == 0f);
+            Destroy(waterBlock); yield return new WaitForSecondsRealtime(0.15f); yield return AimAtPoint(finalBed.AimPosition);
+            flow.Pause(); Check("Pause blocks final water", !finalBed.ReceiveWater(0.5f) && finalBed.WaterFraction == 0f); flow.Resume();
+            yield return AimAtPoint(finalBed.AimPosition);
+            input.EnableTestDriver(false);
+            deadline = Time.realtimeSinceStartup + 8f;
+            while (!p.Watered && Time.realtimeSinceStartup < deadline) { SetCameraAtPoint(finalBed.AimPosition); QueueMouse(default, true); yield return null; }
+            QueueMouse(); input.EnableTestDriver(true); yield return new WaitForSecondsRealtime(0.15f);
+            Check("Held mouse waters final sapling once", p.Watered && p.Stage == RestoredStage.Viewpoint && !finalBed.ReceiveWater(1f));
+            Check("Final planting does not instantly grow a mature tree", finalBed.transform.Find("Final young sapling").GetComponentsInChildren<Renderer>()
+                .Max(r => r.bounds.max.y) - finalBed.transform.position.y < 1.6f);
+            yield return Capture("15-final-tree-watered.png");
+            yield return MoveTo(Ground(new Vector3(0f, 0f, -20f)), 0.6f);
+            yield return MoveTo(Ground(panorama.transform.position + Vector3.back * 1.3f), 0.4f);
+            detector.Scan(); Check("Physical route reaches viewpoint after final tree", detector.Focused == panorama);
+            yield return PressE();
+            Check("Viewpoint starts cinematic with gameplay locked", p.Stage == RestoredStage.Ending && flow.Mode == ScreenMode.Cinematic
+                && !state.SessionRunning && !rig.ControlsEnabled && !water.ApplySpray(1f));
+            yield return new WaitForSecondsRealtime(2f); yield return Capture("16-ending-first-shot.png");
+            before = director.SequenceSeconds;
+            flow.Pause(); yield return new WaitForSecondsRealtime(0.5f);
+            Check("Ending pause freezes camera sequence", director.SequenceSeconds <= before + 0.02f && flow.Mode == ScreenMode.Paused);
+            if (CommandLine.Value("--rimbara-ending-skip") != null)
+            {
+                yield return Click(director.SkipButton);
+                Check("Confirmed cinematic skip gives same final result", p.Stage == RestoredStage.Complete && p.EndingSkipped && flow.Mode == ScreenMode.Victory);
+            }
+            else
+            {
+                yield return Click(hud.View.Resume);
+                Check("Cinematic resume does not enable player movement", flow.Mode == ScreenMode.Cinematic && !rig.ControlsEnabled);
+                yield return new WaitForSecondsRealtime(10f); yield return Capture("17-ending-river-forest.png");
+                deadline = Time.realtimeSinceStartup + 40f;
+                while (flow.Mode != ScreenMode.Victory && Time.realtimeSinceStartup < deadline) yield return null;
+                Check("Normal ending completes only after cinematic", p.Stage == RestoredStage.Complete && !p.EndingSkipped && flow.Mode == ScreenMode.Victory);
+            }
+            Check("Final result recognizes five missions not chapter-only completion", hud.View.VictoryResult.text.Contains("MISI 01–05 SELESAI")
+                && !hud.View.VictoryResult.text.Contains(IndonesianText.ChapterPending) && !state.SessionRunning);
+            yield return Capture("18-story-complete.png");
+        }
+
+        private void SetCameraAtPoint(Vector3 point)
+        {
+            Quaternion rotation = Quaternion.LookRotation(point - rig.ViewCamera.transform.position);
+            float pitch = Mathf.DeltaAngle(0f, rotation.eulerAngles.x) - rig.OfficialController.CameraAngleOverride;
+            rig.SetCameraOrbit(rotation.eulerAngles.y, pitch);
+        }
+
+        private IEnumerator AimAtPoint(Vector3 point)
+        {
+            ClearDriver();
+            for (int i = 0; i < 7; i++) { SetCameraAtPoint(point); yield return new WaitForSecondsRealtime(0.12f); }
+            water.UpdateAim();
+        }
+
+        private IEnumerator ApproachSeedlingForWater(RecoveryPlantingPoint bed)
+        {
+            for (int i = 0; i < 16; i++)
+            {
+                float angle = i * Mathf.PI * 2f / 16f;
+                Vector3 candidate = Ground(bed.transform.position + new Vector3(Mathf.Sin(angle), 0f, -Mathf.Cos(angle)) * 3f);
+                if (!ClearCapsule(candidate)) continue;
+                rig.Teleport(candidate); yield return new WaitForSecondsRealtime(0.2f);
+                rig.transform.rotation = Quaternion.LookRotation(bed.transform.position - rig.transform.position);
+                yield return AimAtPoint(bed.AimPosition);
+                if (water.AimedSeedling == bed && water.AimHint == IndonesianText.SeedlingWaterAction) yield break;
+            }
+            throw new InvalidOperationException("No clear water approach to seedling " + bed.ObjectId + " / " + water.AimHint);
         }
 
         private IEnumerator Approach(Transform target)
@@ -775,14 +1121,25 @@ namespace Rimbara.Diagnostics
 
         private IEnumerator CapturePostBoard(Transform board)
         {
+            yield return CaptureWorldDetail(board, "01c-post-board.png", 3.5f, true);
+        }
+
+        private IEnumerator CaptureWorldDetail(Transform subject, string filename, float distance, bool board = false, bool human = false)
+        {
             // Diagnostic-only close-up. No changes to player/camera/gameplay state.
             yield return new WaitForEndOfFrame();
             var cameraObject = new GameObject("Smoke-only board evidence camera", typeof(Camera));
             Camera camera = cameraObject.GetComponent<Camera>();
             camera.enabled = false;
             camera.fieldOfView = 48f;
-            camera.transform.position = board.position - board.forward * 3.5f + board.up * 0.15f;
-            camera.transform.LookAt(board.position - board.up * 0.1f, board.up);
+            camera.transform.position = subject.position - subject.forward * distance + subject.up * (board ? 0.15f : Mathf.Max(2.8f, distance * 0.55f));
+            camera.transform.LookAt(subject.position + subject.up * (board ? -0.1f : 0.15f), subject.up);
+            if (human)
+            {
+                camera.fieldOfView = 40f;
+                camera.transform.position = subject.position + subject.forward * distance + Vector3.up * 1.2f;
+                camera.transform.LookAt(subject.position + Vector3.up * 1f);
+            }
             RenderTexture target = RenderTexture.GetTemporary(1280, 720, 24, RenderTextureFormat.ARGB32);
             RenderTexture previous = RenderTexture.active;
             Texture2D image = new Texture2D(1280, 720, TextureFormat.RGB24, false);
@@ -795,8 +1152,8 @@ namespace Rimbara.Diagnostics
                 RenderTexture.active = target;
                 image.ReadPixels(new Rect(0f, 0f, 1280f, 720f), 0, 0);
                 image.Apply();
-                File.WriteAllBytes(Path.Combine(output, "01c-post-board.png"), image.EncodeToPNG());
-                captures.Add("01c-post-board.png");
+                File.WriteAllBytes(Path.Combine(output, filename), image.EncodeToPNG());
+                captures.Add(filename);
             }
             finally
             {
@@ -816,6 +1173,48 @@ namespace Rimbara.Diagnostics
             try { File.WriteAllBytes(Path.Combine(output, filename), image.EncodeToPNG()); }
             finally { Destroy(image); }
             captures.Add(filename);
+        }
+
+        private IEnumerator CaptureNpcPortrait(HumanNpcVisual subject)
+        {
+            // Opt-in evidence clone in an isolated, lit location. No map/player edits.
+            Animator source = subject.GetComponentInChildren<Animator>(true);
+            GameObject clone = Instantiate(source.gameObject, new Vector3(0f, 500f, 0f), Quaternion.identity);
+            clone.SetActive(true);
+            foreach (Transform child in clone.GetComponentsInChildren<Transform>(true)) child.gameObject.layer = 31;
+            Animator animator = clone.GetComponent<Animator>();
+            animator.SetFloat("Speed", 0f); animator.SetFloat("MotionSpeed", 1f);
+            animator.Update(0.2f);
+            var cameraObject = new GameObject("Smoke-only NPC portrait camera", typeof(Camera));
+            Camera camera = cameraObject.GetComponent<Camera>();
+            camera.cullingMask = 1 << 31; camera.clearFlags = CameraClearFlags.SolidColor;
+            camera.backgroundColor = new Color(0.19f, 0.22f, 0.2f); camera.fieldOfView = 39f;
+            camera.transform.position = clone.transform.position + new Vector3(0.4f, 1.25f, 3f);
+            camera.transform.LookAt(clone.transform.position + Vector3.up * 0.95f);
+            var lightObject = new GameObject("Smoke-only NPC portrait light", typeof(Light));
+            Light light = lightObject.GetComponent<Light>(); light.type = LightType.Point;
+            light.cullingMask = 1 << 31; light.intensity = 8f; light.range = 10f;
+            light.transform.position = clone.transform.position + new Vector3(-1.4f, 2.4f, 2.2f);
+            RenderTexture target = RenderTexture.GetTemporary(900, 900, 24, RenderTextureFormat.ARGB32);
+            RenderTexture previous = RenderTexture.active;
+            var image = new Texture2D(900, 900, TextureFormat.RGB24, false);
+            try
+            {
+                camera.targetTexture = target;
+                yield return new WaitForEndOfFrame();
+                RenderTexture.active = target; image.ReadPixels(new Rect(0f, 0f, 900f, 900f), 0, 0); image.Apply();
+                string filename = "npc-portrait-" + subject.CharacterId + ".png";
+                File.WriteAllBytes(Path.Combine(output, filename), image.EncodeToPNG()); captures.Add(filename);
+                Transform head = animator.GetBoneTransform(HumanBodyBones.Head);
+                Transform hips = animator.GetBoneTransform(HumanBodyBones.Hips);
+                Check("Animated NPC human proportions: " + subject.CharacterId, head != null && hips != null
+                    && head.position.y - hips.position.y > 0.4f && head.position.y - clone.transform.position.y > 1.2f);
+            }
+            finally
+            {
+                camera.targetTexture = null; RenderTexture.active = previous; RenderTexture.ReleaseTemporary(target);
+                Destroy(image); Destroy(cameraObject); Destroy(lightObject); Destroy(clone);
+            }
         }
 
         private static Vector3 Ground(Vector3 position)
@@ -879,6 +1278,8 @@ namespace Rimbara.Diagnostics
             Time.timeScale = 1f;
             if (keyboard != null) InputSystem.RemoveDevice(keyboard);
             if (mouse != null) InputSystem.RemoveDevice(mouse);
+            foreach (InputDevice device in temporarilyDisabledDevices)
+                if (device.added) InputSystem.EnableDevice(device);
             InputSystem.settings.backgroundBehavior = originalBackgroundBehavior;
             float[] sorted = frameTimes.OrderBy(t => t).ToArray();
             bool passed = checks.Count > 0 && checks.All(c => c.Passed) && errors.Count == 0;

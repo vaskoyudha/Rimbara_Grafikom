@@ -1,0 +1,16 @@
+{
+  "baseline": "f4ec160",
+  "scene": "Assets/Scenes/FromAshes.unity",
+  "terrainOutsideChannelMaxDeltaMeters": 0.0,
+  "changedChannelPoints": 139,
+  "terrainOriginCompensated": true,
+  "passed": true,
+  "previousSceneObjects": 1654,
+  "currentSceneObjects": 2764,
+  "removedPreviousObjects": [],
+  "changedPreviousTransforms": [
+    "725095336"
+  ],
+  "permittedChangedTransform": "725095336 (terrain origin compensated -0.5m)",
+  "sourceScenesPreserved": true
+}

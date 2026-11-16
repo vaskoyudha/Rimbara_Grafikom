@@ -16,6 +16,7 @@ namespace Rimbara.Mission
         [SerializeField] private Renderer[] equipmentRenderers;
         public DisasterProgress Progress { get; private set; }
         public GameState State => state;
+        public RecoveryChapter Recovery => GetComponent<RecoveryChapter>();
         public Transform Coordinator => coordinator;
         public event Action Changed;
         public bool CanExtinguish => state.SessionRunning && Progress != null && Progress.Stage == DisasterStage.StopTheFlames;
