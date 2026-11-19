@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Rimbara::Rimbara.Mission.MissionProfile
   Seedlings: 5
   Trees: 5
-  Fires: 2
+  Fires: 10
   ExtinguishSeconds: 2.4
   SprayRange: 7
   InteractionRange: 2.5

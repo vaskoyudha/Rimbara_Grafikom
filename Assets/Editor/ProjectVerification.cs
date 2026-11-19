@@ -45,7 +45,7 @@ namespace Rimbara.Editor
             Check("Valid assigned scene profile", state != null && state.Profile != null && state.Profile.IsValid);
             MissionProfile full = AssetDatabase.LoadAssetAtPath<MissionProfile>(ProjectBuilder.FullProfilePath);
             Check("Valid full MVP profile", full != null && full.IsValid
-                && full.Seedlings == 5 && full.Trees == 5 && full.Fires == 2);
+                && full.Seedlings == 5 && full.Trees == 5 && full.Fires == 10);
             MissionProfile week = AssetDatabase.LoadAssetAtPath<MissionProfile>(ProjectBuilder.WeekOneProfilePath);
             Check("Valid Week 1 profile", week != null && week.IsValid && week.Seedlings == 1 && week.Trees == 1 && week.Fires == 1);
             MissionSystem missions = transforms.Select(t => t.GetComponent<MissionSystem>()).FirstOrDefault(c => c != null);
@@ -68,10 +68,15 @@ namespace Rimbara.Editor
             FirePoint[] fires = transforms.Select(t => t.GetComponent<FirePoint>()).Where(c => c != null).ToArray();
             Check("Five distinct native seedlings", seeds.Length == 5 && seeds.Select(c => c.ObjectId).Distinct().Count() == 5);
             Check("Five distinct planting beds", beds.Length == 5 && beds.Select(c => c.ObjectId).Distinct().Count() == 5);
-            Check("Two distinct fire targets", fires.Length == 2 && fires.Select(c => c.ObjectId).Distinct().Count() == 2);
+            Check("Ten distinct fire targets", fires.Length == 10 && fires.Select(c => c.ObjectId).Distinct().Count() == 10);
             Check("Seed and bed profile slots", seeds.Select(c => c.Slot).OrderBy(i => i).SequenceEqual(Enumerable.Range(0, 5))
                 && beds.Select(c => c.Slot).OrderBy(i => i).SequenceEqual(Enumerable.Range(0, 5)));
-            Check("Fire profile slots", fires.Select(c => c.Slot).OrderBy(i => i).SequenceEqual(Enumerable.Range(0, 2)));
+            Check("Fire profile slots", fires.Select(c => c.Slot).OrderBy(i => i).SequenceEqual(Enumerable.Range(0, 10)));
+            Check("Ten enlarged fire visuals", fires.All(f =>
+            {
+                Transform flames = f.transform.Find("Flames");
+                return flames != null && flames.localScale.x >= 1.3f && flames.localScale.x <= 1.8001f;
+            }));
             Check("All planting beds have a native tree", beds.All(b => HasObject(b, "treePrefab")));
             Check("All fires have scene references and effects", fires.All(f => HasObject(f, "state") && HasObject(f, "missions")
                 && HasObject(f, "glow") && HasObject(f, "steamEffect") && f.GetComponentsInChildren<ParticleSystem>(true).Length >= 3));
@@ -120,7 +125,7 @@ namespace Rimbara.Editor
                 if (!passed) throw new InvalidOperationException("RIMBARA model check failed: " + name);
                 checks.Add(name);
             }
-            var progress = new RestorationProgress(5, 5, 2);
+            var progress = new RestorationProgress(5, 5, 10);
             int events = 0;
             progress.Changed += snapshot => events++;
             Check("Cannot plant without inventory", !progress.TryPlant("empty") && progress.Snapshot.Trees == 0);
@@ -131,10 +136,12 @@ namespace Rimbara.Editor
             Check("Duplicate planting cannot consume inventory", !progress.TryPlant("bed-0") && progress.Snapshot.Trees == 1);
             for (int i = 1; i < 5; i++) { progress.TryCollect("seed-" + i); progress.TryPlant("bed-" + i); }
             Check("Goals cap inventory and planting", !progress.TryCollect("excess") && !progress.TryPlant("excess") && progress.Snapshot.CarriedSeedlings == 0);
-            Check("Restoration uses trees plus fires over seven", Math.Abs(progress.Snapshot.Restoration - 5f / 7f) < 0.0001f);
+            Check("Restoration uses trees plus fires over fifteen", Math.Abs(progress.Snapshot.Restoration - 5f / 15f) < 0.0001f);
             Check("Fire counter commits once", progress.TryExtinguish("fire-0") && !progress.TryExtinguish("fire-0"));
-            Check("Full profile reaches 100 percent", progress.TryExtinguish("fire-1") && progress.Snapshot.Restored && progress.Snapshot.Restoration == 1f);
-            Check("Fire goal cannot overflow", !progress.TryExtinguish("excess") && progress.Snapshot.Fires == 2);
+            for (int i = 1; i < 10; i++)
+                Check("Fire " + (i + 1) + " commits once", progress.TryExtinguish("fire-" + i) && !progress.TryExtinguish("fire-" + i));
+            Check("Full profile reaches 100 percent", progress.Snapshot.Restored && progress.Snapshot.Restoration == 1f);
+            Check("Fire goal cannot overflow", !progress.TryExtinguish("excess") && progress.Snapshot.Fires == 10);
             progress.Reset();
             Check("Reset clears progress and inventory", progress.Snapshot.Seedlings == 0 && progress.Snapshot.Trees == 0 && progress.Snapshot.Fires == 0);
             var fire = new FireSuppression(2.4f);

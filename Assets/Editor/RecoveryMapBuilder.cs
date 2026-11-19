@@ -59,7 +59,7 @@ namespace Rimbara.Editor
             guideModel.transform.localRotation = Quaternion.Euler(0f, 180f, 0f);
             Shape(PrimitiveType.Cube, "Ranger green badge", ranger.transform, ranger.transform.position + new Vector3(0f, 1.35f, -0.22f), new Vector3(0.25f, 0.14f, 0.025f), Material("Ranger badge", new Color(0.2f, 0.5f, 0.18f)));
             ranger.AddComponent<RangerDialogue>().Configure(chapter, UnityEngine.Object.FindFirstObjectByType<DisasterHud>(), Beacon("PETUGAS HUTAN", ranger.transform, 2.25f), Ring(ranger.transform));
-            var seeds = new RecoverySeedling[4];
+            var seeds = new RecoverySeedling[5];
             for (int i = 0; i < seeds.Length; i++)
             {
                 GameObject seed = Target("Recovery seedling " + (i + 1), nursery, Ground(-15f + i * 2.2f, -10.5f));
@@ -70,7 +70,7 @@ namespace Rimbara.Editor
                 seeds[i].Configure("recovery-seed-" + i, chapter, model.gameObject, Beacon("AMBIL BIBIT", seed.transform, 1.25f), Ring(seed.transform));
             }
             Transform planting = Group("02 - Prepared reforestation clearings", root.transform);
-            Vector2[] positions = { new Vector2(-7f, 6f), new Vector2(8f, 10f), new Vector2(-8f, 27f), new Vector2(7f, 38f) };
+            Vector2[] positions = { new Vector2(-7f, 6f), new Vector2(8f, 10f), new Vector2(-8f, 27f), new Vector2(7f, 38f), new Vector2(14f, 18f) };
             var beds = new RecoveryPlantingPoint[positions.Length];
             for (int i = 0; i < beds.Length; i++)
             {
@@ -145,14 +145,14 @@ namespace Rimbara.Editor
             RecoveryTask[] tasks = root.GetComponentsInChildren<RecoveryTask>(true);
             bool river = root.GetComponentInChildren<RecoveryRiver>(true) != null;
             int wasteGoal = river ? RecoveryRiverLayout.TrashCount : 3;
-            if (seeds.Length != 4 || beds.Length != 4 || tasks.Count(t => t.Kind == RecoveryTaskKind.Waste) != wasteGoal || tasks.Count(t => t.Kind == RecoveryTaskKind.Habitat) != 2
+            if (seeds.Length != 5 || beds.Length != 5 || tasks.Count(t => t.Kind == RecoveryTaskKind.Waste) != wasteGoal || tasks.Count(t => t.Kind == RecoveryTaskKind.Habitat) != 2
                 || root.GetComponentInChildren<RangerDialogue>(true) == null || root.GetComponent<RecoveryEnvironment>() == null) throw new InvalidOperationException("Recovery target supply/wiring invalid.");
             InteractableBehaviour[] targets = root.GetComponentsInChildren<InteractableBehaviour>(true);
             if (targets.Any(t => string.IsNullOrWhiteSpace(t.ObjectId) || t.gameObject.layer != 10 || !t.GetComponent<Collider>().isTrigger)
                 || targets.Select(t => t.ObjectId).Distinct().Count() != targets.Length) throw new InvalidOperationException("Recovery requires unique IDs and interaction triggers.");
             var serialized = new SerializedObject(chapter);
             if (serialized.FindProperty("disaster").objectReferenceValue == null || serialized.FindProperty("ranger").objectReferenceValue == null
-                || serialized.FindProperty("seedlings").arraySize != 4 || serialized.FindProperty("beds").arraySize != 4 || serialized.FindProperty("tasks").arraySize != wasteGoal + 2)
+                || serialized.FindProperty("seedlings").arraySize != 5 || serialized.FindProperty("beds").arraySize != 5 || serialized.FindProperty("tasks").arraySize != wasteGoal + 2)
                 throw new InvalidOperationException("Missing Recovery serialized references.");
             if (beds.Any(b => b.transform.Find("Young planted tree").gameObject.activeSelf)) throw new InvalidOperationException("Saplings must be hidden before planting.");
             if (beds.Any(b => b.transform.Find("Sapling water target") == null || b.transform.Find("Sapling water target").gameObject.layer != 11))
@@ -169,7 +169,7 @@ namespace Rimbara.Editor
                     throw new InvalidOperationException("Recovery interaction visual/UI missing: " + target.name);
             }
             ProjectBuilder.WriteArtifact("recovery-verification.json", "{\"scene\":\"" + StorylineBuilder.ScenePath
-                + "\",\"seedlings\":4,\"plantingBeds\":4,\"waste\":" + wasteGoal + ",\"habitats\":2,\"language\":\"id-ID\",\"result\":\"passed\"}");
+                + "\",\"seedlings\":5,\"plantingBeds\":5,\"waste\":" + wasteGoal + ",\"habitats\":2,\"language\":\"id-ID\",\"result\":\"passed\"}");
             if (river) RecoveryRiverBuilder.VerifyRiver();
         }
 
@@ -245,6 +245,13 @@ namespace Rimbara.Editor
             GameObject go = (GameObject)PrefabUtility.InstantiatePrefab(source, parent); go.name = name;
             Bounds bounds = Bounds(go); go.transform.localScale *= height / Mathf.Max(0.1f, bounds.size.y);
             bounds = Bounds(go); go.transform.position += position - new Vector3(bounds.center.x, bounds.min.y, bounds.center.z);
+            bounds = Bounds(go);
+            Terrain terrain = Terrain.activeTerrain;
+            if (terrain != null)
+            {
+                float ground = terrain.SampleHeight(new Vector3(bounds.center.x, 0f, bounds.center.z)) + terrain.transform.position.y + 0.06f;
+                go.transform.position += Vector3.up * (ground - bounds.min.y);
+            }
             foreach (Collider collider in go.GetComponentsInChildren<Collider>(true)) collider.enabled = false;
             foreach (Transform t in go.GetComponentsInChildren<Transform>(true)) t.gameObject.layer = 2;
             if (material != null) foreach (Renderer renderer in go.GetComponentsInChildren<Renderer>(true)) renderer.sharedMaterials = Enumerable.Repeat(material, renderer.sharedMaterials.Length).ToArray();

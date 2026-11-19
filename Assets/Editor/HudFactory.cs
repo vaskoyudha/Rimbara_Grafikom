@@ -46,7 +46,7 @@ namespace Rimbara.Editor
             Image counters = Panel(hud, "Restoration counters", new Vector2(614f, 328f), new Vector2(324f, 196f), Ink);
             references.Seedlings = Label(counters.transform, "Seedling counter", new Vector2(20f, -19f), new Vector2(290f, 45f), "SEEDLINGS   0 / 5", 16f, Light);
             references.Trees = Label(counters.transform, "Tree counter", new Vector2(20f, -67f), new Vector2(286f, 26f), "TREES PLANTED   0 / 5", 17f, Light);
-            references.Fires = Label(counters.transform, "Fire counter", new Vector2(20f, -101f), new Vector2(286f, 26f), "FIRES OUT   0 / 2", 17f, Light);
+            references.Fires = Label(counters.transform, "Fire counter", new Vector2(20f, -101f), new Vector2(286f, 26f), "FIRES OUT   0 / 10", 17f, Light);
             references.Restoration = Label(counters.transform, "Restoration percent", new Vector2(20f, -143f), new Vector2(286f, 22f), "0% RESTORED", 12f, Green, FontStyles.Bold);
             Image progressBack = ChildPanel(counters.transform, "Restoration bar background", new Vector2(20f, -171f), new Vector2(284f, 7f), new Color(0.16f, 0.25f, 0.19f));
             references.RestorationFill = Fill(progressBack.transform, "Restoration bar fill", Green);
@@ -112,7 +112,7 @@ namespace Rimbara.Editor
             Label(briefing.transform, "Briefing title", new Vector2(46f, -80f), new Vector2(728f, 67f), "YOUR FIRST DAY", 48f, Green, FontStyles.Bold);
             Label(briefing.transform, "Briefing story", new Vector2(46f, -163f), new Vector2(728f, 99f), "The fire has passed, but the forest still needs you. From this volunteer post, follow the amber marker to inspect the damage. Then bring native trees back to the planting area and put out the last flames.", 22f, Light);
             Label(briefing.transform, "Briefing steps", new Vector2(46f, -295f), new Vector2(728f, 130f), "01   FIRST STEPS  /  Inspect the forest\n02   SEEDS OF HOPE  /  Collect and plant\n03   STOP THE FIRE  /  Aim and hold left mouse\n04   A NEW BEGINNING  /  Return to this post", 20f, Light);
-            references.BriefingTargets = Label(briefing.transform, "Briefing targets", new Vector2(46f, -451f), new Vector2(728f, 30f), "5 NATIVE SEEDLINGS / 5 TREES / 2 FIRES", 15f, Amber, FontStyles.Bold);
+            references.BriefingTargets = Label(briefing.transform, "Briefing targets", new Vector2(46f, -451f), new Vector2(728f, 30f), "5 NATIVE SEEDLINGS / 5 TREES / 10 FIRES", 15f, Amber, FontStyles.Bold);
             Label(briefing.transform, "No fail promise", new Vector2(46f, -493f), new Vector2(728f, 32f), "No timer. No damage. No water limit. Take the time you need.", 17f, Muted);
             references.Begin = Button(briefing.transform, "Enter Arunika", new Vector2(46f, -555f), new Vector2(546f, 59f), "ENTER ARUNIKA", true);
             references.BriefingBack = Button(briefing.transform, "Briefing back", new Vector2(610f, -555f), new Vector2(164f, 59f), "BACK", false);

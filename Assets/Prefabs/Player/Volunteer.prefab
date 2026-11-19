@@ -680,6 +680,8 @@ MonoBehaviour:
   obstructionLayers:
     serializedVersion: 2
     m_Bits: 256
+  viewCamera: {fileID: 0}
+  facingThreshold: 0.35
 --- !u!114 &5418727387269576466
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -725,6 +727,8 @@ MonoBehaviour:
   gameplayCamera: {fileID: 0}
   overviewCamera: {fileID: 0}
   spawnPosition: {x: 0, y: 0.1, z: -21}
+  recoveryRadius: 60
+  recoveryFloor: -8
 --- !u!114 &2191992406226529026
 MonoBehaviour:
   m_ObjectHideFlags: 0

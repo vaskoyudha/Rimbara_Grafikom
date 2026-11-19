@@ -6,6 +6,8 @@ namespace Rimbara.Interaction
     {
         [SerializeField] protected string objectId;
         [SerializeField] private GameObject focusRing;
+        private Vector3 focusRingBaseScale = Vector3.one;
+        private bool focusRingScaleCaptured;
         public string ObjectId => objectId;
         public virtual Vector3 FocusPosition => transform.position + Vector3.up * 0.55f;
         public abstract bool Available { get; }
@@ -16,12 +18,36 @@ namespace Rimbara.Interaction
         {
             objectId = id;
             focusRing = ring;
-            if (focusRing != null) focusRing.SetActive(false);
+            if (focusRing == null) return;
+            focusRingBaseScale = focusRing.transform.localScale;
+            focusRingScaleCaptured = true;
+            focusRing.SetActive(false);
         }
 
         public void SetFocused(bool focused)
         {
-            if (focusRing != null) focusRing.SetActive(focused && Available);
+            if (focusRing == null) return;
+            CaptureFocusRingScale();
+            focusRing.SetActive(focused && Available);
+            if (!focused) focusRing.transform.localScale = focusRingBaseScale;
+        }
+
+        public void SetFocusHighlight(float pulse)
+        {
+            if (focusRing == null) return;
+            CaptureFocusRingScale();
+            float scale = 1f + Mathf.Clamp01(pulse) * 0.12f;
+            focusRing.transform.localScale = new Vector3(
+                focusRingBaseScale.x * scale,
+                focusRingBaseScale.y,
+                focusRingBaseScale.z * scale);
+        }
+
+        private void CaptureFocusRingScale()
+        {
+            if (focusRingScaleCaptured) return;
+            focusRingBaseScale = focusRing.transform.localScale;
+            focusRingScaleCaptured = true;
         }
 
         protected bool InRange(VolunteerActor actor)

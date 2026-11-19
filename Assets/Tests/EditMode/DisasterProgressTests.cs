@@ -17,7 +17,7 @@ namespace Rimbara.Tests
         [Test]
         public void RequiresBriefingThenEquipmentBeforeFire()
         {
-            var model = new DisasterProgress(2, 4);
+            var model = new DisasterProgress(10, 4);
             Assert.That(model.CollectEquipment(true), Is.False);
             Assert.That(model.Extinguish("fire", true), Is.False);
             Assert.That(model.ClearDebris("debris", true), Is.False);
@@ -33,10 +33,10 @@ namespace Rimbara.Tests
         public void CleanupCannotStartUntilEveryFireIsContained()
         {
             var model = Ready();
-            model.Extinguish("fire-1", true);
+            for (int i = 1; i < 10; i++) model.Extinguish("fire-" + i, true);
             Assert.That(model.ClearDebris("pile-1", true), Is.False);
             Assert.That(model.Stage, Is.EqualTo(DisasterStage.StopTheFlames));
-            model.Extinguish("fire-2", true);
+            model.Extinguish("fire-10", true);
             Assert.That(model.Stage, Is.EqualTo(DisasterStage.CleanTheWasteland));
             Assert.That(model.ClearDebris("pile-1", true), Is.True);
         }
@@ -47,9 +47,8 @@ namespace Rimbara.Tests
             var model = Ready();
             int notifications = 0;
             model.Changed += () => notifications++;
-            Assert.That(model.Extinguish("fire-1", true), Is.True);
+            for (int i = 1; i <= 10; i++) Assert.That(model.Extinguish("fire-" + i, true), Is.True);
             Assert.That(model.Extinguish("fire-1", true), Is.False);
-            Assert.That(model.Extinguish("fire-2", true), Is.True);
             Assert.That(model.Extinguish("extra", true), Is.False);
             for (int i = 0; i < 4; i++)
             {
@@ -59,19 +58,19 @@ namespace Rimbara.Tests
             Assert.That(model.ClearDebris("extra", true), Is.False);
             Assert.That(model.Stage, Is.EqualTo(DisasterStage.RecoveryReady));
             Assert.That(model.ChapterFraction, Is.EqualTo(1f));
-            Assert.That(notifications, Is.EqualTo(6));
+            Assert.That(notifications, Is.EqualTo(14));
         }
 
         [Test]
         public void PauseBlocksAllChapterMutations()
         {
-            var model = new DisasterProgress(2, 4);
+            var model = new DisasterProgress(10, 4);
             Assert.That(model.AcceptBriefing(false), Is.False);
             model.AcceptBriefing(true);
             Assert.That(model.CollectEquipment(false), Is.False);
             model.CollectEquipment(true);
             Assert.That(model.Extinguish("fire-1", false), Is.False);
-            model.Extinguish("fire-1", true); model.Extinguish("fire-2", true);
+            for (int i = 1; i <= 10; i++) model.Extinguish("fire-" + i, true);
             Assert.That(model.ClearDebris("pile", false), Is.False);
             Assert.That(model.Debris, Is.Zero);
         }
@@ -83,7 +82,7 @@ namespace Rimbara.Tests
         {
             var model = Ready();
             Assert.That(model.Extinguish(id, true), Is.False);
-            model.Extinguish("fire-1", true); model.Extinguish("fire-2", true);
+            for (int i = 1; i <= 10; i++) model.Extinguish("fire-" + i, true);
             Assert.That(model.ClearDebris(id, true), Is.False);
         }
 
@@ -91,21 +90,20 @@ namespace Rimbara.Tests
         public void ResetClearsEquipmentAndUniqueIds()
         {
             var model = Ready();
-            model.Extinguish("fire-1", true); model.Extinguish("fire-2", true);
+            for (int i = 1; i <= 10; i++) model.Extinguish("fire-" + i, true);
             model.ClearDebris("pile", true);
             model.Reset();
             Assert.That(model.Stage, Is.EqualTo(DisasterStage.Briefing));
             Assert.That(model.HasEquipment, Is.False);
             Assert.That(model.ChapterFraction, Is.Zero);
             model.AcceptBriefing(true); model.CollectEquipment(true);
-            Assert.That(model.Extinguish("fire-1", true), Is.True);
-            Assert.That(model.Extinguish("fire-2", true), Is.True);
+            for (int i = 1; i <= 10; i++) Assert.That(model.Extinguish("fire-" + i, true), Is.True);
             Assert.That(model.ClearDebris("pile", true), Is.True);
         }
 
         private static DisasterProgress Ready()
         {
-            var model = new DisasterProgress(2, 4);
+            var model = new DisasterProgress(10, 4);
             model.AcceptBriefing(true); model.CollectEquipment(true);
             return model;
         }

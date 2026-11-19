@@ -27,7 +27,11 @@ namespace Rimbara.Editor
             new Vector2(-12f, 23f), new Vector2(12f, 7f), new Vector2(16f, 22f) };
         private static readonly Vector2[] BedPositions = { new Vector2(-7f, 9f), new Vector2(6f, 15f),
             new Vector2(-9f, 21f), new Vector2(9f, 27f), new Vector2(0f, 31f) };
-        private static readonly Vector2[] FirePositions = { new Vector2(-8f, 49f), new Vector2(11f, 58f) };
+        private static readonly Vector2[] FirePositions =
+        {
+            new Vector2(-34f, 8f), new Vector2(-18f, -2f), new Vector2(28f, 3f), new Vector2(41f, 19f), new Vector2(-41f, 27f),
+            new Vector2(-22f, 39f), new Vector2(3f, 22f), new Vector2(20f, 34f), new Vector2(-8f, 52f), new Vector2(33f, 51f)
+        };
 
         [MenuItem("RIMBARA/Regenerate authored Main scene")]
         private static void SetupFromMenu()
@@ -44,7 +48,7 @@ namespace Rimbara.Editor
             if (EditorApplication.isPlaying) throw new InvalidOperationException("Stop Play mode before generating Main.");
             AssetCatalog.EnsureResources();
             ConfigureProject();
-            MissionProfile full = Profile(FullProfilePath, 5, 5, 2, "Arunika / Full MVP");
+            MissionProfile full = Profile(FullProfilePath, 5, 5, 10, "Arunika / Full MVP");
             MissionProfile week = Profile(WeekOneProfilePath, 1, 1, 1, "Arunika / Week 1");
             var scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
             EnvironmentFactory.ConfigureRendering();
@@ -69,8 +73,6 @@ namespace Rimbara.Editor
             CreateZone(inspection, missions, MissionZone.ZonePurpose.Inspection, 3f);
             GameObject inspectionBeacon = EnvironmentFactory.Beacon("INSPECT THE FOREST", inspection, EnvironmentFactory.Amber, 2.1f);
             GameObject postBeacon = EnvironmentFactory.Beacon("RETURN TO VOLUNTEER POST", post, EnvironmentFactory.Amber, 2.8f);
-            EnvironmentFactory.Ring("Inspection footprint", inspection, 2.3f,
-                AssetCatalog.Material("Amber marker", EnvironmentFactory.Amber, true));
             CreatePost(zoneA);
             ZoneSign("A / DAMAGED FOREST", zoneA, -17f, -9f, EnvironmentFactory.Amber);
             ZoneSign("B / NEW ROOTS", zoneB, -22f, 15f, EnvironmentFactory.Green);
@@ -84,6 +86,7 @@ namespace Rimbara.Editor
             VolunteerActor actor = player.GetComponent<VolunteerActor>();
             actor.Configure(state, missions);
             rig.ConfigureScene(camera, gameplay, overview, player.transform.position);
+            player.GetComponent<InteractionDetector>().ConfigureViewCamera(camera);
             gameplay.Follow = rig.CameraTarget;
             WaterSprayer water = player.GetComponent<WaterSprayer>();
             water.Configure(input, actor, camera, player.transform.Find("Water nozzle"),
@@ -97,10 +100,10 @@ namespace Rimbara.Editor
             GameObject firePrefab = CreateFirePrefab();
             var seeds = new SeedlingPickup[5];
             var beds = new PlantingPoint[5];
-            var fires = new FirePoint[2];
+            var fires = new FirePoint[FirePositions.Length];
             var seedBeacons = new GameObject[5];
             var bedBeacons = new GameObject[5];
-            var fireBeacons = new GameObject[2];
+            var fireBeacons = new GameObject[FirePositions.Length];
             for (int i = 0; i < 5; i++)
             {
                 Vector2 seedPosition = SeedPositions[i];
@@ -118,11 +121,12 @@ namespace Rimbara.Editor
                     bed.transform.Find("Focus ring").gameObject, i);
                 bedBeacons[i] = bed.transform.Find("Beacon - PLANT A TREE").gameObject;
             }
-            for (int i = 0; i < 2; i++)
+            for (int i = 0; i < FirePositions.Length; i++)
             {
                 Vector2 position = FirePositions[i];
-                GameObject fire = EnvironmentFactory.Instance(firePrefab, zoneC, EnvironmentFactory.Ground(position.x, position.y));
+                GameObject fire = EnvironmentFactory.Instance(firePrefab, zoneC, EnvironmentFactory.Ground(position.x, position.y), i * 37f);
                 fire.name = "Remaining fire " + (i + 1).ToString("00");
+                ScaleFireVisual(fire, 1.3f + (i % 6) * 0.1f);
                 fires[i] = fire.GetComponent<FirePoint>();
                 fires[i].Configure("fire-" + (i + 1).ToString("00"), i, state, missions,
                     new[] { fire.transform.Find("Flames").GetComponent<ParticleSystem>(), fire.transform.Find("Smoke").GetComponent<ParticleSystem>() },
@@ -147,7 +151,7 @@ namespace Rimbara.Editor
                 Unity = Application.unityVersion, Scene = ScenePath, Seedlings = seeds.Length, Trees = beds.Length,
                 Fires = fires.Length, Zones = 3, OfficialController = rig.OfficialController.GetType().FullName
             }, true));
-            Debug.Log("RIMBARA Main generated: 3 zones, 4 ordered missions, 5 seedlings, 5 trees and 2 fires.");
+            Debug.Log("RIMBARA Main generated: 3 zones, 4 ordered missions, 5 seedlings, 5 trees and 10 fires.");
         }
 
         [MenuItem("RIMBARA/Verify authored project")]
@@ -397,11 +401,28 @@ namespace Rimbara.Editor
             return prefab;
         }
 
+        private static void ScaleFireVisual(GameObject fire, float scale)
+        {
+            Transform flames = fire.transform.Find("Flames");
+            Transform smoke = fire.transform.Find("Smoke");
+            Transform steam = fire.transform.Find("Steam after suppression");
+            if (flames != null) flames.localScale = Vector3.one * scale;
+            if (smoke != null) smoke.localScale = Vector3.one * scale;
+            if (steam != null) steam.localScale = Vector3.one * scale;
+            Light glow = fire.GetComponentInChildren<Light>();
+            if (glow != null)
+            {
+                glow.intensity = 2.4f * scale;
+                glow.range = 7.5f * Mathf.Sqrt(scale);
+            }
+            SphereCollider target = fire.GetComponent<SphereCollider>();
+            if (target != null) target.radius = 1.15f * (1f + (scale - 1.3f) * 0.35f);
+        }
+
         private static GameObject CreateFirePrefab()
         {
             Transform root = Group("Remaining fire");
             root.gameObject.layer = 11;
-            EnvironmentFactory.Instance(AssetCatalog.NaturePrefab("campfire_logs", 0.55f), root, Vector3.zero, 15f);
             ParticleSystem flame = ParticleFactory.Flame(root);
             ParticleSystem smoke = ParticleFactory.Smoke(root);
             GameObject steam = ParticleFactory.Steam(root);
@@ -411,13 +432,13 @@ namespace Rimbara.Editor
             Light glow = glowObject.AddComponent<Light>();
             glow.type = LightType.Point;
             glow.color = new Color(1f, 0.43f, 0.09f);
-            glow.intensity = 1.8f;
-            glow.range = 6.5f;
+            glow.intensity = 2.4f;
+            glow.range = 7.5f;
             glow.shadows = LightShadows.None;
             SphereCollider target = root.gameObject.AddComponent<SphereCollider>();
             target.isTrigger = true;
             target.center = Vector3.up * 1.1f;
-            target.radius = 1.05f;
+            target.radius = 1.15f;
             EnvironmentFactory.Beacon("REMAINING FIRE", root, EnvironmentFactory.Amber, 2.7f);
             FirePoint fire = root.gameObject.AddComponent<FirePoint>();
             fire.Configure("fire-template", 0, null, null, new[] { flame, smoke }, glow, steam);

@@ -1,3 +1,4 @@
+using Rimbara.Audio;
 using Rimbara.Mission;
 using UnityEngine;
 
@@ -8,15 +9,17 @@ namespace Rimbara.Interaction
         [SerializeField] private DisasterChapter chapter;
         [SerializeField] private GameObject burntVisual;
         [SerializeField] private GameObject preparedGround;
+        [SerializeField] private GameObject clearDust;
         public bool Cleared { get; private set; }
         public override bool Available => !Cleared && gameObject.activeInHierarchy;
 
-        public void Configure(string id, DisasterChapter owner, GameObject visual, GameObject ground, GameObject ring)
+        public void Configure(string id, DisasterChapter owner, GameObject visual, GameObject ground, GameObject ring, GameObject dust = null)
         {
             SetIdentity(id, ring);
             chapter = owner;
             burntVisual = visual;
             preparedGround = ground;
+            clearDust = dust;
         }
 
         public override string GetPrompt(VolunteerActor actor) => chapter.Progress.Stage == DisasterStage.CleanTheWasteland
@@ -30,6 +33,14 @@ namespace Rimbara.Interaction
             SetFocused(false);
             if (burntVisual != null) burntVisual.SetActive(false);
             if (preparedGround != null) preparedGround.SetActive(true);
+            if (clearDust != null)
+            {
+                clearDust.SetActive(true);
+                foreach (ParticleSystem particles in clearDust.GetComponentsInChildren<ParticleSystem>()) particles.Play();
+            }
+            GameAudio audio = FindFirstObjectByType<GameAudio>();
+            if (audio != null) audio.PlayDebrisClear();
+            gameObject.SetActive(false);
             return new InteractionResult(true, "Awal yang bersih. Lahan ini siap untuk pemulihan.");
         }
     }

@@ -490,7 +490,7 @@ namespace Rimbara.Diagnostics
             profileName = "From Ashes / Disaster chapter / local interaction fixtures";
             Check("Story starts in menu with chapter briefing pending", flow.Mode == ScreenMode.Menu
                 && chapter.Progress.Stage == DisasterStage.Briefing && !state.SessionRunning);
-            Check("Authored Disaster object supply", fires.Length == 2 && piles.Length == 4);
+            Check("Authored Disaster object supply", fires.Length == 10 && piles.Length == 6);
             HumanNpcVisual[] humanNpcs = FindObjectsByType<HumanNpcVisual>(FindObjectsInactive.Include, FindObjectsSortMode.None);
             Check("Ten NPCs use eight distinct human characters", humanNpcs.Length == 10 && humanNpcs.Select(n => n.CharacterId).Distinct().Count() == 8);
             foreach (HumanNpcVisual npc in humanNpcs)
@@ -503,7 +503,7 @@ namespace Rimbara.Diagnostics
                     && npc.GetComponentsInChildren<SkinnedMeshRenderer>(true).All(r => r.sharedMesh != null && r.bones.Length > 0));
             }
             Check("Original Disaster map uses kit resources, not demo village layout", UnityEngine.SceneManagement.SceneManager.GetActiveScene().GetRootGameObjects()
-                .Any(r => r.name == "Environment - RIMBARA Disaster Zone (EmaceArt resources)")
+                .Any(r => r.name == "Environment - RIMBARA Disaster Zone (EmaceArt resources)" || r.name == "Environment - RIMBARA")
                 && !UnityEngine.SceneManagement.SceneManager.GetActiveScene().GetRootGameObjects().Any(r => r.name == "Environment - EmaceArt Slavic Village"));
             Transform postBoard = GameObject.Find("Mission map board").transform;
             TMPro.TextMeshPro postSign = postBoard.GetComponentInChildren<TMPro.TextMeshPro>();
@@ -575,7 +575,14 @@ namespace Rimbara.Diagnostics
             yield return MoveTo(Ground(new Vector3(0f, 0f, -5f)), 0.6f);
             yield return MoveTo(Ground(new Vector3(0f, 0f, 16f)), 0.6f);
             yield return MoveTo(Ground(new Vector3(-9f, 0f, 16f)), 0.6f);
-            Check("Authored forest corridor reaches first fire without disabling collision", HorizontalDistance(rig.transform.position, fires[0].transform.position) < 4f);
+            yield return MoveTo(Ground(new Vector3(-14f, 0f, 15f)), 0.6f);
+            yield return MoveTo(Ground(new Vector3(-18f, 0f, 12f)), 0.6f);
+            yield return MoveTo(Ground(new Vector3(-24f, 0f, 11f)), 0.6f);
+            yield return MoveTo(Ground(new Vector3(-28f, 0f, 11f)), 0.6f);
+            yield return MoveTo(Ground(fires[0].transform.position + new Vector3(3f, 0f, 1f)), 0.6f);
+            float corridorDistance = HorizontalDistance(rig.transform.position, fires[0].transform.position);
+            Check("Authored forest corridor reaches first fire without disabling collision", corridorDistance < 4f,
+                "player=" + rig.transform.position + " fire=" + fires[0].transform.position + " distance=" + corridorDistance);
             foreach (FirePoint fire in fires)
             {
                 yield return ApproachFire(fire);
@@ -583,7 +590,7 @@ namespace Rimbara.Diagnostics
                 yield return Extinguish(fire);
             }
             Check("Containment unlocks cleanup without advancing legacy missions", chapter.Progress.Stage == DisasterStage.CleanTheWasteland
-                && state.Snapshot.Fires == 2 && missions.Stage == MissionStage.FirstSteps && !missions.CanCollectOrPlant);
+                && state.Snapshot.Fires == 10 && missions.Stage == MissionStage.FirstSteps && !missions.CanCollectOrPlant);
             yield return Capture("03-fires-contained.png");
             foreach (DebrisPickup pile in piles)
             {
@@ -657,10 +664,10 @@ namespace Rimbara.Diagnostics
             RecoveryPlantingPoint[] targets = FindObjectsByType<RecoveryPlantingPoint>(FindObjectsSortMode.None).OrderBy(b => b.Slot).ToArray();
             RecoveryTask[] tasks = FindObjectsByType<RecoveryTask>(FindObjectsSortMode.None).OrderBy(t => t.ObjectId).ToArray();
             Check("Zone 1 dialogue transitions to Recovery without victory or reset", p.Stage == RecoveryStage.Briefing && state.SessionRunning
-                && flow.Mode == ScreenMode.Playing && missions.DisasterChapter.Progress.Fires == 2 && missions.DisasterChapter.Progress.Debris == 4);
+                && flow.Mode == ScreenMode.Playing && missions.DisasterChapter.Progress.Fires == 10 && missions.DisasterChapter.Progress.Debris == 6);
             RecoveryRiver river = FindFirstObjectByType<RecoveryRiver>();
             int wasteGoal = river == null ? 3 : RecoveryRiverLayout.TrashCount;
-            Check("Recovery supply and initially unplanted trees", supply.Length == 4 && targets.Length == 4 && tasks.Length == wasteGoal + 2
+            Check("Recovery supply and initially unplanted trees", supply.Length == 5 && targets.Length == 5 && tasks.Length == wasteGoal + 2
                 && targets.All(b => !b.Planted && !b.Watered) && !FindFirstObjectByType<RecoveryEnvironment>().WildlifeReturned);
             yield return null;
             if (recovery.Restored != null) yield return CaptureWorldDetail(recovery.transform, "00-recovery-same-view.png", 35f);
@@ -688,7 +695,7 @@ namespace Rimbara.Diagnostics
                 Check("E picks up Recovery seed " + seed.ObjectId, seed.Collected && !seed.Available);
                 Check("Seed pickup cannot duplicate inventory " + seed.ObjectId, !p.Collect(seed.ObjectId, true));
             }
-            Check("Recovery inventory does not advance legacy MVP", p.Carried == 4 && state.Snapshot.Seedlings == 0 && missions.Stage == MissionStage.FirstSteps);
+            Check("Recovery inventory does not advance legacy MVP", p.Carried == 5 && state.Snapshot.Seedlings == 0 && missions.Stage == MissionStage.FirstSteps);
             yield return Capture("07-nursery.png");
             foreach (RecoveryPlantingPoint bed in targets)
             {
@@ -700,7 +707,7 @@ namespace Rimbara.Diagnostics
                 Check("Second E plants young tree " + bed.ObjectId, bed.Planted && !bed.Watered);
                 Check("No duplicate planting " + bed.ObjectId, !p.Plant(bed.ObjectId, true));
             }
-            Check("All planting still requires all watering", p.Planted == 4 && p.Carried == 0 && p.Stage == RecoveryStage.Planting && !p.AcceptPlantingDebrief(true));
+            Check("All planting still requires all watering", p.Planted == 5 && p.Carried == 0 && p.Stage == RecoveryStage.Planting && !p.AcceptPlantingDebrief(true));
             foreach (RecoveryPlantingPoint bed in targets)
             {
                 yield return ApproachSeedlingForWater(bed);
@@ -817,7 +824,7 @@ namespace Rimbara.Diagnostics
             EndingDirector director = restored.Director;
             RestoredEnvironment world = FindFirstObjectByType<RestoredEnvironment>();
             Check("Recovery routes to time transition not victory", p.Stage == RestoredStage.TimeTransition && flow.Mode == ScreenMode.Transition
-                && !state.SessionRunning && !p.HasSeedling && missions.DisasterChapter.Progress.Fires == 2);
+                && !state.SessionRunning && !p.HasSeedling && missions.DisasterChapter.Progress.Fires == 10);
             float before = director.SequenceSeconds;
             flow.Pause(); yield return new WaitForSecondsRealtime(0.4f);
             Check("Time transition pauses without gameplay mutation", director.SequenceSeconds <= before + 0.02f && !restored.AcceptBriefing());
@@ -827,7 +834,7 @@ namespace Rimbara.Diagnostics
             float deadline = Time.realtimeSinceStartup + 12f;
             while (!restored.EnvironmentReady && Time.realtimeSinceStartup < deadline) yield return null;
             Check("Time jump preserves prior missions and applies restored world", restored.EnvironmentReady && world.Applied && flow.Mode == ScreenMode.Playing
-                && restored.Recovery.Progress.Watered == 4 && restored.Recovery.Progress.Waste == 10 && restored.Recovery.Progress.Habitats == 2);
+                && restored.Recovery.Progress.Watered == 5 && restored.Recovery.Progress.Waste == 10 && restored.Recovery.Progress.Habitats == 2);
             Check("Recovered environment owns sun fog and river", RenderSettings.fogDensity < 0.002f && RenderSettings.sun.intensity > 1.4f
                 && FindFirstObjectByType<RecoveryRiver>().transform.Find("River water surface").GetComponent<Renderer>().sharedMaterial.name.Contains("RestoredRiver"));
             yield return CaptureWorldDetail(restored.transform, "13-restored-overview.png", 35f);

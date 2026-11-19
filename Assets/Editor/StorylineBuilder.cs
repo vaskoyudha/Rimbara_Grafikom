@@ -105,14 +105,18 @@ namespace Rimbara.Editor
                     foreach (Renderer renderer in piece.GetComponentsInChildren<Renderer>()) renderer.sharedMaterial = wood;
                 }
                 GameObject ready = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
-                ready.name = "Prepared patch"; ready.transform.SetParent(pile.transform, false);
-                ready.transform.localPosition = Vector3.up * 0.015f; ready.transform.localScale = new Vector3(1.8f, 0.015f, 1.8f);
+                ready.name = "Prepared patch"; ready.transform.SetParent(pile.transform.parent, false);
+                ready.transform.position = pile.transform.position + Vector3.up * 0.015f; ready.transform.localScale = new Vector3(1.8f, 0.015f, 1.8f);
                 UnityEngine.Object.DestroyImmediate(ready.GetComponent<Collider>());
                 ready.GetComponent<Renderer>().sharedMaterial = ground; ready.SetActive(false);
                 var focus = EnvironmentFactory.Ring("Focus ring", pile.transform, 1f, AssetCatalog.Material("Amber marker", EnvironmentFactory.Amber, true));
                 EnvironmentFactory.Beacon("DESIGNATED DEBRIS", burnt.transform, EnvironmentFactory.Amber, 1.3f);
+                GameObject dust = (GameObject)PrefabUtility.InstantiatePrefab(ParticleFactory.ClearDust(), root.transform);
+                dust.name = "Clear dust " + (i + 1).ToString("00");
+                dust.transform.position = pile.transform.position;
+                dust.SetActive(false);
                 debris[i] = pile.AddComponent<DebrisPickup>();
-                debris[i].Configure("disaster-debris-" + i, chapter, burnt, ready, focus);
+                debris[i].Configure("disaster-debris-" + i, chapter, burnt, ready, focus, dust);
             }
             chapter.Configure(state, coordinator.transform, kit.transform, debris,
                 UnityEngine.Object.FindObjectsByType<FirePoint>(FindObjectsSortMode.None).OrderBy(f => f.Slot).ToArray());
@@ -205,13 +209,24 @@ namespace Rimbara.Editor
             if (missing.Length > 0)
                 throw new InvalidOperationException("Missing script in storyline scene: " + string.Join(", ", missing.Select(t => t.name)));
             DisasterChapter chapter = Find<DisasterChapter>();
+            FirePoint[] authoredFires = UnityEngine.Object.FindObjectsByType<FirePoint>(FindObjectsSortMode.None);
             DisasterMapBuilder.VerifyMap();
             if (Find<DisasterChapter>().Recovery != null) RecoveryMapBuilder.VerifyRecovery();
             if (UnityEngine.Object.FindFirstObjectByType<RestoredChapter>() != null) RestoredMapBuilder.VerifyRestored();
-            if (Find<MissionSystem>().DisasterChapter != chapter || Find<GameState>().Profile.Fires != 2
-                || UnityEngine.Object.FindObjectsByType<DebrisPickup>(FindObjectsSortMode.None).Length != 4
-                || UnityEngine.Object.FindObjectsByType<FirePoint>(FindObjectsSortMode.None).Length != 2)
+            if (Find<MissionSystem>().DisasterChapter != chapter || Find<GameState>().Profile.Fires != 10
+                || UnityEngine.Object.FindObjectsByType<DebrisPickup>(FindObjectsSortMode.None).Length != 6
+                || authoredFires.Length != 10)
                 throw new InvalidOperationException("Storyline chapter references or object supply are invalid.");
+            Terrain terrain = UnityEngine.Object.FindFirstObjectByType<Terrain>();
+            if (terrain == null) throw new InvalidOperationException("Storyline chapter is missing its terrain.");
+            Bounds bounds = terrain.terrainData.bounds;
+            Vector3 min = terrain.transform.position + bounds.min;
+            Vector3 max = terrain.transform.position + bounds.max;
+            if (authoredFires.Any(f => f.transform.position.x < min.x + 8f || f.transform.position.x > max.x - 8f
+                || f.transform.position.z < min.z + 8f || f.transform.position.z > max.z - 8f))
+                throw new InvalidOperationException("Fire targets must stay inside the terrain with an eight metre margin.");
+            if (authoredFires.Any(a => authoredFires.Any(b => a != b && Vector3.Distance(a.transform.position, b.transform.position) < 10f)))
+                throw new InvalidOperationException("Fire targets must be spread at least ten metres apart.");
             if (Find<DisasterHud>() == null || Find<CoordinatorDialogue>() == null || Find<EquipmentPickup>() == null)
                 throw new InvalidOperationException("Missing chapter UI or interactions.");
             string[] ids = UnityEngine.Object.FindObjectsByType<DebrisPickup>(FindObjectsSortMode.None).Select(d => d.ObjectId).ToArray();
@@ -220,12 +235,11 @@ namespace Rimbara.Editor
             foreach (InteractableBehaviour interactable in UnityEngine.Object.FindObjectsByType<InteractableBehaviour>(FindObjectsSortMode.None)
                 .Where(i => i is DebrisPickup || i is EquipmentPickup || i is CoordinatorDialogue))
             {
-                Collider collider = interactable.GetComponent<Collider>();
-                if (collider == null || !collider.isTrigger || interactable.gameObject.layer != 10)
+                if (!interactable.GetComponents<Collider>().Any(c => c.isTrigger) || interactable.gameObject.layer != 10)
                     throw new InvalidOperationException("Chapter interaction must have an Interaction-layer trigger: " + interactable.name);
             }
             ProjectBuilder.WriteArtifact("storyline-verification.json", "{\"scene\":\"" + ScenePath + "\",\"utc\":\"" + DateTime.UtcNow.ToString("O")
-                + "\",\"fires\":2,\"debris\":4,\"missingScripts\":0,\"result\":\"passed\"}");
+                + "\",\"fires\":10,\"debris\":6,\"missingScripts\":0,\"result\":\"passed\"}");
         }
 
         [MenuItem("RIMBARA/Storyline/Update chapter presentation")]

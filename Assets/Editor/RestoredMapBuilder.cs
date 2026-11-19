@@ -38,7 +38,7 @@ namespace Rimbara.Editor
             RestoredEnvironment environment = root.gameObject.AddComponent<RestoredEnvironment>();
             EndingDirector director = root.gameObject.AddComponent<EndingDirector>();
             Transform visuals = Group("01 - Reborn forest and active village", root);
-            Transform disaster = scene.GetRootGameObjects().First(r => r.name == DisasterMapBuilder.EnvironmentName).transform;
+            Transform disaster = (DisasterMapBuilder.FindEnvironment(scene) ?? scene.GetRootGameObjects().First(r => r.name == DisasterMapBuilder.EnvironmentName)).transform;
             // Renderers alone change; original collision and object identities stay stable.
             Renderer[] charred = disaster.GetComponentsInChildren<Transform>(true)
                 .Where(t => t.name.StartsWith("Scorched standing tree ") || t.name.StartsWith("Fallen charred tree ") || t.name.StartsWith("Damaged forest edge ") || t.name.StartsWith("Burnt branches "))
@@ -228,6 +228,13 @@ namespace Rimbara.Editor
             Renderer[] rs = go.GetComponentsInChildren<Renderer>(true); Bounds b = rs[0].bounds; foreach (Renderer r in rs) b.Encapsulate(r.bounds);
             go.transform.localScale *= height / Mathf.Max(b.size.y, 0.1f); b = rs[0].bounds; foreach (Renderer r in rs) b.Encapsulate(r.bounds);
             go.transform.position += p - new Vector3(b.center.x, b.min.y, b.center.z);
+            b = rs[0].bounds; foreach (Renderer r in rs) b.Encapsulate(r.bounds);
+            Terrain terrain = Terrain.activeTerrain;
+            if (terrain != null)
+            {
+                float ground = terrain.SampleHeight(new Vector3(b.center.x, 0f, b.center.z)) + terrain.transform.position.y + 0.06f;
+                go.transform.position += Vector3.up * (ground - b.min.y);
+            }
             foreach (Collider c in go.GetComponentsInChildren<Collider>(true)) c.enabled = false; foreach (Transform t in go.GetComponentsInChildren<Transform>(true)) t.gameObject.layer = 2; return go;
         }
         private static GameObject Ring(Transform parent) => EnvironmentFactory.Ring("Restored focus ring", parent, 0.7f, AssetDatabase.LoadAssetAtPath<Material>("Assets/Art/Materials/Amber marker.mat"));

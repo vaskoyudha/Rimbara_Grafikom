@@ -15,6 +15,7 @@ namespace Rimbara.Interaction
         [SerializeField] private AudioSource crackle;
         private FireSuppression suppression;
         private bool recorded;
+        private float glowBaseIntensity;
         public int Slot => slot;
         public string ObjectId => objectId;
         public bool Extinguished => recorded;
@@ -30,6 +31,7 @@ namespace Rimbara.Interaction
             missions = missionSystem;
             fireAndSmoke = particles;
             glow = fireLight;
+            glowBaseIntensity = glow != null ? glow.intensity : 0f;
             steamEffect = steam;
         }
 
@@ -43,7 +45,7 @@ namespace Rimbara.Interaction
         {
             if (recorded || !gameObject.activeInHierarchy || !missions.CanExtinguish) return false;
             bool newlyOut = suppression.ApplyWater(deltaTime);
-            if (glow != null) glow.intensity = Mathf.Lerp(1.8f, 0f, suppression.Fraction);
+            if (glow != null) glow.intensity = Mathf.Lerp(glowBaseIntensity, 0f, suppression.Fraction);
             if (!newlyOut) return false;
             // Commit the counter exactly once before removing the collision target.
             if (!state.ExtinguishFire(objectId)) return false;

@@ -21,11 +21,26 @@ namespace Rimbara.Editor
     public static class DisasterMapBuilder
     {
         public const string EnvironmentName = "Environment - RIMBARA Disaster Zone (EmaceArt resources)";
+        public const string LocalizedEnvironmentName = "Environment - RIMBARA";
+        public const string LocalizedVillageName = "01-rumah2warga";
+        public const string LocalizedPostName = "02 - post misi";
+        public const string LocalizedForestName = "03 - hutan kebakar";
         public const string KitRoot = "Assets/EmaceArt/Slavic World Free/";
         private const string MapFolder = "Assets/Settings/DisasterMap";
         private static readonly List<Bounds> occupied = new List<Bounds>();
         private static readonly List<string> resources = new List<string>();
         private static Material charcoal;
+
+        public static GameObject FindEnvironment(Scene scene)
+        {
+            return scene.GetRootGameObjects().FirstOrDefault(r => r.name == EnvironmentName)
+                ?? scene.GetRootGameObjects().FirstOrDefault(r => r.name == LocalizedEnvironmentName);
+        }
+
+        private static Transform FindGroup(Transform root, string original, string localized)
+        {
+            return root.Find(original) ?? root.Find(localized);
+        }
 
         [MenuItem("RIMBARA/Storyline/Author original Disaster map from kit resources")]
         public static void BuildMap()
@@ -229,8 +244,8 @@ namespace Rimbara.Editor
             if (EditorApplication.isPlaying) throw new InvalidOperationException("Exit Play mode first.");
             if (!Application.isBatchMode && !EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo()) return;
             Scene scene = EditorSceneManager.OpenScene(StorylineBuilder.ScenePath, OpenSceneMode.Single);
-            GameObject environment = scene.GetRootGameObjects().First(r => r.name == EnvironmentName);
-            Transform post = environment.transform.Find("02 - Emergency mission post");
+            GameObject environment = FindEnvironment(scene) ?? scene.GetRootGameObjects().First(r => r.name == EnvironmentName);
+            Transform post = FindGroup(environment.transform, "02 - Emergency mission post", LocalizedPostName);
             Transform board = post.Find("Mission map board");
             TMP_Text sign = post.GetComponentsInChildren<TextMeshPro>(true).Single(t => t.name == "Label - EMERGENCY MISSION POST");
             AttachPostSign(sign, board);
@@ -262,6 +277,7 @@ namespace Rimbara.Editor
                     new Vector3(x, 0.15f, z), 40f + i * 31f, 5f, false);
                 fallen.transform.rotation *= Quaternion.Euler(0f, 0f, 82f);
                 Tint(fallen, charcoal);
+                GroundFallenTree(fallen);
                 AddTrunkCollider(fallen);
             }
             for (int i = 0; i < 18; i++)
@@ -309,17 +325,36 @@ namespace Rimbara.Editor
             }
             foreach (SeedlingPickup seed in UnityEngine.Object.FindObjectsByType<SeedlingPickup>(FindObjectsInactive.Include, FindObjectsSortMode.None)) seed.gameObject.SetActive(false);
             foreach (PlantingPoint bed in UnityEngine.Object.FindObjectsByType<PlantingPoint>(FindObjectsInactive.Include, FindObjectsSortMode.None)) bed.gameObject.SetActive(false);
-            foreach (MissionZone zone in UnityEngine.Object.FindObjectsByType<MissionZone>(FindObjectsInactive.Include, FindObjectsSortMode.None)) zone.gameObject.SetActive(false);
+            foreach (MissionZone zone in UnityEngine.Object.FindObjectsByType<MissionZone>(FindObjectsInactive.Include, FindObjectsSortMode.None)) zone.gameObject.SetActive(true);
             foreach (MissionBoard board in UnityEngine.Object.FindObjectsByType<MissionBoard>(FindObjectsInactive.Include, FindObjectsSortMode.None)) board.gameObject.SetActive(false);
             FirePoint[] fires = UnityEngine.Object.FindObjectsByType<FirePoint>(FindObjectsSortMode.None).OrderBy(f => f.Slot).ToArray();
-            Vector3[] firePoints = { new Vector3(-12f, 0.05f, 16f), new Vector3(13f, 0.05f, 29f) };
-            for (int i = 0; i < fires.Length; i++) { fires[i].transform.position = firePoints[i]; fires[i].transform.SetParent(forest, true); }
+            Vector3[] firePoints =
+            {
+                new Vector3(-34f, 0.05f, 8f), new Vector3(-18f, 0.05f, -2f), new Vector3(28f, 0.05f, 3f),
+                new Vector3(41f, 0.05f, 19f), new Vector3(-41f, 0.05f, 27f), new Vector3(-22f, 0.05f, 39f),
+                new Vector3(3f, 0.05f, 22f), new Vector3(20f, 0.05f, 34f), new Vector3(-8f, 0.05f, 52f),
+                new Vector3(33f, 0.05f, 51f)
+            };
+            Terrain terrain = Terrain.activeTerrain;
+            for (int i = 0; i < fires.Length; i++)
+            {
+                Vector3 point = firePoints[i];
+                if (terrain != null) point.y = terrain.SampleHeight(point) + terrain.transform.position.y + 0.05f;
+                fires[i].transform.position = point;
+                fires[i].transform.SetParent(forest, true);
+            }
             DebrisPickup[] piles = UnityEngine.Object.FindObjectsByType<DebrisPickup>(FindObjectsSortMode.None).OrderBy(d => d.ObjectId).ToArray();
             Vector3[] debrisPoints = { new Vector3(-7f, 0.06f, 6f), new Vector3(8f, 0.06f, 10f), new Vector3(-8f, 0.06f, 27f), new Vector3(7f, 0.06f, 38f) };
-            for (int i = 0; i < piles.Length; i++) { piles[i].transform.position = debrisPoints[i]; piles[i].transform.SetParent(forest, true); }
+            foreach (DebrisPickup pile in piles.Where(p => p.name.StartsWith("Designated debris ", StringComparison.Ordinal)))
+            {
+                int index = int.Parse(pile.name.Substring("Designated debris ".Length)) - 1;
+                if (index < 0 || index >= debrisPoints.Length) continue;
+                pile.transform.position = debrisPoints[index];
+                pile.transform.SetParent(forest, true);
+            }
+            WireRoadTreeDebris(forest);
             VolunteerRig rig = UnityEngine.Object.FindFirstObjectByType<VolunteerRig>();
             Vector3 spawn = new Vector3(0f, 0f, -44f);
-            Terrain terrain = Terrain.activeTerrain;
             spawn.y = terrain.SampleHeight(spawn) + terrain.transform.position.y + 0.12f;
             rig.transform.position = spawn;
             var data = new SerializedObject(rig);
@@ -339,6 +374,67 @@ namespace Rimbara.Editor
                 resident.name = "Evacuated villager at relief post"; resident.transform.position = new Vector3(18f, 0f, -5f);
                 resident.transform.rotation = Quaternion.Euler(0f, 180f, 0f);
             }
+        }
+
+        public static void WireRoadTreeDebris(Transform forest)
+        {
+            DisasterChapter chapter = UnityEngine.Object.FindFirstObjectByType<DisasterChapter>();
+            if (chapter == null) throw new InvalidOperationException("Disaster chapter is missing.");
+            DebrisPickup source = UnityEngine.Object.FindObjectsByType<DebrisPickup>(FindObjectsInactive.Include, FindObjectsSortMode.None)
+                .FirstOrDefault(d => d.name.StartsWith("Designated debris 01", StringComparison.Ordinal));
+            if (source == null) throw new InvalidOperationException("Designated debris fixture is missing.");
+            SerializedObject sourceData = new SerializedObject(source);
+            GameObject sourceGround = sourceData.FindProperty("preparedGround").objectReferenceValue as GameObject;
+            GameObject sourceDust = sourceData.FindProperty("clearDust").objectReferenceValue as GameObject;
+            if (sourceGround == null || sourceDust == null) throw new InvalidOperationException("Designated debris fixture is incomplete.");
+            Transform[] roadTrees = forest.GetComponentsInChildren<Transform>(true)
+                .Where(t => t.name.StartsWith("Fallen charred tree", StringComparison.Ordinal)
+                    && Mathf.Abs(t.position.x) < 7f && t.position.z < -10f && t.position.z > -46f)
+                .OrderBy(t => t.position.z).ToArray();
+            int added = 0;
+            foreach (Transform tree in roadTrees)
+            {
+                GroundFallenTree(tree.gameObject);
+                if (tree.GetComponentInChildren<DebrisPickup>(true) != null) continue;
+                tree.gameObject.layer = 10;
+                foreach (Collider collider in tree.GetComponentsInChildren<Collider>(true)) collider.enabled = false;
+                float surfaceY = tree.position.y;
+                if (Terrain.activeTerrain != null)
+                    surfaceY = Terrain.activeTerrain.SampleHeight(tree.position) + Terrain.activeTerrain.transform.position.y;
+                GameObject interaction = new GameObject("Road debris interaction - " + tree.name);
+                interaction.transform.SetParent(tree, true);
+                interaction.transform.position = new Vector3(tree.position.x, surfaceY + 0.06f, tree.position.z);
+                interaction.layer = 10;
+                SphereCollider trigger = interaction.AddComponent<SphereCollider>();
+                trigger.isTrigger = true;
+                trigger.center = Vector3.up * 0.55f;
+                trigger.radius = 1.15f;
+                GameObject focus = EnvironmentFactory.Ring("Focus ring", interaction.transform, 1f,
+                    AssetCatalog.Material("Amber marker", EnvironmentFactory.Amber, true));
+                EnvironmentFactory.Beacon("CLEAR ROAD", interaction.transform, EnvironmentFactory.Amber, 1.5f);
+                GameObject ground = (GameObject)UnityEngine.Object.Instantiate(sourceGround, forest);
+                ground.name = "Prepared patch - " + tree.name;
+                ground.transform.position = new Vector3(tree.position.x, surfaceY + 0.015f, tree.position.z);
+                ground.SetActive(false);
+                GameObject dust = (GameObject)UnityEngine.Object.Instantiate(sourceDust, forest);
+                dust.name = "Clear dust - " + tree.name;
+                dust.transform.position = new Vector3(tree.position.x, surfaceY, tree.position.z);
+                dust.SetActive(false);
+                DebrisPickup pickup = interaction.AddComponent<DebrisPickup>();
+                pickup.Configure("disaster-debris-road-" + added, chapter, tree.gameObject, ground, focus, dust);
+                EditorUtility.SetDirty(pickup);
+                added++;
+            }
+            SerializedObject chapterData = new SerializedObject(chapter);
+            GameState state = chapterData.FindProperty("state").objectReferenceValue as GameState;
+            Transform coordinator = chapterData.FindProperty("coordinator").objectReferenceValue as Transform;
+            Transform equipment = chapterData.FindProperty("equipment").objectReferenceValue as Transform;
+            FirePoint[] fires = UnityEngine.Object.FindObjectsByType<FirePoint>(FindObjectsInactive.Include, FindObjectsSortMode.None)
+                .OrderBy(f => f.Slot).ToArray();
+            DebrisPickup[] all = UnityEngine.Object.FindObjectsByType<DebrisPickup>(FindObjectsInactive.Include, FindObjectsSortMode.None)
+                .OrderBy(d => d.ObjectId).ToArray();
+            chapter.Configure(state, coordinator, equipment, all, fires);
+            EditorUtility.SetDirty(chapter);
         }
 
         private static void ConfigurePresentation(Transform environment)
@@ -388,6 +484,13 @@ namespace Rimbara.Editor
             instance.transform.rotation = Quaternion.Euler(0f, yaw, 0f);
             bounds = BoundsOf(instance);
             instance.transform.position += position - new Vector3(bounds.center.x, bounds.min.y, bounds.center.z);
+            bounds = BoundsOf(instance);
+            Terrain terrain = Terrain.activeTerrain;
+            if (terrain != null)
+            {
+                float ground = terrain.SampleHeight(new Vector3(bounds.center.x, 0f, bounds.center.z)) + terrain.transform.position.y + 0.02f;
+                instance.transform.position += Vector3.up * (ground - bounds.min.y);
+            }
             foreach (Transform t in instance.GetComponentsInChildren<Transform>(true))
             {
                 t.gameObject.layer = 8;
@@ -405,6 +508,29 @@ namespace Rimbara.Editor
             return instance;
         }
 
+        private static void GroundFallenTree(GameObject tree)
+        {
+            Terrain terrain = Terrain.activeTerrain;
+            if (terrain == null) return;
+            Transform lodRoot = tree.GetComponentsInChildren<Transform>(true)
+                .FirstOrDefault(t => t.GetComponent<LODGroup>() != null);
+            if (lodRoot == null) return;
+            foreach (Transform level in lodRoot.GetComponentsInChildren<Transform>(true).Where(t => t.parent == lodRoot).ToArray())
+            {
+                Renderer[] renderers = level.GetComponentsInChildren<Renderer>(true);
+                if (renderers.Length == 0) continue;
+                Bounds bounds = renderers[0].bounds;
+                foreach (Renderer renderer in renderers) bounds.Encapsulate(renderer.bounds);
+                float ground = terrain.SampleHeight(new Vector3(bounds.center.x, 0f, bounds.center.z)) + terrain.transform.position.y + 0.02f;
+                level.position += Vector3.up * (ground - bounds.min.y);
+            }
+            Transform proxy = tree.GetComponentsInChildren<Transform>(true)
+                .FirstOrDefault(t => t.parent == tree.transform && t.name.StartsWith("Road debris interaction", StringComparison.Ordinal));
+            if (proxy == null) return;
+            Vector3 anchor = tree.transform.position;
+            float surface = terrain.SampleHeight(anchor) + terrain.transform.position.y + 0.06f;
+            proxy.position = new Vector3(anchor.x, surface, anchor.z);
+        }
         private static void AddTrunkCollider(GameObject tree)
         {
             var collider = tree.AddComponent<BoxCollider>();
@@ -450,16 +576,16 @@ namespace Rimbara.Editor
 
         public static void VerifyMap()
         {
-            GameObject environment = SceneManager.GetActiveScene().GetRootGameObjects().FirstOrDefault(r => r.name == EnvironmentName);
-            if (environment == null || environment.transform.Find("01 - Quiet emergency village") == null
-                || environment.transform.Find("03 - Burnt forest and cleanup clearings") == null)
+            GameObject environment = FindEnvironment(SceneManager.GetActiveScene());
+            if (environment == null || FindGroup(environment.transform, "01 - Quiet emergency village", LocalizedVillageName) == null
+                || FindGroup(environment.transform, "03 - Burnt forest and cleanup clearings", LocalizedForestName) == null)
                 throw new InvalidOperationException("An original RIMBARA Disaster map is required, not the Slavic demo layout.");
             if (SceneManager.GetActiveScene().GetRootGameObjects().Any(r => r.name == "Environment - EmaceArt Slavic Village"))
                 throw new InvalidOperationException("Copied demo village must not remain in the authored map.");
             int count = environment.GetComponentsInChildren<MeshFilter>(true).Count(m => m.sharedMesh != null && AssetDatabase.GetAssetPath(m.sharedMesh).StartsWith(KitRoot));
             if (count < 40 || Terrain.activeTerrain == null || environment.GetComponentInChildren<ParticleSystem>() == null)
                 throw new InvalidOperationException("Disaster map requires kit resources, original terrain and smoke.");
-            Transform board = environment.transform.Find("02 - Emergency mission post/Mission map board");
+            Transform board = FindGroup(environment.transform, "02 - Emergency mission post", LocalizedPostName)?.Find("Mission map board");
             TextMeshPro sign = board == null ? null : board.GetComponentInChildren<TextMeshPro>();
             if (sign == null || sign.text != "POSKO DARURAT" || sign.GetComponent<Rimbara.World.Billboard>() != null
                 || Quaternion.Angle(sign.transform.rotation, board.rotation) > 0.1f)
@@ -480,7 +606,7 @@ namespace Rimbara.Editor
         public static void ClearArrivalCorridor()
         {
             Scene scene = EditorSceneManager.OpenScene(StorylineBuilder.ScenePath, OpenSceneMode.Single);
-            GameObject environment = scene.GetRootGameObjects().First(r => r.name == EnvironmentName);
+            GameObject environment = FindEnvironment(scene) ?? scene.GetRootGameObjects().First(r => r.name == EnvironmentName);
             Terrain terrain = Terrain.activeTerrain;
             TerrainData data = terrain.terrainData;
             int resolution = data.heightmapResolution;

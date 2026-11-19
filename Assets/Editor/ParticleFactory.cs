@@ -7,33 +7,33 @@ namespace Rimbara.Editor
     {
         public static ParticleSystem Flame(Transform parent)
         {
-            ParticleSystem particles = Create("Flames", parent, true, 1.1f, 1.7f, 0.7f,
-                new Color(1f, 0.45f, 0.06f, 0.9f), 34f, true);
+            ParticleSystem particles = Create("Flames", parent, true, 1.35f, 2.2f, 1.05f,
+                new Color(1f, 0.45f, 0.06f, 0.95f), 55f, true);
             particles.transform.localRotation = Quaternion.Euler(-90f, 0f, 0f);
             var shape = particles.shape;
             shape.shapeType = ParticleSystemShapeType.Cone;
-            shape.radius = 0.65f;
-            shape.angle = 17f;
+            shape.radius = 0.85f;
+            shape.angle = 20f;
             var colors = particles.colorOverLifetime;
             colors.enabled = true;
             colors.color = Fade(new Color(1f, 0.72f, 0.13f), new Color(0.95f, 0.15f, 0.025f), 0.88f);
             var size = particles.sizeOverLifetime;
             size.enabled = true;
-            size.size = new ParticleSystem.MinMaxCurve(1f, new AnimationCurve(new Keyframe(0f, 0.45f),
-                new Keyframe(0.25f, 1.15f), new Keyframe(1f, 0.05f)));
+            size.size = new ParticleSystem.MinMaxCurve(1f, new AnimationCurve(new Keyframe(0f, 0.55f),
+                new Keyframe(0.25f, 1.45f), new Keyframe(1f, 0.05f)));
             return particles;
         }
 
         public static ParticleSystem Smoke(Transform parent)
         {
-            ParticleSystem particles = Create("Smoke", parent, true, 3.2f, 1.5f, 1.05f,
-                new Color(0.22f, 0.23f, 0.19f, 0.33f), 9f, false);
-            particles.transform.localPosition = Vector3.up * 0.6f;
+            ParticleSystem particles = Create("Smoke", parent, true, 3.6f, 1.8f, 1.3f,
+                new Color(0.22f, 0.23f, 0.19f, 0.33f), 13f, false);
+            particles.transform.localPosition = Vector3.up * 0.75f;
             particles.transform.localRotation = Quaternion.Euler(-90f, 0f, 0f);
             var shape = particles.shape;
             shape.shapeType = ParticleSystemShapeType.Cone;
-            shape.radius = 0.5f;
-            shape.angle = 14f;
+            shape.radius = 0.65f;
+            shape.angle = 16f;
             var colors = particles.colorOverLifetime;
             colors.enabled = true;
             colors.color = Fade(new Color(0.22f, 0.23f, 0.19f), new Color(0.46f, 0.47f, 0.42f), 0.30f);
@@ -47,20 +47,46 @@ namespace Rimbara.Editor
         {
             var root = new GameObject("Steam after suppression");
             root.transform.SetParent(parent, false);
-            ParticleSystem particles = Create("Steam burst", root.transform, false, 1.7f, 1.8f, 0.75f,
+            ParticleSystem particles = Create("Steam burst", root.transform, false, 1.7f, 2f, 0.95f,
                 new Color(0.79f, 0.88f, 0.85f, 0.65f), 0f, false);
             particles.transform.localRotation = Quaternion.Euler(-90f, 0f, 0f);
             var emission = particles.emission;
             emission.SetBursts(new[] { new ParticleSystem.Burst(0f, (short)32) });
             var shape = particles.shape;
             shape.shapeType = ParticleSystemShapeType.Cone;
-            shape.radius = 0.75f;
+            shape.radius = 0.95f;
             shape.angle = 28f;
             var color = particles.colorOverLifetime;
             color.enabled = true;
             color.color = Fade(new Color(0.79f, 0.88f, 0.85f), new Color(0.89f, 0.93f, 0.88f), 0.55f);
             root.SetActive(false);
             return root;
+        }
+
+        public static GameObject ClearDust()
+        {
+            const string path = "Assets/Prefabs/FX/ClearDust.prefab";
+            var existing = AssetDatabase.LoadAssetAtPath<GameObject>(path);
+            if (existing != null) return existing;
+            var root = new GameObject("Clear dust");
+            root.layer = 2;
+            ParticleSystem particles = Create("Dust puff", root.transform, false, 0.65f, 1.6f, 0.28f,
+                new Color(0.55f, 0.45f, 0.30f, 0.55f), 0f, false);
+            particles.transform.localRotation = Quaternion.Euler(-90f, 0f, 0f);
+            var emission = particles.emission;
+            emission.SetBursts(new[] { new ParticleSystem.Burst(0f, (short)24) });
+            var shape = particles.shape;
+            shape.shapeType = ParticleSystemShapeType.Cone;
+            shape.radius = 0.6f;
+            shape.angle = 42f;
+            var color = particles.colorOverLifetime;
+            color.enabled = true;
+            color.color = Fade(new Color(0.55f, 0.45f, 0.30f), new Color(0.42f, 0.34f, 0.24f), 0.45f);
+            var main = particles.main;
+            main.playOnAwake = false;
+            GameObject prefab = PrefabUtility.SaveAsPrefabAsset(root, path);
+            Object.DestroyImmediate(root);
+            return prefab;
         }
 
         public static GameObject WaterPrefab()

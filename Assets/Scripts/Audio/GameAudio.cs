@@ -87,6 +87,7 @@ namespace Rimbara.Audio
             birdTarget = recovery.Progress.WaterClean && recovery.Progress.Habitats == recovery.Progress.HabitatGoal ? 0.18f : 0.04f;
         }
         private void PlayPlant(string id) { feedback.PlayOneShot(plant, 0.6f); }
+        public void PlayDebrisClear() { if (feedback != null && collect != null) feedback.PlayOneShot(collect, 0.35f); }
         private void RefreshRestoredBirds() { if (restored.EnvironmentReady) birdTarget = 0.25f; }
         private void PlayOut(string id) { feedback.PlayOneShot(extinguish, 0.55f); }
         private void PlayComplete() { feedback.PlayOneShot(complete, 0.75f); }

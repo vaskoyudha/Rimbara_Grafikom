@@ -9,7 +9,7 @@ namespace Rimbara.Tests
     public sealed class RestorationTests
     {
         [TestCase(1, 1, 1)]
-        [TestCase(5, 5, 2)]
+        [TestCase(5, 5, 10)]
         public void BothProfilesCompleteWithoutInventoryLoss(int seedlings, int trees, int fires)
         {
             var model = new RestorationProgress(seedlings, trees, fires);
@@ -34,7 +34,7 @@ namespace Rimbara.Tests
         [Test]
         public void EmptyInventoryCannotPlant()
         {
-            var model = new RestorationProgress(5, 5, 2);
+            var model = new RestorationProgress(5, 5, 10);
             Assert.That(model.TryPlant("bed"), Is.False);
             Assert.That(model.Snapshot.Trees, Is.Zero);
         }
@@ -71,13 +71,13 @@ namespace Rimbara.Tests
         [Test]
         public void SeedlingsDoNotDoubleCountRestoration()
         {
-            var model = new RestorationProgress(5, 5, 2);
+            var model = new RestorationProgress(5, 5, 10);
             for (int i = 0; i < 5; i++) model.TryCollect("seed" + i);
             Assert.That(model.Snapshot.Restoration, Is.Zero);
             model.TryPlant("bed");
-            Assert.That(model.Snapshot.Restoration, Is.EqualTo(1f / 7f).Within(0.00001f));
+            Assert.That(model.Snapshot.Restoration, Is.EqualTo(1f / 15f).Within(0.00001f));
             model.TryExtinguish("fire");
-            Assert.That(model.Snapshot.Restoration, Is.EqualTo(2f / 7f).Within(0.00001f));
+            Assert.That(model.Snapshot.Restoration, Is.EqualTo(2f / 15f).Within(0.00001f));
         }
 
         [Test]
@@ -189,11 +189,11 @@ namespace Rimbara.Tests
         }
 
         [TestCase(1, 1, 1, true)]
-        [TestCase(5, 5, 2, true)]
-        [TestCase(5, 4, 2, true)]
-        [TestCase(6, 5, 2, false)]
+        [TestCase(5, 5, 10, true)]
+        [TestCase(5, 4, 10, true)]
+        [TestCase(6, 5, 10, false)]
         [TestCase(1, 2, 1, false)]
-        [TestCase(5, 5, 3, false)]
+        [TestCase(5, 5, 3, true)]
         public void ProfilesRespectTheAuthoredMapSupply(int seeds, int trees, int fires, bool valid)
         {
             var profile = ScriptableObject.CreateInstance<MissionProfile>();

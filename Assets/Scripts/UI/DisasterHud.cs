@@ -162,7 +162,8 @@ namespace Rimbara.UI
                         if (text.name == "Victory title") text.text = "DARI ABU MENUJU KEHIDUPAN";
                         if (text.name == "Victory story") text.text = "Kamu bukan sekadar menyelesaikan misi.\nKamu membantu menghidupkan kembali hutan ini.";
                     }
-                    view.VictoryResult.text = "<b>MISI 01–05 SELESAI</b>\n2 titik api / 4 lahan bersih / 5 bibit ditanam dan disiram\n10 sampah sungai / 2 habitat dipulihkan\n\nSetiap Pohon Menyimpan Cerita.\nTerima kasih, relawan.";
+                    view.VictoryResult.text = "<b>MISI 01–05 SELESAI</b>\n" + chapter.Progress.FireGoal + " titik api / " + chapter.Progress.DebrisGoal
+                        + " lahan bersih / 5 bibit ditanam dan disiram\n10 sampah sungai / 2 habitat dipulihkan\n\nSetiap Pohon Menyimpan Cerita.\nTerima kasih, relawan.";
                     return;
                 }
                 if (recovery != null && recovery.Active)
