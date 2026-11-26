@@ -28,9 +28,9 @@ namespace Rimbara.Editor
 
         public static void Run()
         {
-            UiKit kit = AssetDatabase.LoadAssetAtPath<UiKit>(KingsforgeThemeBuilder.AssetPath);
+            UiKit kit = AssetDatabase.LoadAssetAtPath<UiKit>(FantasticThemeBuilder.AssetPath);
             if (kit == null || !kit.IsComplete)
-                throw new InvalidOperationException("Kingsforge UiKit is missing or incomplete. Import the kit and run RIMBARA/UI/Build Kingsforge theme.");
+                throw new InvalidOperationException("Fantastic UiKit is missing or incomplete. Import the kit and run RIMBARA/UI/Build Fantastic theme.");
             var checks = new List<string>();
             void Check(string name, bool passed)
             {

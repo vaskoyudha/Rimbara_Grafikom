@@ -8,13 +8,13 @@ namespace Rimbara.Tests
 {
     public sealed class HudThemeTests
     {
-        private static UiKit Load() => AssetDatabase.LoadAssetAtPath<UiKit>("Assets/UI/KingsforgeUiKit.asset");
+        private static UiKit Load() => AssetDatabase.LoadAssetAtPath<UiKit>("Assets/UI/FantasticUiKit.asset");
 
         [Test]
-        public void ButtonUsesKingsforgeSpritesForEveryState()
+        public void ButtonUsesFantasticSpritesForEveryState()
         {
             UiKit kit = Load();
-            if (kit == null) Assert.Ignore("Kingsforge kit not imported.");
+            if (kit == null) Assert.Ignore("Fantastic kit not imported.");
             var go = new GameObject("btn", typeof(RectTransform), typeof(Image), typeof(Button));
             var image = go.GetComponent<Image>();
             var button = go.GetComponent<Button>();
@@ -29,7 +29,7 @@ namespace Rimbara.Tests
         public void PanelUsesNineSlicedWindow()
         {
             UiKit kit = Load();
-            if (kit == null) Assert.Ignore("Kingsforge kit not imported.");
+            if (kit == null) Assert.Ignore("Fantastic kit not imported.");
             var go = new GameObject("panel", typeof(RectTransform), typeof(Image));
             var image = go.GetComponent<Image>();
             HudTheme.ApplyPanel(image, kit, HudSurface.Window);

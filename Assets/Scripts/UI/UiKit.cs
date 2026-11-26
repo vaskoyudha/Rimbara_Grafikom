@@ -4,15 +4,17 @@ using UnityEngine;
 
 namespace Rimbara.UI
 {
-    [CreateAssetMenu(menuName = "RIMBARA/UI Kit", fileName = "KingsforgeUiKit")]
+    [CreateAssetMenu(menuName = "RIMBARA/UI Kit", fileName = "FantasticUiKit")]
     public sealed class UiKit : ScriptableObject
     {
         [Header("Fonts")]
         public TMP_FontAsset HeadingFont;
         public TMP_FontAsset BodyFont;
+        public Material TitleMaterial;
 
         [Header("Colours")]
         public Color Ink = new Color32(0x1B, 0x14, 0x0E, 0xFF);
+        public Color Cream = new Color32(0xFF, 0xF0, 0xCC, 0xFF);
         public Color Parchment = new Color32(0xF3, 0xE3, 0xC3, 0xFF);
         public Color Gold = new Color32(0xC9, 0x9A, 0x3F, 0xFF);
         public Color Success = new Color32(0x6F, 0x9E, 0x4A, 0xFF);

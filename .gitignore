@@ -46,5 +46,10 @@ Thumbs.db
 mono_crash.*.blob
 /[Aa]ssets/_Recovery/
 
-# Paid third-party UI kit — imported locally, never committed to this public repo.
-/Assets/ThirdParty/Kingsforge/
+# Third-party UI kit — imported locally, never committed to this public repo.
+/Assets/ThirdParty/FantasticUI/
+/Assets/ThirdParty/FantasticUI.meta
+/Assets/ThirdParty.meta
+# Role-to-sprite mapping generated from the local kit (run RIMBARA/UI/Build Fantastic theme).
+/Assets/UI/FantasticUiKit.asset
+/Assets/UI/FantasticUiKit.asset.meta

@@ -180,7 +180,7 @@ namespace Rimbara.Editor
             rect.anchorMin = rect.anchorMax = rect.pivot = new Vector2(0.5f, 0.5f); rect.sizeDelta = new Vector2(860f, 440f);
             Image background = panel.GetComponent<Image>(); background.color = new Color(0.08f, 0.12f, 0.09f, 0.98f);
             background.raycastTarget = true;
-            UiKit kit = AssetDatabase.LoadAssetAtPath<UiKit>(KingsforgeThemeBuilder.AssetPath);
+            UiKit kit = AssetDatabase.LoadAssetAtPath<UiKit>(FantasticThemeBuilder.AssetPath);
             if (kit != null)
             {
                 HudTheme.ApplyPanel(background, kit, HudSurface.Window);
@@ -217,9 +217,9 @@ namespace Rimbara.Editor
         [MenuItem("RIMBARA/Storyline/Verify Disaster chapter")]
         public static void VerifyChapter()
         {
-            UiKit kit = AssetDatabase.LoadAssetAtPath<UiKit>(KingsforgeThemeBuilder.AssetPath);
+            UiKit kit = AssetDatabase.LoadAssetAtPath<UiKit>(FantasticThemeBuilder.AssetPath);
             if (kit == null || !kit.IsComplete)
-                throw new InvalidOperationException("Kingsforge UiKit is missing or incomplete. Import the kit and run RIMBARA/UI/Build Kingsforge theme.");
+                throw new InvalidOperationException("Fantastic UiKit is missing or incomplete. Import the kit and run RIMBARA/UI/Build Fantastic theme.");
             EditorSceneManager.OpenScene(ScenePath, OpenSceneMode.Single);
             Transform[] transforms = SceneManager.GetActiveScene().GetRootGameObjects().SelectMany(r => r.GetComponentsInChildren<Transform>(true)).ToArray();
             Transform[] missing = transforms.Where(t => GameObjectUtility.GetMonoBehavioursWithMissingScriptCount(t.gameObject) > 0).ToArray();

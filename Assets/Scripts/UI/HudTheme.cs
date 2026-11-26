@@ -50,6 +50,18 @@ namespace Rimbara.UI
             "No fail promise", "Help tip", "Game subtitle"
         };
 
+        private static readonly HashSet<string> CenteredText = new HashSet<string>
+        {
+            "Menu eyebrow", "Briefing eyebrow", "Help eyebrow", "Pause eyebrow", "Victory eyebrow",
+            "RIMBARA title", "Briefing title", "Help title", "Pause title", "Victory title",
+            "Game subtitle", "Menu scope"
+        };
+
+        private static readonly HashSet<string> TitleText = new HashSet<string>
+        {
+            "RIMBARA title", "Briefing title", "Help title", "Pause title", "Victory title"
+        };
+
         public static void Apply(Canvas canvas, UiKit kit)
         {
             if (canvas == null || kit == null) return;
@@ -110,21 +122,42 @@ namespace Rimbara.UI
 
             foreach (TMP_Text text in canvas.GetComponentsInChildren<TMP_Text>(true))
             {
+                bool isButtonLabel = text.name.EndsWith(" label") && text.transform.parent != null
+                    && text.transform.parent.GetComponent<Button>() != null;
+                if (isButtonLabel)
+                {
+                    text.font = kit.HeadingFont;
+                    text.fontStyle = FontStyles.SmallCaps;
+                    text.color = kit.Cream;
+                    continue;
+                }
+
                 bool heading = text.fontStyle.HasFlag(FontStyles.Bold) || text.fontSize >= 28f;
                 text.font = heading ? kit.HeadingFont : kit.BodyFont;
                 if (GoldText.Contains(text.name)) text.color = kit.Gold;
-                else if (SuccessText.Contains(text.name)) text.color = kit.Success;
+                else if (SuccessText.Contains(text.name)) text.color = kit.Cream;
                 else if (MutedText.Contains(text.name)) text.color = kit.Muted;
-                else if (text.name.EndsWith(" label") && text.transform.parent != null
-                    && text.transform.parent.GetComponent<Button>() != null)
-                {
-                    bool primary = PrimaryButtons.Contains(text.transform.parent.name);
-                    text.color = primary ? kit.Ink : kit.Parchment;
-                }
                 else text.color = kit.Parchment;
+
+                if (CenteredText.Contains(text.name))
+                {
+                    text.alignment = TextAlignmentOptions.Center;
+                    RectTransform rect = text.rectTransform;
+                    rect.anchorMin = new Vector2(0.5f, rect.anchorMin.y);
+                    rect.anchorMax = new Vector2(0.5f, rect.anchorMax.y);
+                    rect.pivot = new Vector2(0.5f, rect.pivot.y);
+                    rect.anchoredPosition = new Vector2(0f, rect.anchoredPosition.y);
+                }
+
+                if (TitleText.Contains(text.name) && kit.TitleMaterial != null)
+                {
+                    text.font = kit.HeadingFont;
+                    text.fontSharedMaterial = kit.TitleMaterial;
+                }
             }
 
             HudLayout.Apply(canvas);
+            HudContentLayout.Apply(canvas);
         }
 
         public static void ApplyPanel(Image image, UiKit kit, HudSurface surface)
@@ -158,7 +191,12 @@ namespace Rimbara.UI
                 disabledSprite = primary ? kit.ButtonPrimaryDisabled : kit.ButtonSecondaryDisabled
             };
             TMP_Text label = button.GetComponentInChildren<TMP_Text>(true);
-            if (label != null) label.color = primary ? kit.Ink : kit.Parchment;
+            if (label != null)
+            {
+                label.font = kit.HeadingFont;
+                label.fontStyle = FontStyles.SmallCaps;
+                label.color = kit.Cream;
+            }
         }
 
         public static void ApplyFill(Image image, UiKit kit, HudFill fill)

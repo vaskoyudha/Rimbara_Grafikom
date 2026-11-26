@@ -10,12 +10,12 @@ namespace Rimbara.Editor
 {
     public static class HudThemeApplier
     {
-        [MenuItem("RIMBARA/UI/Apply Kingsforge theme to open scene")]
+        [MenuItem("RIMBARA/UI/Apply Fantastic theme to open scene")]
         public static void ApplyToOpenScene()
         {
-            UiKit kit = AssetDatabase.LoadAssetAtPath<UiKit>(KingsforgeThemeBuilder.AssetPath);
+            UiKit kit = AssetDatabase.LoadAssetAtPath<UiKit>(FantasticThemeBuilder.AssetPath);
             if (kit == null)
-                throw new InvalidOperationException("Run RIMBARA/UI/Build Kingsforge theme first.");
+                throw new InvalidOperationException("Run RIMBARA/UI/Build Fantastic theme first.");
 
             Scene scene = SceneManager.GetActiveScene();
             Canvas canvas = UnityEngine.Object.FindObjectsByType<Canvas>(FindObjectsSortMode.None)
@@ -26,7 +26,7 @@ namespace Rimbara.Editor
             HudTheme.Apply(canvas, kit);
             EditorSceneManager.MarkSceneDirty(scene);
             EditorSceneManager.SaveScene(scene);
-            Debug.Log($"Kingsforge theme applied to {scene.name}.");
+            Debug.Log($"Fantastic theme applied to {scene.name}.");
         }
     }
 }

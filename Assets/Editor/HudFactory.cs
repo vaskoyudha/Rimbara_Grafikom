@@ -21,9 +21,9 @@ namespace Rimbara.Editor
 
         public static HudReferences Create(TMP_FontAsset typeface, Sprite roundedSprite, Sprite circleSprite)
         {
-            UiKit loaded = UnityEditor.AssetDatabase.LoadAssetAtPath<UiKit>(KingsforgeThemeBuilder.AssetPath);
+            UiKit loaded = UnityEditor.AssetDatabase.LoadAssetAtPath<UiKit>(FantasticThemeBuilder.AssetPath);
             if (loaded == null)
-                throw new System.InvalidOperationException("Missing " + KingsforgeThemeBuilder.AssetPath + ". Run RIMBARA/UI/Build Kingsforge theme.");
+                throw new System.InvalidOperationException("Missing " + FantasticThemeBuilder.AssetPath + ". Run RIMBARA/UI/Build Fantastic theme.");
             return Create(typeface, roundedSprite, circleSprite, loaded);
         }
 
