@@ -45,3 +45,6 @@ Thumbs.db
 # Unity crash artifacts
 mono_crash.*.blob
 /[Aa]ssets/_Recovery/
+
+# Paid third-party UI kit — imported locally, never committed to this public repo.
+/Assets/ThirdParty/Kingsforge/

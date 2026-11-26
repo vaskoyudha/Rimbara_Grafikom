@@ -174,16 +174,30 @@ namespace Rimbara.Editor
         private static Transform DialoguePanel(HudReferences view, out TMP_Text text, out Button next)
         {
             GameObject panel = new GameObject("Coordinator dialogue", typeof(RectTransform), typeof(Image));
-            var rect = panel.GetComponent<RectTransform>(); rect.SetParent(view.Canvas.transform, false);
-            rect.anchorMin = rect.anchorMax = rect.pivot = new Vector2(0.5f, 0.5f); rect.sizeDelta = new Vector2(820f, 430f);
+            var rect = panel.GetComponent<RectTransform>();
+            Transform parent = view.SafeArea != null ? view.SafeArea.transform : view.Canvas.transform;
+            rect.SetParent(parent, false);
+            rect.anchorMin = rect.anchorMax = rect.pivot = new Vector2(0.5f, 0.5f); rect.sizeDelta = new Vector2(860f, 440f);
             Image background = panel.GetComponent<Image>(); background.color = new Color(0.08f, 0.12f, 0.09f, 0.98f);
             background.raycastTarget = true;
+            UiKit kit = AssetDatabase.LoadAssetAtPath<UiKit>(KingsforgeThemeBuilder.AssetPath);
+            if (kit != null)
+            {
+                HudTheme.ApplyPanel(background, kit, HudSurface.Window);
+                background.raycastTarget = true;
+            }
             text = new GameObject("Dialogue text", typeof(RectTransform), typeof(TextMeshProUGUI)).GetComponent<TMP_Text>();
             text.rectTransform.SetParent(rect, false); text.rectTransform.anchorMin = new Vector2(0f, 0.25f); text.rectTransform.anchorMax = Vector2.one;
             text.rectTransform.offsetMin = new Vector2(35f, 10f); text.rectTransform.offsetMax = new Vector2(-35f, -30f);
-            text.font = view.MissionDescription.font; text.fontSize = 23f; text.color = Color.white; text.raycastTarget = false;
+            text.font = kit != null ? kit.BodyFont : view.MissionDescription.font;
+            text.fontSize = 23f; text.color = kit != null ? kit.Parchment : Color.white; text.raycastTarget = false;
             text.textWrappingMode = TextWrappingModes.Normal; text.enableAutoSizing = true; text.fontSizeMin = 18f; text.fontSizeMax = 23f;
             next = UnityEngine.Object.Instantiate(view.Begin, rect); next.name = "Dialogue next";
+            if (kit != null)
+            {
+                Image nextImage = next.GetComponent<Image>();
+                if (nextImage != null) HudTheme.ApplyButton(next, nextImage, kit, true);
+            }
             RectTransform button = next.GetComponent<RectTransform>(); button.anchorMin = button.anchorMax = new Vector2(0.5f, 0f);
             button.pivot = new Vector2(0.5f, 0f); button.anchoredPosition = new Vector2(0f, 25f); button.sizeDelta = new Vector2(260f, 58f);
             next.onClick = new Button.ButtonClickedEvent();
@@ -203,6 +217,9 @@ namespace Rimbara.Editor
         [MenuItem("RIMBARA/Storyline/Verify Disaster chapter")]
         public static void VerifyChapter()
         {
+            UiKit kit = AssetDatabase.LoadAssetAtPath<UiKit>(KingsforgeThemeBuilder.AssetPath);
+            if (kit == null || !kit.IsComplete)
+                throw new InvalidOperationException("Kingsforge UiKit is missing or incomplete. Import the kit and run RIMBARA/UI/Build Kingsforge theme.");
             EditorSceneManager.OpenScene(ScenePath, OpenSceneMode.Single);
             Transform[] transforms = SceneManager.GetActiveScene().GetRootGameObjects().SelectMany(r => r.GetComponentsInChildren<Transform>(true)).ToArray();
             Transform[] missing = transforms.Where(t => GameObjectUtility.GetMonoBehavioursWithMissingScriptCount(t.gameObject) > 0).ToArray();

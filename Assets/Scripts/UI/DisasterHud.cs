@@ -75,7 +75,6 @@ namespace Rimbara.UI
                 else view.Pause.SetActive(false);
             }
             if (flow.Mode != ScreenMode.Playing && flow.Mode != ScreenMode.Paused) return;
-            view.Toast.color = Color.white;
             view.PlayerDot.anchoredPosition = MapPosition(rig.transform.position);
             bool recovering = recovery != null && recovery.Active;
             Transform target = recovering ? recovery.Destination(rig.transform.position) : chapter.Destination(rig.transform.position);
@@ -186,22 +185,15 @@ namespace Rimbara.UI
         public void OpenCoordinatorDialogue()
         {
             if (flow.Mode != ScreenMode.Playing || DialogueOpen) return;
-            speaker = "KOORDINATOR MISI";
+            speaker = DialogueCopy.CoordinatorSpeaker;
             elderBriefing = false;
             rangerDialogue = false;
             acceptingBriefing = chapter.Progress.Stage == DisasterStage.Briefing;
             finishingChapter = chapter.Progress.Stage == DisasterStage.RecoveryReady;
-            pages = acceptingBriefing ? new[]
-            {
-                "Selamat datang di posko darurat. Terima kasih sudah datang membantu.",
-                "Kami menemukan beberapa titik api aktif di sekitar hutan. Misi pertamamu adalah memadamkan seluruh titik api yang tersisa.",
-                "Ambil perlengkapan di samping posko. Dekati api yang ditandai, arahkan bidikan, lalu tahan KLIK KIRI untuk menyemprot. Setelah kawasan aman, kita bisa memulai pemulihan."
-            } : finishingChapter ? new[]
-            {
-                "Lahan akhirnya bersih. Meski masih terlihat gersang, setiap upaya kecil membawa kita semakin dekat menuju pemulihan hutan.",
-                recovery != null ? "Setiap pemulihan dimulai dari satu langkah. Temui Petugas Hutan di persemaian. Ia akan membimbingmu menanam bibit dan memulihkan habitat."
-                    : "Kamu telah menyelesaikan bab Zona Bencana. Bab berikutnya masih dalam pengembangan."
-            } : new[] { chapter.Instruction };
+            pages = acceptingBriefing ? DialogueCopy.CoordinatorBriefing
+                : finishingChapter ? (recovery != null ? DialogueCopy.CoordinatorDebrief
+                    : new[] { "Kamu telah menyelesaikan Bab Zona Bencana. Bab berikutnya masih dalam pengembangan." })
+                : new[] { chapter.Instruction };
             page = 0;
             flow.Pause();
             view.Pause.SetActive(false);
@@ -262,21 +254,11 @@ namespace Rimbara.UI
             rangerDialogue = true;
             elderBriefing = false;
             rangerStage = recovery.Progress.Stage;
-            speaker = "PETUGAS HUTAN";
-            pages = rangerStage == RecoveryStage.Briefing ? new[]
-            {
-                "Kamu sudah melakukan pekerjaan luar biasa. Api sudah padam dan kawasan ini bersih. Namun, hutan bukan sekadar kumpulan pohon; hutan adalah rumah bagi banyak makhluk hidup.",
-                "Kita harus mengembalikan kehidupan itu. Ambil bibit di persemaian. Gali lubang pada lahan bertanda, tanam bibit, lalu siram setiap pohon muda. Beri mereka waktu untuk tumbuh."
-            } : rangerStage == RecoveryStage.PlantingDebrief ? new[]
-            {
-                "Setiap bibit yang kamu tanam adalah janji untuk masa depan. Pohon-pohon muda telah disiram. Rawat mereka dan berikan waktu untuk tumbuh. Suatu hari nanti, tanah ini akan kembali hijau.",
-                "Sekarang kita perlu memulihkan sungai dan habitat. Kumpulkan " + recovery.Progress.WasteGoal + " sampah di kedua tepian sungai. Gunakan jembatan untuk menyeberang, lalu pulihkan tempat berlindung dan tanaman penutup pada habitat bertanda."
-            } : rangerStage == RecoveryStage.EcosystemDebrief ? new[]
-            {
-                "Lahan ini tidak lagi kosong. Pohon muda mulai tumbuh, air lebih bersih, dan tanda kehidupan satwa mulai muncul. Upayamu telah memberi hutan ini kesempatan kedua.",
-                restored == null ? "Zona Pemulihan selesai. Zona Hutan Pulih masih dalam pengembangan."
-                    : "Pemulihan membutuhkan waktu dan perawatan bersama. Musim demi musim, hutan akan tumbuh. Suatu hari, kembalilah dan temui Tetua Desa untuk melihat harapan yang telah kita tanam."
-            } : new[] { recovery.Instruction };
+            speaker = DialogueCopy.RangerSpeaker;
+            pages = rangerStage == RecoveryStage.Briefing ? DialogueCopy.RangerBriefing
+                : rangerStage == RecoveryStage.PlantingDebrief ? DialogueCopy.RangerPlantingDebrief(recovery.Progress.WasteGoal)
+                : rangerStage == RecoveryStage.EcosystemDebrief ? DialogueCopy.RangerEcosystemDebrief(restored != null)
+                : new[] { recovery.Instruction };
             page = 0;
             flow.Pause();
             view.Pause.SetActive(false);
@@ -289,13 +271,8 @@ namespace Rimbara.UI
             if (flow.Mode != ScreenMode.Playing || DialogueOpen || restored == null || !restored.EnvironmentReady) return;
             rangerDialogue = acceptingBriefing = finishingChapter = false;
             elderBriefing = restored.Progress.Stage == RestoredStage.ElderBriefing;
-            speaker = "TETUA DESA";
-            pages = elderBriefing ? new[]
-            {
-                "Lihat apa yang telah kita capai. Dulu, hutan ini dipenuhi api dan abu. Desa kami diliputi ketakutan, dan kami khawatir akan kehilangan rumah ini.",
-                "Kini pepohonan tumbuh kembali, burung-burung kembali, dan desa kami hidup lagi. Terima kasih. Kamu tidak hanya menyelamatkan hutan, tetapi membantu menghidupkan kembali rumah kami.",
-                "Bawalah bibit terakhir ini ke lahan pemulihan desa. Tanam dan siram sebagai janji untuk menjaga hutan. Setelah itu, datangi titik pandang dan lihat apa yang telah kita pulihkan bersama."
-            } : new[] { restored.Instruction };
+            speaker = DialogueCopy.ElderSpeaker;
+            pages = elderBriefing ? DialogueCopy.ElderBriefing : new[] { restored.Instruction };
             page = 0; flow.Pause(); view.Pause.SetActive(false); dialoguePanel.SetActive(true); DisplayPage();
         }
     }

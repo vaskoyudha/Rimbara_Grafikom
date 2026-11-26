@@ -114,7 +114,7 @@ namespace Rimbara.UI
         {
             if (missions.DisasterChapter != null) return;
             int index = Mathf.Min(4, (int)stage + 1);
-            view.MissionNumber.text = "MISI LAPANGAN    " + index.ToString("00") + " / 04";
+            view.MissionNumber.text = "MISI LAPANGAN    " + index.ToString("00") + " / " + GameScope.Chapters.ToString("00");
             view.MissionTitle.text = missions.Title;
             view.MissionDescription.text = missions.Instruction;
             if (flow.Mode == ScreenMode.Playing)

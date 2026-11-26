@@ -17,10 +17,20 @@ namespace Rimbara.Editor
         private static TMP_FontAsset font;
         private static Sprite rounded;
         private static Sprite circle;
+        private static UiKit kit;
 
         public static HudReferences Create(TMP_FontAsset typeface, Sprite roundedSprite, Sprite circleSprite)
         {
+            UiKit loaded = UnityEditor.AssetDatabase.LoadAssetAtPath<UiKit>(KingsforgeThemeBuilder.AssetPath);
+            if (loaded == null)
+                throw new System.InvalidOperationException("Missing " + KingsforgeThemeBuilder.AssetPath + ". Run RIMBARA/UI/Build Kingsforge theme.");
+            return Create(typeface, roundedSprite, circleSprite, loaded);
+        }
+
+        public static HudReferences Create(TMP_FontAsset typeface, Sprite roundedSprite, Sprite circleSprite, UiKit uiKit)
+        {
             font = typeface;
+            kit = uiKit;
             rounded = roundedSprite;
             circle = circleSprite;
             var references = new HudReferences();
@@ -30,7 +40,7 @@ namespace Rimbara.Editor
             references.Canvas.renderMode = RenderMode.ScreenSpaceOverlay;
             var scaler = canvasObject.GetComponent<CanvasScaler>();
             scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
-            scaler.referenceResolution = new Vector2(1600f, 900f);
+            scaler.referenceResolution = new Vector2(HudLayout.ReferenceWidth, HudLayout.ReferenceHeight);
             scaler.matchWidthOrHeight = 0.5f;
             GameObject events = new GameObject("EventSystem", typeof(EventSystem), typeof(InputSystemUIInputModule));
             events.GetComponent<InputSystemUIInputModule>().AssignDefaultActions();
@@ -38,10 +48,10 @@ namespace Rimbara.Editor
             Transform hud = references.Gameplay.transform;
 
             Image mission = Panel(hud, "Mission card", new Vector2(-541f, 331f), new Vector2(470f, 190f), Ink);
-            references.MissionNumber = Label(mission.transform, "Mission number", new Vector2(22f, -17f), new Vector2(425f, 20f), "FIELD ASSIGNMENT    01 / 04", 12f, Muted);
+            references.MissionNumber = Label(mission.transform, "Mission number", new Vector2(22f, -17f), new Vector2(425f, 20f), "MISI LAPANGAN    01 / 05", 12f, Muted);
             references.MissionNumber.characterSpacing = 1.8f;
-            references.MissionTitle = Label(mission.transform, "Mission title", new Vector2(22f, -45f), new Vector2(425f, 40f), "FIRST STEPS", 29f, Green, FontStyles.Bold);
-            references.MissionDescription = Label(mission.transform, "Mission description", new Vector2(22f, -94f), new Vector2(425f, 78f), "Inspect the forest.", 18f, Light);
+            references.MissionTitle = Label(mission.transform, "Mission title", new Vector2(22f, -45f), new Vector2(425f, 40f), "KEDATANGAN", 29f, Green, FontStyles.Bold);
+            references.MissionDescription = Label(mission.transform, "Mission description", new Vector2(22f, -94f), new Vector2(425f, 78f), "Datangi posko darurat. Tekan E untuk berbicara dengan koordinator.", 18f, Light);
 
             Image counters = Panel(hud, "Restoration counters", new Vector2(614f, 328f), new Vector2(324f, 196f), Ink);
             references.Seedlings = Label(counters.transform, "Seedling counter", new Vector2(20f, -19f), new Vector2(290f, 45f), "SEEDLINGS   0 / 5", 16f, Light);
@@ -100,7 +110,7 @@ namespace Rimbara.Editor
             logo.characterSpacing = 5f;
             Label(menu.transform, "Game subtitle", new Vector2(38f, -178f), new Vector2(584f, 30f), "RISE OF THE FORGOTTEN FOREST", 17f, Light, FontStyles.Bold).characterSpacing = 2f;
             Label(menu.transform, "Menu story", new Vector2(38f, -243f), new Vector2(584f, 115f), "A forest scarred by fire.\nA young volunteer. A chance to begin again.\n\nCollect native seedlings, plant new roots, and let Arunika breathe.", 21f, Light);
-            Label(menu.transform, "Menu scope", new Vector2(38f, -382f), new Vector2(584f, 27f), "3 ZONES     /     4 MISSIONS     /     ONE NEW BEGINNING", 13f, Amber, FontStyles.Bold).characterSpacing = 1f;
+            Label(menu.transform, "Menu scope", new Vector2(38f, -382f), new Vector2(584f, 27f), "5 BAB  /  3 ZONA  /  TANPA BATAS WAKTU", 13f, Amber, FontStyles.Bold).characterSpacing = 1f;
             references.Start = Button(menu.transform, "Start restoration", new Vector2(38f, -435f), new Vector2(584f, 62f), "BEGIN RESTORATION", true);
             references.OpenControls = Button(menu.transform, "Controls button", new Vector2(38f, -512f), new Vector2(282f, 52f), "HOW TO PLAY", false);
             Button menuQuit = Button(menu.transform, "Menu quit", new Vector2(340f, -512f), new Vector2(282f, 52f), "QUIT", false);
@@ -111,7 +121,7 @@ namespace Rimbara.Editor
             Label(briefing.transform, "Briefing eyebrow", new Vector2(46f, -34f), new Vector2(728f, 25f), "VOLUNTEER POST / ARUNIKA FOREST", 13f, Amber, FontStyles.Bold).characterSpacing = 2f;
             Label(briefing.transform, "Briefing title", new Vector2(46f, -80f), new Vector2(728f, 67f), "YOUR FIRST DAY", 48f, Green, FontStyles.Bold);
             Label(briefing.transform, "Briefing story", new Vector2(46f, -163f), new Vector2(728f, 99f), "The fire has passed, but the forest still needs you. From this volunteer post, follow the amber marker to inspect the damage. Then bring native trees back to the planting area and put out the last flames.", 22f, Light);
-            Label(briefing.transform, "Briefing steps", new Vector2(46f, -295f), new Vector2(728f, 130f), "01   FIRST STEPS  /  Inspect the forest\n02   SEEDS OF HOPE  /  Collect and plant\n03   STOP THE FIRE  /  Aim and hold left mouse\n04   A NEW BEGINNING  /  Return to this post", 20f, Light);
+            Label(briefing.transform, "Briefing steps", new Vector2(46f, -295f), new Vector2(728f, 130f), "01  KEDATANGAN  /  Periksa hutan\n02  TANAM MASA DEPAN  /  Kumpulkan dan tanam bibit\n03  PADAMKAN API  /  Bidik dan tahan klik kiri\n04  KEMBALIKAN KEHIDUPAN  /  Bersihkan sungai dan habitat\n05  JANJI UNTUK HUTAN  /  Bibit terakhir dan titik pandang", 20f, Light);
             references.BriefingTargets = Label(briefing.transform, "Briefing targets", new Vector2(46f, -451f), new Vector2(728f, 30f), "5 NATIVE SEEDLINGS / 5 TREES / 10 FIRES", 15f, Amber, FontStyles.Bold);
             Label(briefing.transform, "No fail promise", new Vector2(46f, -493f), new Vector2(728f, 32f), "No timer. No damage. No water limit. Take the time you need.", 17f, Muted);
             references.Begin = Button(briefing.transform, "Enter Arunika", new Vector2(46f, -555f), new Vector2(546f, 59f), "ENTER ARUNIKA", true);
@@ -146,6 +156,9 @@ namespace Rimbara.Editor
             references.VictoryMenu = Button(victory.transform, "Victory return menu", new Vector2(384f, -524f), new Vector2(210f, 58f), "MENU", false);
             Button victoryQuit = Button(victory.transform, "Victory quit", new Vector2(612f, -524f), new Vector2(142f, 58f), "QUIT", false);
             references.Quit = new[] { menuQuit, pauseQuit, victoryQuit };
+            HudTheme.Apply(references.Canvas, kit);
+            Transform safeArea = canvasObject.transform.Find("Safe area");
+            references.SafeArea = safeArea != null ? safeArea.gameObject : null;
             references.Menu.SetActive(true);
             references.Briefing.SetActive(false);
             references.Controls.SetActive(false);

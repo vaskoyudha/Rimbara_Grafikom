@@ -1,7 +1,7 @@
 {
   "name": "Rimbara.Tests",
   "rootNamespace": "Rimbara.Tests",
-  "references": ["Rimbara", "Unity.Cinemachine", "Unity.InputSystem", "Unity.TextMeshPro"],
+  "references": ["Rimbara", "Unity.Cinemachine", "Unity.InputSystem", "Unity.TextMeshPro", "UnityEngine.UI"],
   "includePlatforms": ["Editor"],
   "optionalUnityReferences": ["TestAssemblies"],
   "autoReferenced": false

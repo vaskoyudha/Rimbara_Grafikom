@@ -16,6 +16,7 @@ namespace Rimbara.UI
         public GameObject Pause;
         public GameObject Victory;
         public GameObject Dimmer;
+        public GameObject SafeArea;
         public TMP_Text MissionNumber;
         public TMP_Text MissionTitle;
         public TMP_Text MissionDescription;

@@ -16,29 +16,30 @@ namespace Rimbara.UI
             { "Menu eyebrow", "ARUNIKA / PROGRAM RELAWAN PEMULIHAN HUTAN" },
             { "RIMBARA title", "RIMBARA" },
             { "Game subtitle", "DARI ABU MENUJU KEHIDUPAN" },
-            { "Menu story", "Kamu tiba di kawasan yang dilanda kebakaran.\nPadamkan api. Bersihkan lahan. Beri kehidupan kesempatan untuk kembali." },
-            { "Menu scope", "BENCANA → PEMULIHAN → HUTAN PULIH / MISI 01–05" },
-            { "Menu footer", "Setiap Pohon Menyimpan Cerita.\nVERSI PENGEMBANGAN TIM / TIGA ZONA" },
+            { "Menu story", "Hutan ini pernah terbakar. Tanahnya kini dingin, tetapi belum hidup.\nKamu datang bukan untuk berperang, melainkan untuk menanam.\n\nPadamkan api terakhir, tanam akar baru, dan beri Arunika alasan untuk bernapas lagi." },
+            { "Menu scope", "5 BAB  /  3 ZONA  /  TANPA BATAS WAKTU" },
+            { "Menu footer", "Setiap Pohon Menyimpan Cerita.\nRIMBARA  /  VERSI TIGA ZONA" },
             { "Start restoration label", "MULAI PEMULIHAN" },
             { "Controls button label", "CARA BERMAIN" },
             { "Menu quit label", "KELUAR" },
             { "Briefing eyebrow", "POSKO RELAWAN / HUTAN ARUNIKA" },
             { "Briefing title", "HARI PERTAMAMU" },
-            { "Briefing story", "Hutan masih terbakar. Datangi posko darurat dan temui koordinator. Ambil perlengkapan, padamkan titik api yang ditandai, lalu bersihkan puing sisa kebakaran." },
-            { "Briefing steps", "01–02 / Padamkan api dan bersihkan lahan\n03 / Ambil bibit, gali, tanam, dan siram\n04 / Bersihkan sungai dan pulihkan habitat\n05 / Janji untuk Hutan: bibit terakhir dan titik pandang" },
-            { "No fail promise", "Tanpa batas waktu atau batas air. Karakter tidak menerima cedera." },
+            { "Briefing story", "Api sudah lewat, tetapi hutan belum pulih. Dari posko ini, ikuti penanda amber untuk memeriksa kerusakan. Lalu bawa bibit asli kembali ke lahan tanam dan padamkan sisa api." },
+            { "Briefing steps", "01  KEDATANGAN  /  Periksa hutan\n02  TANAM MASA DEPAN  /  Kumpulkan dan tanam bibit\n03  PADAMKAN API  /  Bidik dan tahan klik kiri\n04  KEMBALIKAN KEHIDUPAN  /  Bersihkan sungai dan habitat\n05  JANJI UNTUK HUTAN  /  Bibit terakhir dan titik pandang" },
+            { "Briefing targets", "5 BIBIT ASLI  /  5 POHON  /  10 TITIK API" },
+            { "No fail promise", "Tanpa batas waktu. Tanpa cedera. Tanpa batas air. Lakukan dengan tenang." },
             { "Enter Arunika label", "MASUK KE ARUNIKA" },
             { "Briefing back label", "KEMBALI" },
             { "Help eyebrow", "PANDUAN LAPANGAN" },
             { "Help title", "CARA BERMAIN" },
-            { "Control list", "WASD / Bergerak    MOUSE / Putar kamera\nSHIFT / Berlari    SPASI / Melompat\nE / Bicara, ambil, gali, tanam, dan bersihkan\nKLIK KIRI / Tahan untuk padamkan api atau siram bibit\nESC / Jeda, lanjutkan, atau tutup dialog" },
-            { "Help tip", "Ikuti penanda dan peta. Dekati objek untuk berinteraksi. Bidik api atau bibit sebelum menyemprot; penghalang dapat menghalangi air. Setiap bibit harus disiram." },
+            { "Control list", "WASD  Bergerak\nMOUSE  Putar kamera\nSHIFT  Berlari\nSPASI  Melompat\nE  Bicara, ambil, gali, tanam, bersihkan\nKLIK KIRI  Tahan untuk menyiram api atau bibit\nESC  Jeda atau tutup dialog" },
+            { "Help tip", "Ikuti penanda amber dan peta. Dekati objek untuk berinteraksi. Bidik api atau bibit sebelum menyiram; penghalang bisa menahan air." },
             { "Help back label", "KEMBALI KE MENU" },
-            { "Controls text", "WASD gerak / SHIFT lari / SPASI lompat / E interaksi / KLIK KIRI air / ESC jeda" },
+            { "Controls text", "WASD gerak  /  SHIFT lari  /  SPASI lompat  /  E interaksi  /  KLIK KIRI air  /  ESC jeda" },
             { "Map title", "ARUNIKA / PETA" },
             { "Pause eyebrow", "TARIK NAPAS SEJENAK" },
             { "Pause title", "PERMAINAN DIJEDA" },
-            { "Pause description", "Progresmu tetap tersimpan selama jeda. Lanjutkan saat siap." },
+            { "Pause description", "Progresmu aman. Lanjutkan saat kamu siap." },
             { "Volume label", "VOLUME UTAMA" },
             { "Resume mission label", "LANJUTKAN MISI" },
             { "Pause return menu label", "KEMBALI KE MENU" },
@@ -57,7 +58,6 @@ namespace Rimbara.UI
             { "Tree counter", "PUING DIBERSIHKAN   0 / 4" },
             { "Fire counter", "API PADAM   0 / 10" },
             { "Restoration percent", "0% BAB BENCANA" },
-            { "Briefing targets", "10 TITIK API / 4 TUMPUKAN PUING / ZONA 1" },
             { "Waypoint instruction", "POSKO DARURAT" },
             { "Interaction text", "[E]  Berinteraksi" },
             { "Feedback text", "" },
@@ -98,5 +98,18 @@ namespace Rimbara.UI
         }
 
         public static string WorldLabel(string text) => WorldLabels.TryGetValue(text, out string translated) ? translated : text;
+
+        public static List<string> Validate()
+        {
+            var problems = new List<string>();
+            foreach (KeyValuePair<string, string> pair in Labels)
+                if (string.IsNullOrWhiteSpace(pair.Value) && pair.Key != "Feedback text" && pair.Key != "Ending subtitle")
+                    problems.Add(pair.Key + " is empty");
+            if (!Labels["Menu scope"].Contains(GameScope.Chapters.ToString()))
+                problems.Add("Menu scope chapter count mismatch");
+            if (!Labels["Briefing steps"].Contains("05"))
+                problems.Add("Briefing steps missing chapter 05");
+            return problems;
+        }
     }
 }
