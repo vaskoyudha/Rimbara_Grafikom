@@ -169,7 +169,7 @@ namespace Rimbara.UI
                 {
                     foreach (TMP_Text text in view.Victory.GetComponentsInChildren<TMP_Text>(true))
                     {
-                        if (text.name == "Victory eyebrow") text.text = "ZONA PEMULIHAN / BAB SELESAI";
+                        if (text.name == "Victory eyebrow") text.text = "ZONA PEMULIHAN  <sprite name=\"diamond\" tint=1>  BAB SELESAI";
                         if (text.name == "Victory title") text.text = "KESEMPATAN KEDUA";
                         if (text.name == "Victory story") text.text = "Pohon muda telah dirawat. Air lebih bersih. Habitat mulai pulih.\nHutan mendapat kesempatan kedua.";
                     }

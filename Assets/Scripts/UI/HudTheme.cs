@@ -134,6 +134,7 @@ namespace Rimbara.UI
 
                 bool heading = text.fontStyle.HasFlag(FontStyles.Bold) || text.fontSize >= 28f;
                 text.font = heading ? kit.HeadingFont : kit.BodyFont;
+                if (kit.SeparatorSprite != null) text.spriteAsset = kit.SeparatorSprite;
                 if (GoldText.Contains(text.name)) text.color = kit.Gold;
                 else if (SuccessText.Contains(text.name)) text.color = kit.Cream;
                 else if (MutedText.Contains(text.name)) text.color = kit.Muted;

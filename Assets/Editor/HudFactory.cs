@@ -77,7 +77,7 @@ namespace Rimbara.Editor
             Label(controlsPill.transform, "Controls text", new Vector2(13f, -6f), new Vector2(575f, 22f), "WASD move   /   SHIFT run   /   E interact   /   LEFT MOUSE water   /   ESC pause", 12f, Muted);
 
             Image map = Panel(hud, "Arunika field map", new Vector2(681f, -315f), new Vector2(190f, 220f), Ink);
-            TMP_Text mapTitle = Label(map.transform, "Map title", new Vector2(16f, -13f), new Vector2(158f, 20f), "ARUNIKA / FIELD MAP", 11f, Muted, FontStyles.Bold);
+            TMP_Text mapTitle = Label(map.transform, "Map title", new Vector2(16f, -13f), new Vector2(158f, 20f), "ARUNIKA  <sprite name=\"diamond\" tint=1>  FIELD MAP", 11f, Muted, FontStyles.Bold);
             mapTitle.characterSpacing = 1f;
             RectTransform mapArea = Point(map.transform, "Map coordinates", new Vector2(18f, -43f), new Vector2(154f, 165f));
             mapArea.gameObject.AddComponent<RectMask2D>();
@@ -104,25 +104,25 @@ namespace Rimbara.Editor
 
             references.Menu = Layer(canvasObject.transform, "Main menu");
             Image menu = Panel(references.Menu.transform, "Main menu card", new Vector2(-414f, 8f), new Vector2(660f, 672f), Ink);
-            TMP_Text eyebrow = Label(menu.transform, "Menu eyebrow", new Vector2(38f, -34f), new Vector2(584f, 24f), "ARUNIKA / VOLUNTEER RESTORATION PROGRAM", 12f, Muted, FontStyles.Bold);
+            TMP_Text eyebrow = Label(menu.transform, "Menu eyebrow", new Vector2(38f, -34f), new Vector2(584f, 24f), "ARUNIKA  <sprite name=\"diamond\" tint=1>  VOLUNTEER RESTORATION PROGRAM", 12f, Muted, FontStyles.Bold);
             eyebrow.characterSpacing = 2f;
             TMP_Text logo = Label(menu.transform, "RIMBARA title", new Vector2(34f, -78f), new Vector2(594f, 99f), "RIMBARA", 78f, Green, FontStyles.Bold);
             logo.characterSpacing = 5f;
             Label(menu.transform, "Game subtitle", new Vector2(38f, -178f), new Vector2(584f, 30f), "RISE OF THE FORGOTTEN FOREST", 17f, Light, FontStyles.Bold).characterSpacing = 2f;
             Label(menu.transform, "Menu story", new Vector2(38f, -243f), new Vector2(584f, 115f), "A forest scarred by fire.\nA young volunteer. A chance to begin again.\n\nCollect native seedlings, plant new roots, and let Arunika breathe.", 21f, Light);
-            Label(menu.transform, "Menu scope", new Vector2(38f, -382f), new Vector2(584f, 27f), "5 BAB  /  3 ZONA  /  TANPA BATAS WAKTU", 13f, Amber, FontStyles.Bold).characterSpacing = 1f;
+            Label(menu.transform, "Menu scope", new Vector2(38f, -382f), new Vector2(584f, 27f), "5 BAB  <sprite name=\"diamond\" tint=1>  3 ZONA  <sprite name=\"diamond\" tint=1>  TANPA BATAS WAKTU", 13f, Amber, FontStyles.Bold).characterSpacing = 1f;
             references.Start = Button(menu.transform, "Start restoration", new Vector2(38f, -435f), new Vector2(584f, 62f), "BEGIN RESTORATION", true);
             references.OpenControls = Button(menu.transform, "Controls button", new Vector2(38f, -512f), new Vector2(282f, 52f), "HOW TO PLAY", false);
             Button menuQuit = Button(menu.transform, "Menu quit", new Vector2(340f, -512f), new Vector2(282f, 52f), "QUIT", false);
-            Label(menu.transform, "Menu footer", new Vector2(38f, -604f), new Vector2(584f, 38f), "A small act of care can change what grows next.\nSOLO MVP  /  RIMBARA", 12f, Muted);
+            Label(menu.transform, "Menu footer", new Vector2(38f, -604f), new Vector2(584f, 38f), "A small act of care can change what grows next.\nSOLO MVP  <sprite name=\"diamond\" tint=1>  RIMBARA", 12f, Muted);
 
             references.Briefing = Layer(canvasObject.transform, "Briefing screen");
             Image briefing = Panel(references.Briefing.transform, "Volunteer briefing", Vector2.zero, new Vector2(820f, 660f), Ink);
-            Label(briefing.transform, "Briefing eyebrow", new Vector2(46f, -34f), new Vector2(728f, 25f), "VOLUNTEER POST / ARUNIKA FOREST", 13f, Amber, FontStyles.Bold).characterSpacing = 2f;
+            Label(briefing.transform, "Briefing eyebrow", new Vector2(46f, -34f), new Vector2(728f, 25f), "VOLUNTEER POST  <sprite name=\"diamond\" tint=1>  ARUNIKA FOREST", 13f, Amber, FontStyles.Bold).characterSpacing = 2f;
             Label(briefing.transform, "Briefing title", new Vector2(46f, -80f), new Vector2(728f, 67f), "YOUR FIRST DAY", 48f, Green, FontStyles.Bold);
             Label(briefing.transform, "Briefing story", new Vector2(46f, -163f), new Vector2(728f, 99f), "The fire has passed, but the forest still needs you. From this volunteer post, follow the amber marker to inspect the damage. Then bring native trees back to the planting area and put out the last flames.", 22f, Light);
             Label(briefing.transform, "Briefing steps", new Vector2(46f, -295f), new Vector2(728f, 130f), "01  KEDATANGAN  /  Periksa hutan\n02  TANAM MASA DEPAN  /  Kumpulkan dan tanam bibit\n03  PADAMKAN API  /  Bidik dan tahan klik kiri\n04  KEMBALIKAN KEHIDUPAN  /  Bersihkan sungai dan habitat\n05  JANJI UNTUK HUTAN  /  Bibit terakhir dan titik pandang", 20f, Light);
-            references.BriefingTargets = Label(briefing.transform, "Briefing targets", new Vector2(46f, -451f), new Vector2(728f, 30f), "5 NATIVE SEEDLINGS / 5 TREES / 10 FIRES", 15f, Amber, FontStyles.Bold);
+            references.BriefingTargets = Label(briefing.transform, "Briefing targets", new Vector2(46f, -451f), new Vector2(728f, 30f), "5 NATIVE SEEDLINGS  <sprite name=\"diamond\" tint=1>  5 TREES  <sprite name=\"diamond\" tint=1>  10 FIRES", 15f, Amber, FontStyles.Bold);
             Label(briefing.transform, "No fail promise", new Vector2(46f, -493f), new Vector2(728f, 32f), "No timer. No damage. No water limit. Take the time you need.", 17f, Muted);
             references.Begin = Button(briefing.transform, "Enter Arunika", new Vector2(46f, -555f), new Vector2(546f, 59f), "ENTER ARUNIKA", true);
             references.BriefingBack = Button(briefing.transform, "Briefing back", new Vector2(610f, -555f), new Vector2(164f, 59f), "BACK", false);
@@ -148,7 +148,7 @@ namespace Rimbara.Editor
 
             references.Victory = Layer(canvasObject.transform, "Ending screen");
             Image victory = Panel(references.Victory.transform, "Restoration ending", Vector2.zero, new Vector2(800f, 632f), Ink);
-            Label(victory.transform, "Victory eyebrow", new Vector2(46f, -34f), new Vector2(708f, 26f), "A NEW BEGINNING / MISSION COMPLETE", 14f, Amber, FontStyles.Bold).characterSpacing = 1.5f;
+            Label(victory.transform, "Victory eyebrow", new Vector2(46f, -34f), new Vector2(708f, 26f), "A NEW BEGINNING  <sprite name=\"diamond\" tint=1>  MISSION COMPLETE", 14f, Amber, FontStyles.Bold).characterSpacing = 1.5f;
             Label(victory.transform, "Victory title", new Vector2(46f, -86f), new Vector2(708f, 78f), "ARUNIKA RESTORED", 48f, Green, FontStyles.Bold);
             Label(victory.transform, "Victory story", new Vector2(46f, -189f), new Vector2(708f, 96f), "New roots hold the soil. The last flames are silent.\nWhat began as a small act of care has become a new beginning for this forgotten forest.", 23f, Light);
             references.VictoryResult = Label(victory.transform, "Mission results", new Vector2(46f, -329f), new Vector2(708f, 142f), "5 trees planted / 2 fires extinguished", 22f, Light);

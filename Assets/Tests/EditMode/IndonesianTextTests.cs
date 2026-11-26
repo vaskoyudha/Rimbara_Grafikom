@@ -9,7 +9,7 @@ namespace Rimbara.Tests
         [TestCase("Help title", "CARA BERMAIN")]
         [TestCase("Pause title", "PERMAINAN DIJEDA")]
         [TestCase("Victory title", "AWAL YANG BERSIH")]
-        [TestCase("Menu scope", "5 BAB  /  3 ZONA  /  TANPA BATAS WAKTU")]
+        [TestCase("Menu scope", "5 BAB  <sprite name=\"diamond\" tint=1>  3 ZONA  <sprite name=\"diamond\" tint=1>  TANPA BATAS WAKTU")]
         public void PrimaryScreensUseIndonesian(string label, string expected)
         {
             Assert.That(IndonesianText.Labels[label], Is.EqualTo(expected));

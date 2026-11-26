@@ -33,6 +33,7 @@ namespace Rimbara.Editor
             kit.BodyFont = bodyFont ?? kitFont ?? fallbackFont;
             kit.Cream = new Color32(0xFF, 0xF0, 0xCC, 0xFF);
             kit.TitleMaterial = EnsureTitleMaterial(kit.HeadingFont);
+            kit.SeparatorSprite = FantasySpriteAssetInstaller.Ensure();
             if (kit.HeadingFont == null || kit.BodyFont == null)
                 Debug.LogWarning("No TMP font found; import TMP Essential Resources or assign fonts manually.");
 

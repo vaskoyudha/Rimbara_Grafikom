@@ -35,7 +35,11 @@ imported locally and gitignored at `Assets/ThirdParty/FantasticUI/`.
 6. Run `RIMBARA/UI/Build Fantastic theme`. It creates
    `Assets/UI/FantasticUiKit.asset` and fails loudly if any required role is
    unresolved. Check the Console for the chosen asset path per role.
-7. Run `RIMBARA/UI/Apply Fantastic theme to open scene` once for each scene that
+7. The same command builds `Assets/UI/FantasticSeparator.asset`, a TMP sprite
+   asset that wraps the kit's `Widgets/Diamond.png` and is used as the gold
+   separator between menu labels. It stores only a reference and glyph metrics,
+   never the kit pixels.
+8. Run `RIMBARA/UI/Apply Fantastic theme to open scene` once for each scene that
    contains the `UI - RIMBARA` canvas: `Main`, `FromAshes`, `Arunika`, and
    `VillageRestoration`. The command skins the open scene and saves it.
 9. Run `RIMBARA/Verify authored project` and
@@ -56,5 +60,7 @@ fails with:
 - Standard Unity Asset Store EULA; the pack is free.
 - Use in unlimited personal and commercial projects.
 - Do not resell or redistribute the sprite/prefab files as an asset pack.
-- The kit ships no fonts. RIMBARA falls back to TextMeshPro's LiberationSans SDF,
-  which is covered by the Unity Companion License.
+- The kit ships no fonts. RIMBARA uses the OFL faces Cinzel (headings) and
+  EB Garamond (body) under `Assets/External/Fonts/`, with their TMP SDF assets
+  committed. The menu separator is a kit sprite referenced by the small
+  `Assets/UI/FantasticSeparator.asset`; that file contains no kit pixel data.

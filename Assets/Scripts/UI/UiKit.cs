@@ -11,6 +11,7 @@ namespace Rimbara.UI
         public TMP_FontAsset HeadingFont;
         public TMP_FontAsset BodyFont;
         public Material TitleMaterial;
+        public TMP_SpriteAsset SeparatorSprite;
 
         [Header("Colours")]
         public Color Ink = new Color32(0x1B, 0x14, 0x0E, 0xFF);
