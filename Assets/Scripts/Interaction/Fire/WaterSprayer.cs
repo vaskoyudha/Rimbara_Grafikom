@@ -49,7 +49,9 @@ namespace Rimbara.Interaction
             bool didHit = Physics.Raycast(ray, out hit, 100f, hitLayers, QueryTriggerInteraction.Collide);
             LastAimPoint = didHit ? hit.point : ray.GetPoint(30f);
             if (nozzle != null) nozzle.rotation = Quaternion.LookRotation((LastAimPoint - nozzle.position).normalized);
-            AimedFire = didHit ? hit.collider.GetComponentInParent<FirePoint>() : null;
+            AimedFire = didHit && hit.collider is SphereCollider && hit.collider.isTrigger
+                ? hit.collider.GetComponent<FirePoint>()
+                : null;
             AimedSeedling = didHit ? hit.collider.GetComponentInParent<RecoveryPlantingPoint>() : null;
             AimedFinalTree = didHit ? hit.collider.GetComponentInParent<FinalPlantingPoint>() : null;
             AimHint = string.Empty;
@@ -78,9 +80,9 @@ namespace Rimbara.Interaction
                 AimHint = actor.Missions.DisasterChapter != null ? "Baca pengarahan darurat dan ambil perlengkapan pemadaman" : "Selesaikan Benih Harapan sebelum menyemprot air";
                 return;
             }
-            float distance = Vector3.Distance(actor.transform.position + Vector3.up, AimedFire.AimPosition);
+            float distance = Vector3.Distance(actor.transform.position + Vector3.up, LastAimPoint);
             if (distance > actor.State.Profile.SprayRange) { AimHint = "Dekati api  |  jangkauan " + actor.State.Profile.SprayRange.ToString("0") + " m"; return; }
-            if (Physics.Linecast(nozzle.position, AimedFire.AimPosition, obstructionLayers, QueryTriggerInteraction.Ignore))
+            if (Physics.Linecast(nozzle.position, LastAimPoint, obstructionLayers, QueryTriggerInteraction.Ignore))
             { AimHint = "Aliran air terhalang  |  cari posisi lain"; return; }
             AimHint = Rimbara.UI.IndonesianText.WaterAction;
         }
@@ -106,8 +108,8 @@ namespace Rimbara.Interaction
                 return watered;
             }
             if (!actor.State.SessionRunning || !actor.Missions.CanExtinguish || AimedFire == null || AimedFire.Extinguished) return false;
-            if (Vector3.Distance(actor.transform.position + Vector3.up, AimedFire.AimPosition) > actor.State.Profile.SprayRange) return false;
-            if (Physics.Linecast(nozzle.position, AimedFire.AimPosition, obstructionLayers, QueryTriggerInteraction.Ignore)) return false;
+            if (Vector3.Distance(actor.transform.position + Vector3.up, LastAimPoint) > actor.State.Profile.SprayRange) return false;
+            if (Physics.Linecast(nozzle.position, LastAimPoint, obstructionLayers, QueryTriggerInteraction.Ignore)) return false;
             bool extinguished = AimedFire.ReceiveWater(deltaTime);
             if (extinguished) actor.Report(new InteractionResult(true, "Api telah padam. Arunika dapat bernapas kembali."));
             return extinguished;

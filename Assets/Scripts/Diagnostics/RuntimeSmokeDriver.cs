@@ -555,6 +555,9 @@ namespace Rimbara.Diagnostics
                 && !storyHud.DialogueOpen && state.SessionRunning);
             yield return Approach(equipment.transform);
             yield return PressE();
+            Check("Reaching for equipment does not grant it immediately", !chapter.Progress.HasEquipment && equipment.Available);
+            float graspDeadline = Time.realtimeSinceStartup + 8f;
+            while (!chapter.Progress.HasEquipment && Time.realtimeSinceStartup < graspDeadline) yield return null;
             Check("E collects equipment once and enables water", chapter.Progress.HasEquipment && missions.CanExtinguish && !equipment.Available);
             Check("HUD and action feedback use Indonesian", hud.View.Seedlings.text.Contains("PERLENGKAPAN")
                 && hud.View.Toast.text.Contains("Perlengkapan siap"));

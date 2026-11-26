@@ -18,6 +18,9 @@ namespace Rimbara.UI
         [SerializeField] private GameObject dialoguePanel;
         [SerializeField] private TMP_Text dialogueText;
         [SerializeField] private Button dialogueNext;
+        [SerializeField] private Animator coordinatorAnimator;
+        private AnimatorUpdateMode previousAnimatorMode;
+        private bool coordinatorGreetingActive;
         private string[] pages;
         private int page;
         private bool acceptingBriefing;
@@ -207,6 +210,13 @@ namespace Rimbara.UI
             view.Pause.SetActive(false);
             dialoguePanel.SetActive(true);
             DisplayPage();
+            if (coordinatorAnimator != null)
+            {
+                previousAnimatorMode = coordinatorAnimator.updateMode;
+                coordinatorAnimator.updateMode = AnimatorUpdateMode.UnscaledTime;
+                coordinatorGreetingActive = true;
+                coordinatorAnimator.SetTrigger("Lambai");
+            }
         }
 
         private void DisplayPage()
@@ -225,6 +235,12 @@ namespace Rimbara.UI
 
         private void CloseDialogue(bool completed)
         {
+            if (coordinatorGreetingActive && coordinatorAnimator != null)
+            {
+                coordinatorAnimator.ResetTrigger("Lambai");
+                coordinatorAnimator.updateMode = previousAnimatorMode;
+                coordinatorGreetingActive = false;
+            }
             dialoguePanel.SetActive(false);
             if (flow.Mode == ScreenMode.Paused) flow.Resume();
             if (completed && acceptingBriefing) chapter.AcceptBriefing();
