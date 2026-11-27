@@ -322451,14 +322451,12 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Hutan ini pernah terbakar. Tanahnya kini dingin, tetapi belum hidup.
-
-    Kamu
-    datang bukan untuk berperang, melainkan untuk menanam.
-
-
-    Padamkan api terakhir,
-    tanam akar baru, dan beri Arunika alasan untuk bernapas lagi.'
+  m_text: "Ketika kebakaran besar menghabiskan Hutan Arunika, seorang pemuda datang
+    ke desa yang tinggal abu\u2014bukan sebagai tentara, melainkan sebagai relawan
+    terakhir.\nIa memadamkan bara yang masih menyala, menanam bibit asli di tanah
+    yang hangus, membersihkan sungai yang tersumbat, dan mengembalikan tempat berlindung
+    bagi satwa. Lima bab perjalanan, satu janji: bahwa dari abu, kehidupan bisa tumbuh
+    lagi."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: da7a41fec6dbf3cd4b94c255f67e32e7, type: 2}
   m_sharedMaterial: {fileID: -5135216834097942168, guid: da7a41fec6dbf3cd4b94c255f67e32e7, type: 2}
@@ -322485,12 +322483,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 17.35
+  m_fontSize: 16.05
   m_fontSizeBase: 21
   m_fontWeight: 400
   m_enableAutoSizing: 1
-  m_fontSizeMin: 12
-  m_fontSizeMax: 21
+  m_fontSizeMin: 13
+  m_fontSizeMax: 17
   m_fontStyle: 0
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 256

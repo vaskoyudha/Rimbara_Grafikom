@@ -816,6 +816,14 @@ namespace Rimbara.UI
                 {
                     story.SetAsLastSibling();
                     PositionTopCenter(story, new Vector2(564f, 110f), -86f);
+                    var storyText = story.GetComponent<TMP_Text>();
+                    if (storyText != null)
+                    {
+                        storyText.enableAutoSizing = true;
+                        storyText.fontSizeMin = 13f;
+                        storyText.fontSizeMax = 17f;
+                        storyText.fontSize = 17f;
+                    }
                 }
 
                 var scope = mainMenuCard.Find("Menu scope") as RectTransform;
