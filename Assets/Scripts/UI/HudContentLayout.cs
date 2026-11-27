@@ -13,7 +13,7 @@ namespace Rimbara.UI
     {
         private static readonly Dictionary<string, float> CenteredCards = new Dictionary<string, float>
         {
-            { "Main menu card", 584f },
+            { "Main menu card", 604f },
             { "Volunteer briefing", 728f },
             { "How to play card", 670f },
             { "Pause card", 434f },
@@ -28,14 +28,14 @@ namespace Rimbara.UI
             Icon(canvas, "Mission card", "Mission icon", 38f, 28f, -24f);
             TextAt(canvas, "Mission card", "Mission number", 18f, 12.5f, TextAlignmentOptions.Left, 76f, 28f, -24f);
             TextAt(canvas, "Mission card", "Mission title", 30f, 24f, TextAlignmentOptions.Left, 76f, 28f, -44f);
-            Rect(canvas, "Mission card", "Mission divider", 4f, 28f, -82f);
+            Rect(canvas, "Mission card", "Mission divider", 10f, 28f, -79f);
             Rect(canvas, "Mission card", "Mission task inset", 74f, 26f, -92f);
             Text(canvas, "Mission card", "Mission description", 54f, 17f, TextAlignmentOptions.TopLeft, 40f, -102f);
 
             // Restoration counters (428x248) with proper icons and clean wood-frame clearance.
             Icon(canvas, "Restoration counters", "Counters icon", 18f, 28f, -23f);
             TextAt(canvas, "Restoration counters", "Counters header", 18f, 12.5f, TextAlignmentOptions.Left, 54f, 28f, -23f);
-            Rect(canvas, "Restoration counters", "Counters divider", 4f, 28f, -47f);
+            Rect(canvas, "Restoration counters", "Counters divider", 9f, 28f, -44f);
             Rect(canvas, "Restoration counters", "Counter row 0", 32f, 26f, -56f);
             Rect(canvas, "Restoration counters", "Counter row 1", 32f, 26f, -94f);
             Rect(canvas, "Restoration counters", "Counter row 2", 32f, 26f, -132f);
@@ -51,7 +51,12 @@ namespace Rimbara.UI
 
             // Thin strips and prompts: centred, with side padding.
             Text(canvas, "Controls reminder", "Controls text", 26f, 17f, TextAlignmentOptions.Center, 18f, -6f);
-            Text(canvas, "Next destination", "Waypoint instruction", 28f, 18f, TextAlignmentOptions.Center, 16f, -8f);
+            TextAt(canvas, "Arunika field map", "Map title", 18f, 11.5f, TextAlignmentOptions.Left, 24f, 64f, -18f);
+            TextAt(canvas, "Arunika field map", "Map M hint", 18f, 11f, TextAlignmentOptions.Right, 24f, 24f, -18f);
+            Rect(canvas, "Arunika field map", "Map coordinates", 204f, 24f, -44f);
+            Text(canvas, "Next destination", "Waypoint distance", 22f, 16f, TextAlignmentOptions.Center, 16f, -4f);
+            CenterChild(canvas, "Next destination", "Waypoint 3D arrow", new Vector2(84f, 84f), new Vector2(0f, -22f));
+            Text(canvas, "Next destination", "Waypoint instruction", 24f, 15.5f, TextAlignmentOptions.Center, 16f, -112f);
             Text(canvas, "Interaction prompt", "Interaction text", 30f, 20f, TextAlignmentOptions.Center, 20f, -13f);
             Text(canvas, "Feedback toast", "Feedback text", 34f, 20f, TextAlignmentOptions.Center, 20f, -13f);
 
@@ -197,6 +202,19 @@ namespace Rimbara.UI
             child.pivot = new Vector2(0f, 1f);
             child.sizeDelta = new Vector2(panel.rect.width - padding * 2f, height);
             child.anchoredPosition = new Vector2(padding, top);
+        }
+
+        private static void CenterChild(Canvas canvas, string panelName, string childName, Vector2 size, Vector2 offset)
+        {
+            RectTransform panel = Find(canvas.transform, panelName);
+            if (panel == null) return;
+            RectTransform child = Find(panel, childName);
+            if (child == null) return;
+            child.anchorMin = new Vector2(0.5f, 1f);
+            child.anchorMax = new Vector2(0.5f, 1f);
+            child.pivot = new Vector2(0.5f, 1f);
+            child.sizeDelta = size;
+            child.anchoredPosition = offset;
         }
 
         private static void InsetFill(Canvas canvas, string panelName, string barName, string fillName, float inset)

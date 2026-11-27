@@ -11,6 +11,8 @@ namespace Rimbara.UI
         public Canvas Canvas;
         public GameObject Gameplay;
         public GameObject Menu;
+        public GameObject ZoneSelect;
+        public GameObject Settings;
         public GameObject Briefing;
         public GameObject Controls;
         public GameObject Pause;
@@ -36,14 +38,19 @@ namespace Rimbara.UI
         public RectTransform TargetDot;
         public Button Start;
         public Button Begin;
+        public Button ZoneABegin;
         public Button OpenControls;
+        public Button OpenSettings;
         public Button ControlsBack;
         public Button BriefingBack;
+        public Button SettingsBack;
+        public Button ZoneSelectBack;
         public Button Resume;
         public Button PauseMenu;
         public Button Replay;
         public Button VictoryMenu;
         public Button[] Quit;
         public Slider Volume;
+        public MenuScreensController MenuScreens;
     }
 }

@@ -2,6 +2,7 @@ using Rimbara.Interaction;
 using Rimbara.Mission;
 using Rimbara.Player;
 using TMPro;
+using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -31,8 +32,10 @@ namespace Rimbara.UI
         private bool rangerDialogue;
         private RestoredChapter restored;
         private bool elderBriefing;
-        private string speaker = "KOORDINATOR MISI";
+        private string speaker = "BIMA PRATAMA";
+        private string speakerRole = "KOORDINATOR MISI";
         private string narration = string.Empty;
+        private GameObject portraitFrame;
         private const float RevealCharactersPerSecond = 55f;
         private const float PanelFadeSeconds = 0.16f;
         private const float InputGraceSeconds = 0.22f;
@@ -43,6 +46,34 @@ namespace Rimbara.UI
         private float dialogueOpenedAt;
         private CanvasGroup dialogueGroup;
         private Button dialogueSurface;
+        private WaypointArrow3D waypointArrow;
+        private TMP_Text waypointDistance;
+        private GameObject waypointRoot;
+        private GameObject crosshairH;
+        private GameObject crosshairV;
+        private readonly Button[] choiceButtons = new Button[2];
+        private readonly TMP_Text[] choiceLabels = new TMP_Text[2];
+        private RectTransform dialogueDivider;
+        private DialogueOption[][] optionGroups;
+        private string reactionOverride;
+        private bool portraitShown;
+        private Transform activeNpc;
+        private Quaternion savedNpcRotation;
+        private Quaternion savedPlayerRotation;
+        private Quaternion playerTargetRot;
+        private Quaternion npcTargetRot;
+        private Animator activeNpcAnimator;
+        private AnimatorUpdateMode savedNpcAnimMode;
+        private AnimatorUpdateMode savedPlayerAnimMode;
+        private CinemachineBrain cameraBrain;
+        private bool brainWasEnabled;
+        private bool ownsDialogueCamera;
+        private Vector3 camStartPos;
+        private Vector3 camTargetPos;
+        private Quaternion camStartRot;
+        private Quaternion camTargetRot;
+        private float stageBlend;
+        private GtaRadarController radar;
         [SerializeField] private Vector2 mapCenter = new Vector2(0f, 22f);
         [SerializeField] private Vector2 mapHalfSize = new Vector2(60f, 65f);
         public void ConfigureMap(Vector2 center, Vector2 halfSize) { mapCenter = center; mapHalfSize = halfSize; }
@@ -88,8 +119,8 @@ namespace Rimbara.UI
             RectTransform nextRect = dialogueNext.GetComponent<RectTransform>();
             nextRect.anchorMin = nextRect.anchorMax = new Vector2(1f, 0f);
             nextRect.pivot = new Vector2(0.5f, 0.5f);
-            nextRect.anchoredPosition = new Vector2(-152f, 52f);
-            nextRect.sizeDelta = new Vector2(240f, 56f);
+            nextRect.anchoredPosition = new Vector2(-142f, 44f);
+            nextRect.sizeDelta = new Vector2(220f, 46f);
             if (dialogueNext.GetComponent<ButtonHoverAnimation>() == null)
                 dialogueNext.gameObject.AddComponent<ButtonHoverAnimation>();
 
@@ -100,6 +131,31 @@ namespace Rimbara.UI
             dialogueSurface.transition = Selectable.Transition.None;
             dialogueSurface.targetGraphic = dialoguePanel.GetComponent<Image>();
             dialogueSurface.onClick.AddListener(NextPage);
+            Transform portrait = dialoguePanel.transform.Find("Dialogue portrait frame");
+            if (portrait != null) portraitFrame = portrait.gameObject;
+            Transform div = dialoguePanel.transform.Find("Dialogue divider");
+            if (div != null) dialogueDivider = div as RectTransform;
+            InitializeChoiceButtons();
+            if (view != null && view.Waypoint != null && view.Waypoint.transform.parent != null)
+            {
+                waypointRoot = view.Waypoint.transform.parent.gameObject;
+                HudTheme.ApplyReadableShadow(view.Waypoint, 0.25f);
+                waypointArrow = view.Waypoint.transform.parent.GetComponentInChildren<WaypointArrow3D>(true);
+                Transform dist = view.Waypoint.transform.parent.Find("Waypoint distance");
+                if (dist != null)
+                {
+                    waypointDistance = dist.GetComponent<TMP_Text>();
+                    HudTheme.ApplyReadableShadow(waypointDistance, 0.25f);
+                }
+            }
+            if (view != null && view.Gameplay != null)
+            {
+                Transform ch = view.Gameplay.transform.Find("Crosshair horizontal");
+                Transform cv = view.Gameplay.transform.Find("Crosshair vertical");
+                if (ch != null) crosshairH = ch.gameObject;
+                if (cv != null) crosshairV = cv.gameObject;
+                radar = view.Gameplay.GetComponentInChildren<GtaRadarController>(true);
+            }
         }
 
         private void Start() { Refresh(); }
@@ -112,22 +168,29 @@ namespace Rimbara.UI
                 else { view.Pause.SetActive(false); UpdateDialogue(); }
             }
             if (flow.Mode != ScreenMode.Playing && flow.Mode != ScreenMode.Paused) return;
-            view.PlayerDot.anchoredPosition = MapPosition(rig.transform.position);
+            bool useGtaRadar = radar != null && radar.HasWorldMap;
+            if (!useGtaRadar) view.PlayerDot.anchoredPosition = MapPosition(rig.transform.position);
             bool recovering = recovery != null && recovery.Active;
             Transform target = recovering ? recovery.Destination(rig.transform.position) : chapter.Destination(rig.transform.position);
-            view.TargetDot.gameObject.SetActive(target != null);
+            if (!useGtaRadar) view.TargetDot.gameObject.SetActive(target != null);
             string destination = target == null ? (recovering ? recovery.Title : chapter.Title)
                 : (recovering ? recovery.DestinationLabel(target) : chapter.DestinationLabel(target));
-            view.Waypoint.text = destination.ToUpperInvariant() + (target == null ? string.Empty
-                : "   " + Vector3.Distance(rig.transform.position, target.position).ToString("0") + " m");
-            if (target != null)
+            view.Waypoint.text = destination.ToUpperInvariant();
+            if (waypointDistance != null)
+                waypointDistance.text = target == null ? string.Empty
+                    : Vector3.Distance(rig.transform.position, target.position).ToString("0") + " M";
+            if (target != null && !useGtaRadar)
                 view.TargetDot.anchoredPosition = MapPosition(target.position);
             if (restored != null && restored.Active)
             {
                 target = restored.Destination;
-                view.Waypoint.text = restored.DestinationLabel.ToUpperInvariant() + "   " + Vector3.Distance(rig.transform.position, target.position).ToString("0") + " m";
-                view.TargetDot.anchoredPosition = MapPosition(target.position);
+                view.Waypoint.text = restored.DestinationLabel.ToUpperInvariant();
+                if (waypointDistance != null)
+                    waypointDistance.text = Vector3.Distance(rig.transform.position, target.position).ToString("0") + " M";
+                if (!useGtaRadar) view.TargetDot.anchoredPosition = MapPosition(target.position);
             }
+            if (waypointArrow != null)
+                waypointArrow.UpdateDirection(rig.transform.position, rig.ViewCamera != null ? rig.ViewCamera.transform : null, target);
             bool aimed = chapter.CanExtinguish && sprayer.AimedFire != null && !sprayer.AimedFire.Extinguished;
             view.FireProgress.SetActive(aimed);
             if (aimed) view.FireFill.fillAmount = sprayer.AimedFire.SuppressionFraction;
@@ -144,6 +207,7 @@ namespace Rimbara.UI
         {
             float elapsed = Time.unscaledTime - dialogueOpenedAt;
             if (dialogueGroup != null) dialogueGroup.alpha = Mathf.Clamp01(elapsed / PanelFadeSeconds);
+            UpdateDialogueStage();
 
             if (revealing)
             {
@@ -164,9 +228,16 @@ namespace Rimbara.UI
 
             if (elapsed < InputGraceSeconds) return;
             Keyboard keyboard = Keyboard.current;
-            if (keyboard != null && (keyboard.eKey.wasPressedThisFrame || keyboard.spaceKey.wasPressedThisFrame
-                || keyboard.enterKey.wasPressedThisFrame || keyboard.numpadEnterKey.wasPressedThisFrame))
-                NextPage();
+            if (keyboard != null)
+            {
+                if (keyboard.digit1Key.wasPressedThisFrame && choiceButtons[0] != null && choiceButtons[0].gameObject.activeSelf)
+                { ChooseOption(0); return; }
+                if (keyboard.digit2Key.wasPressedThisFrame && choiceButtons[1] != null && choiceButtons[1].gameObject.activeSelf)
+                { ChooseOption(1); return; }
+                if (keyboard.eKey.wasPressedThisFrame || keyboard.spaceKey.wasPressedThisFrame
+                    || keyboard.enterKey.wasPressedThisFrame || keyboard.numpadEnterKey.wasPressedThisFrame)
+                    NextPage();
+            }
         }
 
         private int ResolveRevealTotal()
@@ -273,10 +344,14 @@ namespace Rimbara.UI
             }
         }
 
-        public void OpenCoordinatorDialogue()
+        public void OpenCoordinatorDialogue() => OpenCoordinatorDialogue(null);
+
+        public void OpenCoordinatorDialogue(Transform npcTransform)
         {
             if (flow.Mode != ScreenMode.Playing || DialogueOpen) return;
-            speaker = DialogueCopy.CoordinatorSpeaker;
+            speaker = DialogueCopy.CoordinatorName;
+            speakerRole = DialogueCopy.CoordinatorSpeaker;
+            SetDialoguePortraitVisible(true);
             elderBriefing = false;
             rangerDialogue = false;
             acceptingBriefing = chapter.Progress.Stage == DisasterStage.Briefing;
@@ -285,46 +360,48 @@ namespace Rimbara.UI
                 : finishingChapter ? (recovery != null ? DialogueCopy.CoordinatorDebrief
                     : new[] { "Kamu telah menyelesaikan Bab Zona Bencana. Bab berikutnya masih dalam pengembangan." })
                 : new[] { chapter.Instruction };
+            optionGroups = acceptingBriefing ? DialogueCopy.CoordinatorBriefingOptions
+                : (finishingChapter && recovery != null) ? DialogueCopy.CoordinatorDebriefOptions
+                : null;
             narration = acceptingBriefing
-                ? "Koordinator Misi menunjuk ke arah asap yang masih membubung di balik posko."
+                ? "Bima Pratama, Koordinator Misi, menunjuk ke arah asap yang masih membubung di balik posko."
                 : finishingChapter
-                    ? "Koordinator Misi menghela napas lega sambil memandang lahan yang mulai bersih."
-                    : "Koordinator Misi mengangguk, lalu mengulang arahan terakhirnya.";
+                    ? "Bima Pratama menghela napas lega sambil memandang lahan yang mulai bersih."
+                    : "Bima Pratama mengangguk, lalu mengulang arahan terakhirnya.";
             page = 0;
+            reactionOverride = null;
             flow.Pause();
             view.Pause.SetActive(false);
+            BeginDialogueStage(npcTransform != null ? npcTransform : FindFirstObjectByType<CoordinatorDialogue>()?.transform);
             ShowDialogue();
             DisplayPage();
-            if (coordinatorAnimator != null)
-            {
-                previousAnimatorMode = coordinatorAnimator.updateMode;
-                coordinatorAnimator.updateMode = AnimatorUpdateMode.UnscaledTime;
-                coordinatorGreetingActive = true;
-                coordinatorAnimator.SetTrigger("Lambai");
-            }
         }
 
         private void DisplayPage()
         {
-            string header = "<b><size=112%><color=" + SpeakerColor + ">" + speaker + "</color></size></b>";
-            string divider = dialogueText != null && dialogueText.spriteAsset != null
-                ? "\n<size=62%><sprite name=\"diamond\" tint=1></size>" : string.Empty;
-            string beat = page == 0 && !string.IsNullOrEmpty(narration)
-                ? "\n<i><size=88%><color=#A89472>" + narration + "</color></size></i>" : string.Empty;
+            string roleTag = string.IsNullOrEmpty(speakerRole)
+                ? string.Empty
+                : "  <size=80%><color=#F3E3C3>—  " + speakerRole + "</color></size>";
+            string header = "<b><size=112%><color=" + SpeakerColor + ">" + speaker + "</color></size></b>" + roleTag;
+            string beat = page == 0 && !string.IsNullOrEmpty(narration) && string.IsNullOrEmpty(reactionOverride)
+                ? "\n<i><size=86%><color=#A89472>" + narration + "</color></size></i>" : string.Empty;
+            string body = string.IsNullOrEmpty(reactionOverride) ? pages[page] : reactionOverride;
             string progress = pages.Length > 1
-                ? "\n\n<size=70%><alpha=#AA>" + (page + 1) + " / " + pages.Length + "<alpha=#FF></size>" : string.Empty;
-            dialogueText.text = header + divider + beat + "\n\n" + pages[page] + progress;
+                ? "  <size=72%><alpha=#AA>(" + (page + 1) + " / " + pages.Length + ")<alpha=#FF></size>" : string.Empty;
+            dialogueText.text = header + "\n<size=55%> </size>" + beat + "\n" + body + progress;
             dialogueText.maxVisibleCharacters = 0;
             revealTotal = -1;
             revealElapsed = 0f;
             revealing = true;
             dialogueNext.GetComponentInChildren<TMP_Text>().text = page + 1 == pages.Length ? "LANJUTKAN" : "BERIKUTNYA";
+            RefreshChoiceButtons();
         }
 
         public void NextPage()
         {
             if (!DialogueOpen || flow.Mode != ScreenMode.Paused) return;
             if (revealing) { CompleteReveal(); return; }
+            reactionOverride = null;
             page++;
             if (page < pages.Length) { DisplayPage(); return; }
             CloseDialogue(true);
@@ -334,17 +411,21 @@ namespace Rimbara.UI
         {
             dialogueOpenedAt = Time.unscaledTime;
             if (dialogueGroup != null) dialogueGroup.alpha = 0f;
+            if (waypointRoot != null) waypointRoot.SetActive(false);
+            if (crosshairH != null) crosshairH.SetActive(false);
+            if (crosshairV != null) crosshairV.SetActive(false);
             dialoguePanel.SetActive(true);
         }
 
         private void CloseDialogue(bool completed)
         {
-            if (coordinatorGreetingActive && coordinatorAnimator != null)
-            {
-                coordinatorAnimator.ResetTrigger("Lambai");
-                coordinatorAnimator.updateMode = previousAnimatorMode;
-                coordinatorGreetingActive = false;
-            }
+            EndDialogueStage();
+            if (waypointRoot != null) waypointRoot.SetActive(true);
+            if (crosshairH != null) crosshairH.SetActive(true);
+            if (crosshairV != null) crosshairV.SetActive(true);
+            reactionOverride = null;
+            optionGroups = null;
+            SetChoiceButtonsActive(false);
             dialoguePanel.SetActive(false);
             revealing = false;
             if (flow.Mode == ScreenMode.Paused) flow.Resume();
@@ -369,15 +450,215 @@ namespace Rimbara.UI
 
         private void OnDestroy()
         {
+            EndDialogueStage();
             if (recovery != null) recovery.Changed -= Refresh;
             if (restored != null) restored.Changed -= Refresh;
             if (chapter != null) chapter.Changed -= Refresh;
             if (flow != null) flow.ModeChanged -= RefreshMode;
             if (dialogueNext != null) dialogueNext.onClick.RemoveListener(NextPage);
             if (dialogueSurface != null) dialogueSurface.onClick.RemoveListener(NextPage);
+            for (int i = 0; i < choiceButtons.Length; i++)
+                if (choiceButtons[i] != null) choiceButtons[i].onClick.RemoveAllListeners();
         }
 
-        public void OpenRangerDialogue()
+        private void SetDialoguePortraitVisible(bool visible)
+        {
+            portraitShown = visible && portraitFrame != null;
+            if (portraitFrame != null) portraitFrame.SetActive(portraitShown);
+            LayoutDialogueBodyAndChoices();
+        }
+
+        private void LayoutDialogueBodyAndChoices()
+        {
+            float left = portraitShown ? 276f : 40f;
+            bool hasChoices = optionGroups != null && page >= 0 && page < optionGroups.Length
+                && optionGroups[page] != null && optionGroups[page].Length > 0;
+            if (dialogueText != null)
+            {
+                RectTransform textRect = dialogueText.rectTransform;
+                textRect.offsetMin = new Vector2(left, hasChoices ? 124f : 90f);
+                textRect.offsetMax = new Vector2(-40f, -24f);
+            }
+            float available = 1140f - left;
+            if (dialogueDivider != null)
+            {
+                dialogueDivider.anchorMin = new Vector2(0f, 1f);
+                dialogueDivider.anchorMax = new Vector2(0f, 1f);
+                dialogueDivider.pivot = new Vector2(0f, 1f);
+                dialogueDivider.anchoredPosition = new Vector2(left, -50f);
+                dialogueDivider.sizeDelta = new Vector2(available, 12f);
+            }
+            const float gap = 14f;
+            float width = (available - gap) * 0.5f;
+            for (int i = 0; i < choiceButtons.Length; i++)
+            {
+                if (choiceButtons[i] == null) continue;
+                RectTransform rect = choiceButtons[i].GetComponent<RectTransform>();
+                rect.anchorMin = Vector2.zero;
+                rect.anchorMax = Vector2.zero;
+                rect.pivot = Vector2.zero;
+                rect.sizeDelta = new Vector2(width, 38f);
+                rect.anchoredPosition = new Vector2(left + i * (width + gap), 76f);
+            }
+        }
+
+        private void InitializeChoiceButtons()
+        {
+            for (int i = 0; i < 2; i++)
+            {
+                int index = i;
+                Transform existing = dialoguePanel.transform.Find("Dialogue choice " + i);
+                GameObject go = existing != null ? existing.gameObject : Instantiate(dialogueNext.gameObject, dialoguePanel.transform);
+                go.name = "Dialogue choice " + i;
+                var btn = go.GetComponent<Button>();
+                btn.onClick = new Button.ButtonClickedEvent();
+                btn.onClick.AddListener(() => ChooseOption(index));
+                var label = go.GetComponentInChildren<TMP_Text>(true);
+                if (label != null)
+                {
+                    label.fontStyle = FontStyles.Normal;
+                    label.enableAutoSizing = true;
+                    label.fontSizeMin = 12f;
+                    label.fontSizeMax = 15.5f;
+                    label.alignment = TextAlignmentOptions.Center;
+                }
+                choiceButtons[i] = btn;
+                choiceLabels[i] = label;
+                go.SetActive(false);
+            }
+        }
+
+        private void RefreshChoiceButtons()
+        {
+            LayoutDialogueBodyAndChoices();
+            DialogueOption[] row = optionGroups != null && page >= 0 && page < optionGroups.Length ? optionGroups[page] : null;
+            for (int i = 0; i < choiceButtons.Length; i++)
+            {
+                if (choiceButtons[i] == null) continue;
+                bool active = row != null && i < row.Length;
+                choiceButtons[i].gameObject.SetActive(active);
+                if (active && choiceLabels[i] != null)
+                    choiceLabels[i].text = (i + 1) + ". " + row[i].Prompt;
+            }
+        }
+
+        private void SetChoiceButtonsActive(bool active)
+        {
+            for (int i = 0; i < choiceButtons.Length; i++)
+                if (choiceButtons[i] != null) choiceButtons[i].gameObject.SetActive(active);
+        }
+
+        public void ChooseOption(int index)
+        {
+            if (!DialogueOpen || flow.Mode != ScreenMode.Paused) return;
+            if (revealing) { CompleteReveal(); return; }
+            DialogueOption[] row = optionGroups != null && page >= 0 && page < optionGroups.Length ? optionGroups[page] : null;
+            if (row == null || index < 0 || index >= row.Length) { NextPage(); return; }
+            string reaction = row[index].NpcReaction;
+            if (!string.IsNullOrEmpty(reaction) && reactionOverride != reaction)
+            {
+                reactionOverride = reaction;
+                DisplayPage();
+                return;
+            }
+            NextPage();
+        }
+
+        private void BeginDialogueStage(Transform npcTransform)
+        {
+            EndDialogueStage();
+            if (rig == null) return;
+            savedPlayerRotation = rig.transform.rotation;
+            if (rig.Animator != null)
+            {
+                savedPlayerAnimMode = rig.Animator.updateMode;
+                rig.Animator.updateMode = AnimatorUpdateMode.UnscaledTime;
+                rig.Animator.speed = 1f;
+                rig.Animator.SetFloat("Speed", 0f);
+            }
+            activeNpc = npcTransform;
+            if (activeNpc != null)
+            {
+                savedNpcRotation = activeNpc.rotation;
+                Vector3 toNpc = activeNpc.position - rig.transform.position;
+                toNpc.y = 0f;
+                Vector3 dir = toNpc.sqrMagnitude > 0.001f ? toNpc.normalized : rig.transform.forward;
+                playerTargetRot = Quaternion.LookRotation(dir);
+                npcTargetRot = Quaternion.LookRotation(-dir);
+
+                activeNpcAnimator = activeNpc.GetComponentInChildren<Animator>(true) ?? coordinatorAnimator;
+                if (activeNpcAnimator != null)
+                {
+                    savedNpcAnimMode = activeNpcAnimator.updateMode;
+                    activeNpcAnimator.updateMode = AnimatorUpdateMode.UnscaledTime;
+                    activeNpcAnimator.speed = 1f;
+                    foreach (AnimatorControllerParameter p in activeNpcAnimator.parameters)
+                        if (p.name == "Lambai" && p.type == AnimatorControllerParameterType.Trigger)
+                        {
+                            coordinatorGreetingActive = true;
+                            activeNpcAnimator.SetTrigger("Lambai");
+                            break;
+                        }
+                }
+
+                if (rig.ViewCamera != null)
+                {
+                    cameraBrain = rig.ViewCamera.GetComponent<CinemachineBrain>();
+                    brainWasEnabled = cameraBrain != null && cameraBrain.enabled;
+                    if (cameraBrain != null) cameraBrain.enabled = false;
+                    ownsDialogueCamera = true;
+                    camStartPos = rig.ViewCamera.transform.position;
+                    camStartRot = rig.ViewCamera.transform.rotation;
+
+                    Vector3 right = Vector3.Cross(Vector3.up, dir).normalized;
+                    Vector3 eyeNpc = activeNpc.position + Vector3.up * 1.48f;
+                    Vector3 desiredPos = rig.transform.position + Vector3.up * 1.62f - dir * 0.95f + right * 0.56f;
+                    if (Physics.Linecast(eyeNpc, desiredPos, out RaycastHit hit, 1 << 8, QueryTriggerInteraction.Ignore))
+                        desiredPos = hit.point + (eyeNpc - desiredPos).normalized * 0.2f;
+                    camTargetPos = desiredPos;
+                    camTargetRot = Quaternion.LookRotation((eyeNpc - Vector3.up * 0.14f - desiredPos).normalized);
+                }
+            }
+            stageBlend = 0f;
+        }
+
+        private void UpdateDialogueStage()
+        {
+            if (rig == null || activeNpc == null) return;
+            stageBlend = Mathf.Clamp01(stageBlend + Time.unscaledDeltaTime * 3.2f);
+            float s = Mathf.SmoothStep(0f, 1f, stageBlend);
+            rig.transform.rotation = Quaternion.Slerp(savedPlayerRotation, playerTargetRot, s);
+            activeNpc.rotation = Quaternion.Slerp(savedNpcRotation, npcTargetRot, s);
+            if (ownsDialogueCamera && rig.ViewCamera != null)
+                rig.ViewCamera.transform.SetPositionAndRotation(
+                    Vector3.Lerp(camStartPos, camTargetPos, s),
+                    Quaternion.Slerp(camStartRot, camTargetRot, s));
+        }
+
+        private void EndDialogueStage()
+        {
+            if (activeNpcAnimator != null)
+            {
+                if (coordinatorGreetingActive) activeNpcAnimator.ResetTrigger("Lambai");
+                activeNpcAnimator.updateMode = savedNpcAnimMode;
+                activeNpcAnimator = null;
+            }
+            coordinatorGreetingActive = false;
+            if (activeNpc != null)
+            {
+                activeNpc.rotation = savedNpcRotation;
+                activeNpc = null;
+            }
+            if (rig != null && rig.Animator != null)
+                rig.Animator.updateMode = savedPlayerAnimMode;
+            if (ownsDialogueCamera && cameraBrain != null)
+                cameraBrain.enabled = brainWasEnabled;
+            ownsDialogueCamera = false;
+        }
+
+        public void OpenRangerDialogue() => OpenRangerDialogue(null);
+
+        public void OpenRangerDialogue(Transform npcTransform)
         {
             if (flow.Mode != ScreenMode.Playing || DialogueOpen || recovery == null || !recovery.Active) return;
             acceptingBriefing = finishingChapter = false;
@@ -385,10 +666,13 @@ namespace Rimbara.UI
             elderBriefing = false;
             rangerStage = recovery.Progress.Stage;
             speaker = DialogueCopy.RangerSpeaker;
+            speakerRole = string.Empty;
+            SetDialoguePortraitVisible(false);
             pages = rangerStage == RecoveryStage.Briefing ? DialogueCopy.RangerBriefing
                 : rangerStage == RecoveryStage.PlantingDebrief ? DialogueCopy.RangerPlantingDebrief(recovery.Progress.WasteGoal)
                 : rangerStage == RecoveryStage.EcosystemDebrief ? DialogueCopy.RangerEcosystemDebrief(restored != null)
                 : new[] { recovery.Instruction };
+            optionGroups = rangerStage == RecoveryStage.Briefing ? DialogueCopy.RangerBriefingOptions : null;
             narration = rangerStage == RecoveryStage.Briefing
                 ? "Petugas Hutan menyerahkan sekotak bibit dengan hati-hati."
                 : rangerStage == RecoveryStage.PlantingDebrief
@@ -397,23 +681,36 @@ namespace Rimbara.UI
                         ? "Petugas Hutan menunjuk ke arah sungai yang mulai jernih."
                         : "Petugas Hutan memeriksa persemaian sambil berbicara.";
             page = 0;
+            reactionOverride = null;
             flow.Pause();
             view.Pause.SetActive(false);
+            BeginDialogueStage(npcTransform != null ? npcTransform : FindFirstObjectByType<RangerDialogue>()?.transform);
             ShowDialogue();
             DisplayPage();
         }
 
-        public void OpenElderDialogue()
+        public void OpenElderDialogue() => OpenElderDialogue(null);
+
+        public void OpenElderDialogue(Transform npcTransform)
         {
             if (flow.Mode != ScreenMode.Playing || DialogueOpen || restored == null || !restored.EnvironmentReady) return;
             rangerDialogue = acceptingBriefing = finishingChapter = false;
             elderBriefing = restored.Progress.Stage == RestoredStage.ElderBriefing;
             speaker = DialogueCopy.ElderSpeaker;
+            speakerRole = string.Empty;
+            SetDialoguePortraitVisible(false);
             pages = elderBriefing ? DialogueCopy.ElderBriefing : new[] { restored.Instruction };
+            optionGroups = elderBriefing ? DialogueCopy.ElderBriefingOptions : null;
             narration = elderBriefing
                 ? "Tetua Desa berdiri di tengah desa, matanya berkaca-kaca memandang hutan yang kembali hijau."
                 : "Tetua Desa tersenyum dan menepuk bahumu pelan.";
-            page = 0; flow.Pause(); view.Pause.SetActive(false); ShowDialogue(); DisplayPage();
+            page = 0;
+            reactionOverride = null;
+            flow.Pause();
+            view.Pause.SetActive(false);
+            BeginDialogueStage(npcTransform != null ? npcTransform : FindFirstObjectByType<ElderDialogue>()?.transform);
+            ShowDialogue();
+            DisplayPage();
         }
     }
 }

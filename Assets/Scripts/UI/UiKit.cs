@@ -28,8 +28,25 @@ namespace Rimbara.UI
         public Sprite Popup;
         public Sprite Tooltip;
         public Sprite Inset;
+        public Sprite CardInset;
+        public Sprite RowInset;
         public Sprite Divider;
         public Sprite Ribbon;
+
+        [Header("Radar Map")]
+        public Sprite WorldMap;
+        public Sprite RadarBezel;
+        public Sprite RadarChevron;
+        public Sprite RadarFov;
+        public Sprite RadarBlipDiamond;
+        public Sprite RadarBlipDot;
+        public Vector2 WorldMin = new Vector2(-60f, -55f);
+        public Vector2 WorldSize = new Vector2(120f, 120f);
+
+        [Header("Zone Thumbnails")]
+        public Sprite ZoneAThumbnail;
+        public Sprite ZoneBThumbnail;
+        public Sprite ZoneCThumbnail;
 
         [Header("Buttons")]
         public Sprite ButtonPrimaryNormal;
@@ -65,6 +82,13 @@ namespace Rimbara.UI
         public Sprite SlotEmpty;
         public Sprite SlotSelected;
         public Sprite SlotLocked;
+
+        [Header("Icons")]
+        public Sprite IconQuest;
+        public Sprite IconCompass;
+        public Sprite IconBag;
+        public Sprite IconCleanup;
+        public Sprite IconEmber;
 
         public bool IsComplete => MissingRoles().Count == 0;
 

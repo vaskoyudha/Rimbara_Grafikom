@@ -2,9 +2,23 @@ using System.Collections.Generic;
 
 namespace Rimbara.UI
 {
+    public readonly struct DialogueOption
+    {
+        public readonly string Prompt;
+        public readonly string NpcReaction;
+
+        public DialogueOption(string prompt, string npcReaction)
+        {
+            Prompt = prompt;
+            NpcReaction = npcReaction;
+        }
+    }
+
     public static class DialogueCopy
     {
+        public const string CoordinatorName = "BIMA PRATAMA";
         public const string CoordinatorSpeaker = "KOORDINATOR MISI";
+        public static string CoordinatorHeader => CoordinatorName + "  <sprite name=\"diamond\" tint=1>  " + CoordinatorSpeaker;
         public const string RangerSpeaker = "PETUGAS HUTAN";
         public const string ElderSpeaker = "TETUA DESA";
         public const string NarratorSpeaker = "NARATOR";
@@ -14,7 +28,7 @@ namespace Rimbara.UI
         {
             NarratorSpeaker,
             VillagerSpeaker,
-            CoordinatorSpeaker,
+            CoordinatorName + "  —  " + CoordinatorSpeaker,
             NarratorSpeaker
         };
 
@@ -72,6 +86,72 @@ namespace Rimbara.UI
             "Bawalah bibit terakhir ini ke lahan pemulihan desa. Tanam dan siram sebagai janji untuk menjaga hutan. Setelah itu, datangi titik pandang dan lihat apa yang telah kita pulihkan bersama."
         };
 
+        public static readonly DialogueOption[][] CoordinatorBriefingOptions =
+        {
+            new[]
+            {
+                new DialogueOption("Siap membantu. Apa situasinya sekarang?", string.Empty),
+                new DialogueOption("Bagaimana kondisi warga di posko?", "Warga sudah dievakuasi ke area aman di sekitar posko. Mereka berharap api di hutan segera padam sebelum angin malam datang.")
+            },
+            new[]
+            {
+                new DialogueOption("Di mana saya ambil alat pemadam?", string.Empty),
+                new DialogueOption("Apakah apinya masih bisa menyebar?", "Masih berisiko jika dibiarkan. Karena itu kita harus memadamkan semua titik bertanda lebih dulu sebelum mulai menanam.")
+            },
+            new[]
+            {
+                new DialogueOption("Siap, saya ambil perlengkapan sekarang!", string.Empty),
+                new DialogueOption("Dimengerti, saya akan berhati-hati.", string.Empty)
+            }
+        };
+
+        public static readonly DialogueOption[][] CoordinatorDebriefOptions =
+        {
+            new[]
+            {
+                new DialogueOption("Lahan sudah aman. Apa langkah selanjutnya?", string.Empty),
+                new DialogueOption("Apakah tanahnya sudah siap ditanami?", "Lahan yang bersih sudah siap digemburkan. Petugas Hutan di persemaian sudah menyiapkan bibit asli Arunika untukmu.")
+            },
+            new[]
+            {
+                new DialogueOption("Baik, saya temui Petugas Hutan.", string.Empty),
+                new DialogueOption("Saya segera menuju persemaian!", string.Empty)
+            }
+        };
+
+        public static readonly DialogueOption[][] RangerBriefingOptions =
+        {
+            new[]
+            {
+                new DialogueOption("Apa yang paling dibutuhkan hutan ini?", string.Empty),
+                new DialogueOption("Apakah satwa akan kembali setelah ini?", "Ya, perlahan. Begitu pohon muda tumbuh dan sungai bersih, burung dan satwa kecil akan berani kembali ke sini.")
+            },
+            new[]
+            {
+                new DialogueOption("Saya ambil bibitnya dan mulai menanam!", string.Empty),
+                new DialogueOption("Dimengerti, akan saya rawat tiap bibit.", string.Empty)
+            }
+        };
+
+        public static readonly DialogueOption[][] ElderBriefingOptions =
+        {
+            new[]
+            {
+                new DialogueOption("Saya senang melihat desa kembali hidup.", string.Empty),
+                new DialogueOption("Bagaimana perasaan warga sekarang?", "Semua bersyukur. Anak-anak mulai berani bermain di tepi hutan lagi, dan udara desa terasa segar kembali.")
+            },
+            new[]
+            {
+                new DialogueOption("Perjalanan ini milik kita semua.", string.Empty),
+                new DialogueOption("Apa janji terakhir untuk hutan ini?", string.Empty)
+            },
+            new[]
+            {
+                new DialogueOption("Saya tanam bibit terakhir sekarang.", string.Empty),
+                new DialogueOption("Dengan senang hati, Tetua.", string.Empty)
+            }
+        };
+
         public static IEnumerable<string> AllPages(int wasteGoal)
         {
             foreach (string line in OpeningLines) yield return line;
@@ -82,6 +162,13 @@ namespace Rimbara.UI
             foreach (string page in RangerEcosystemDebrief(true)) yield return page;
             foreach (string page in RangerEcosystemDebrief(false)) yield return page;
             foreach (string page in ElderBriefing) yield return page;
+            foreach (DialogueOption[][] group in new[] { CoordinatorBriefingOptions, CoordinatorDebriefOptions, RangerBriefingOptions, ElderBriefingOptions })
+                foreach (DialogueOption[] row in group)
+                    foreach (DialogueOption opt in row)
+                    {
+                        yield return opt.Prompt;
+                        if (!string.IsNullOrEmpty(opt.NpcReaction)) yield return opt.NpcReaction;
+                    }
         }
     }
 }

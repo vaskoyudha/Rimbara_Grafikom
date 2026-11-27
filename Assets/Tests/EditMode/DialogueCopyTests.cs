@@ -18,7 +18,9 @@ namespace Rimbara.Tests
         [Test]
         public void SpeakerNamesAreIndonesian()
         {
+            Assert.That(DialogueCopy.CoordinatorName, Is.EqualTo("BIMA PRATAMA"));
             Assert.That(DialogueCopy.CoordinatorSpeaker, Is.EqualTo("KOORDINATOR MISI"));
+            Assert.That(DialogueCopy.CoordinatorHeader, Does.Contain("BIMA PRATAMA").And.Contain("KOORDINATOR MISI"));
             Assert.That(DialogueCopy.RangerSpeaker, Is.EqualTo("PETUGAS HUTAN"));
             Assert.That(DialogueCopy.ElderSpeaker, Is.EqualTo("TETUA DESA"));
         }
@@ -52,6 +54,15 @@ namespace Rimbara.Tests
             Assert.That(p3, Is.EqualTo(0f).Within(0.001f));
             Assert.That(OpeningDirector.ShotForTime(30.0f, out float pEnd), Is.EqualTo(3));
             Assert.That(pEnd, Is.EqualTo(1f).Within(0.001f));
+        }
+
+        [Test]
+        public void InteractiveDialogueOptionsMatchBriefingPages()
+        {
+            Assert.That(DialogueCopy.CoordinatorBriefingOptions.Length, Is.EqualTo(DialogueCopy.CoordinatorBriefing.Length));
+            Assert.That(DialogueCopy.CoordinatorDebriefOptions.Length, Is.EqualTo(DialogueCopy.CoordinatorDebrief.Length));
+            Assert.That(DialogueCopy.RangerBriefingOptions.Length, Is.EqualTo(DialogueCopy.RangerBriefing.Length));
+            Assert.That(DialogueCopy.ElderBriefingOptions.Length, Is.EqualTo(DialogueCopy.ElderBriefing.Length));
         }
     }
 }

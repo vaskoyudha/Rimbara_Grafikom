@@ -17,7 +17,7 @@ namespace Rimbara.Interaction
         public override InteractionResult Interact(VolunteerActor actor)
         {
             if (!Available || !InRange(actor)) return new InteractionResult(false, "Dekati Tetua Desa setelah pemulihan selesai.");
-            hud.OpenElderDialogue(); return new InteractionResult(true, "Tetua Desa / Hutan Arunika");
+            hud.OpenElderDialogue(transform); return new InteractionResult(true, "Tetua Desa / Hutan Arunika");
         }
     }
 }

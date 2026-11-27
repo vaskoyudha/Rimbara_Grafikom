@@ -26,7 +26,7 @@ namespace Rimbara.Interaction
         public override InteractionResult Interact(VolunteerActor actor)
         {
             if (!InRange(actor)) return new InteractionResult(false, "Dekati koordinator.");
-            hud.OpenCoordinatorDialogue();
+            hud.OpenCoordinatorDialogue(transform);
             return new InteractionResult(true, "Posko Misi Darurat");
         }
     }

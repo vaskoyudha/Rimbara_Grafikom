@@ -42,7 +42,11 @@ namespace Rimbara.Editor
             kit.Popup = FindSprite(root, "Panel_Runestone") ?? kit.Window;
             kit.Tooltip = FindSprite(root, "Tooltip_Ink") ?? kit.Popup;
             kit.Inset = FindSprite(root, "Tile_Leather") ?? kit.Window;
-            kit.Divider = FindSprite(root, "Divider_Gold");
+            Sprite externalCardInset = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Art/UI/Panels/CardInset_DarkGoldBracket.png");
+            kit.CardInset = externalCardInset != null ? externalCardInset : kit.Tooltip;
+            kit.RowInset = FindSprite(root, "Slot_Crimson_Inset") ?? kit.Inset;
+            Sprite externalDivider = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Art/UI/Dividers/ElegantDivider_Ornate.png");
+            kit.Divider = externalDivider != null ? externalDivider : FindSprite(root, "Divider_Gold");
             kit.Ribbon = FindSprite(root, "Ornament_Horizontal");
 
             kit.ButtonPrimaryNormal = FindSprite(root, "Button_Crimson");
@@ -75,6 +79,31 @@ namespace Rimbara.Editor
             kit.SlotEmpty = FindSprite(root, "Slot_Bone");
             kit.SlotSelected = FindSprite(root, "Slot_Emerald_Glow");
             kit.SlotLocked = FindSprite(root, "Slot_Obsidian_Deep");
+
+            kit.IconQuest = FindSprite(root, "Scroll_Color");
+            kit.IconCompass = FindSprite(root, "Compass");
+            kit.IconBag = FindSprite(root, "Backpack");
+            kit.IconCleanup = FindSprite(root, "Broom_Color");
+            kit.IconEmber = FindSprite(root, "Feather_Color");
+
+            kit.WorldMap = AssetDatabase.LoadAssetAtPath<Sprite>(TopDownMapBaker.MapPath);
+            kit.RadarBezel = AssetDatabase.LoadAssetAtPath<Sprite>(TopDownMapBaker.BezelPath);
+            kit.RadarChevron = AssetDatabase.LoadAssetAtPath<Sprite>(TopDownMapBaker.ChevronPath);
+            kit.RadarFov = AssetDatabase.LoadAssetAtPath<Sprite>(TopDownMapBaker.FovPath);
+            kit.RadarBlipDiamond = AssetDatabase.LoadAssetAtPath<Sprite>(TopDownMapBaker.DiamondPath);
+            kit.RadarBlipDot = AssetDatabase.LoadAssetAtPath<Sprite>(TopDownMapBaker.DotPath);
+            kit.ZoneAThumbnail = AssetDatabase.LoadAssetAtPath<Sprite>(TopDownMapBaker.ZoneAPath);
+            kit.ZoneBThumbnail = AssetDatabase.LoadAssetAtPath<Sprite>(TopDownMapBaker.ZoneBPath);
+            kit.ZoneCThumbnail = AssetDatabase.LoadAssetAtPath<Sprite>(TopDownMapBaker.ZoneCPath);
+            Terrain activeTerrain = Terrain.activeTerrain;
+            if (activeTerrain != null && activeTerrain.terrainData != null)
+            {
+                Vector3 tp = activeTerrain.transform.position;
+                Vector3 ts = activeTerrain.terrainData.size;
+                float span = Mathf.Max(ts.x, ts.z);
+                kit.WorldMin = new Vector2(tp.x, tp.z);
+                kit.WorldSize = new Vector2(span, span);
+            }
 
             if (created) AssetDatabase.CreateAsset(kit, AssetPath);
             EditorUtility.SetDirty(kit);
