@@ -17,6 +17,7 @@ namespace Rimbara.Player
         private InputAction interact;
         private InputAction spray;
         private InputAction pause;
+        private InputAction inventory;
         private bool testMode;
         private Vector2 testMove;
         private Vector2 testLook;
@@ -32,6 +33,7 @@ namespace Rimbara.Player
         public bool InteractPressed => GameplayEnabled && (testMode ? testInteract : interact.WasPressedThisFrame());
         public bool SprayHeld => GameplayEnabled && (testMode ? testSpray : spray.IsPressed());
         public bool PausePressed => !testMode && pause.WasPressedThisFrame();
+        public bool InventoryPressed => !testMode && inventory.WasPressedThisFrame();
 
         private void Awake()
         {
@@ -51,6 +53,7 @@ namespace Rimbara.Player
             spray.AddBinding("<Gamepad>/rightTrigger");
             pause = actions.AddAction("Pause", InputActionType.Button, "<Keyboard>/escape");
             pause.AddBinding("<Gamepad>/start");
+            inventory = actions.AddAction("Inventory", InputActionType.Button, "<Keyboard>/i");
         }
 
         private void OnEnable() { actions?.Enable(); }

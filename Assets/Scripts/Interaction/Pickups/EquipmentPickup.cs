@@ -26,18 +26,33 @@ namespace Rimbara.Interaction
             pickupVisual = visual;
             beacon = marker;
         }
-
-        public override string GetPrompt(VolunteerActor actor) => chapter.Progress.Stage == DisasterStage.Equipment
-            ? "[E]  Ambil perlengkapan pemadaman" : "Temui koordinator sebelum mengambil perlengkapan";
-
+        public override string GetPrompt(VolunteerActor actor)
+        {
+            return Available
+                ? "[E]  Ambil perlengkapan pemadaman"
+                : "Temui koordinator sebelum mengambil perlengkapan.";
+        }
         public override InteractionResult Interact(VolunteerActor actor)
         {
-            if (!InRange(actor) || !chapter.CollectEquipment())
-                return new InteractionResult(false, "Baca pengarahan darurat, lalu ambil perlengkapan.");
+            if (!Available || !InRange(actor))
+                return new InteractionResult(false, "Ikuti pengarahan, lalu dekati alat.");
+
+            if (!actor.MulaiAmbilAlat(this))
+                return new InteractionResult(false, "Sedang mengambil alat.");
+
+            return new InteractionResult(true, "Mengambil perlengkapan pemadaman…");
+        }
+
+        public InteractionResult SelesaikanPengambilan(VolunteerActor actor)
+        {
+            if (!Available || !InRange(actor) || !chapter.CollectEquipment())
+                return new InteractionResult(false, "Dekati alat untuk mengambilnya kembali.");
+
             SetFocused(false);
             if (pickupVisual != null) pickupVisual.SetActive(false);
             if (beacon != null) beacon.SetActive(false);
-            return new InteractionResult(true, "Perlengkapan siap. Dekati api bertanda, bidik, lalu tahan KLIK KIRI.");
+
+            return new InteractionResult(true, "Perlengkapan siap. Dekati api bertanda.");
         }
     }
 }

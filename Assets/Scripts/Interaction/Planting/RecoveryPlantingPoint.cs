@@ -51,9 +51,22 @@ namespace Rimbara.Interaction
             if (!Available || !InRange(actor)) return new InteractionResult(false, "Dekati lahan tanam pada misi Tanam Masa Depan.");
             if (!Dug && chapter.Progress.Dig(objectId, chapter.Running))
                 return new InteractionResult(true, "Lubang tanam siap. Tekan E lagi untuk menanam bibit yang dibawa.");
-            if (!Planted && chapter.Progress.Plant(objectId, chapter.Running))
-                return new InteractionResult(true, "Bibit ditanam. Bidik bibit dan tahan KLIK KIRI untuk menyiramnya.");
+            if (Dug && !Planted && chapter.Progress.Carried > 0)
+            {
+                if (!actor.MulaiTanamBibit(this))
+                    return new InteractionResult(false, "Tunggu sampai gerakan pemain selesai.");
+
+                return new InteractionResult(true, "Sedang menanam bibit…");
+            }
             return new InteractionResult(false, Planted ? "Gunakan semprotan air untuk merawat bibit ini." : "Kamu belum membawa bibit. Datangi persemaian.");
+        }
+        public InteractionResult SelesaikanPenanaman(VolunteerActor actor)
+        {
+            if (!Available || !Dug || Planted || !InRange(actor) ||
+                !chapter.Progress.Plant(objectId, chapter.Running))
+                return new InteractionResult(false, "Bibit belum ditanam. Dekati lahan lalu coba lagi.");
+
+            return new InteractionResult(true, "Bibit ditanam. Bidik bibit dan tahan KLIK KIRI untuk menyiramnya.");
         }
         public bool ReceiveWater(float seconds)
         {

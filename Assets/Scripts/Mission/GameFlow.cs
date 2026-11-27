@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 namespace Rimbara.Mission
 {
-    public enum ScreenMode { Menu, Briefing, Controls, Playing, Paused, Victory, Transition, Cinematic }
+    public enum ScreenMode { Menu, Briefing, Controls, Playing, Paused, Victory, Transition, Cinematic, Inventory }
 
     [DefaultExecutionOrder(-40)]
     public sealed class GameFlow : MonoBehaviour
@@ -14,6 +14,7 @@ namespace Rimbara.Mission
         [SerializeField] private MissionSystem missions;
         [SerializeField] private VolunteerRig rig;
         [SerializeField] private VolunteerInput input;
+        [SerializeField] private GameObject inventoryPanel;
         private static ScreenMode nextLaunchMode = ScreenMode.Menu;
         private ScreenMode resumeMode = ScreenMode.Playing;
         public ScreenMode Mode { get; private set; } = ScreenMode.Menu;
@@ -40,6 +41,18 @@ namespace Rimbara.Mission
 
         private void Update()
         {
+            if (Mode == ScreenMode.Inventory)
+            {
+                if (input.InventoryPressed || input.PausePressed)
+                    SetMode(ScreenMode.Playing);
+
+                return;
+            }
+            if (Mode == ScreenMode.Playing && input.InventoryPressed && inventoryPanel != null)
+            {
+                SetMode(ScreenMode.Inventory);
+                return;
+            }
             if (Mode == ScreenMode.Playing) ElapsedSeconds += Time.deltaTime;
             if (input.PausePressed)
             {
@@ -130,15 +143,29 @@ namespace Rimbara.Mission
         private void SetMode(ScreenMode mode)
         {
             Mode = mode;
+
             bool playing = mode == ScreenMode.Playing;
-            bool gameplayView = playing || mode == ScreenMode.Paused || mode == ScreenMode.Victory || mode == ScreenMode.Transition || mode == ScreenMode.Cinematic;
-            Time.timeScale = mode == ScreenMode.Paused ? 0f : 1f;
+            bool bagOpen = mode == ScreenMode.Inventory;
+            bool frozen = mode == ScreenMode.Paused || bagOpen;
+            bool gameplayView = playing || frozen || mode == ScreenMode.Victory
+                || mode == ScreenMode.Transition || mode == ScreenMode.Cinematic;
+
+            Time.timeScale = frozen ? 0f : 1f;
             state.SetSessionRunning(playing);
-            rig.SetControlsEnabled(playing, mode == ScreenMode.Paused);
+            rig.SetControlsEnabled(playing, frozen);
             rig.SetGameplayView(gameplayView);
-            Cursor.lockState = playing && !DiagnosticMode ? CursorLockMode.Locked : CursorLockMode.None;
+
+            Cursor.lockState = playing && !DiagnosticMode
+                ? CursorLockMode.Locked : CursorLockMode.None;
             Cursor.visible = !playing || DiagnosticMode;
+
             ModeChanged?.Invoke(mode);
+
+            if (inventoryPanel != null)
+            {
+                if (bagOpen) inventoryPanel.transform.SetAsLastSibling();
+                inventoryPanel.SetActive(bagOpen);
+            }
         }
 
         private void OnApplicationFocus(bool focused)
