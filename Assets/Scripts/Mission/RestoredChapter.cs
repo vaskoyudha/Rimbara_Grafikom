@@ -40,6 +40,14 @@ namespace Rimbara.Mission
             director.BeginTransition(); return true;
         }
         public bool AcceptBriefing() => Progress.AcceptBriefing(Running);
+
+        /// <summary>Applies restored environment visuals immediately when loading saved post-transition progress.</summary>
+        public void SyncVisualsFromProgress()
+        {
+            if (Progress == null || director == null || Progress.Stage < RestoredStage.TimeTransition) return;
+            RestoredEnvironment env = director.GetComponent<RestoredEnvironment>();
+            if (env != null) env.ApplyFromSave();
+        }
         public bool VisitViewpoint(string id)
         {
             if (!Progress.Visit(id, Running)) return false;

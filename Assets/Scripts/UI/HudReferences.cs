@@ -13,6 +13,7 @@ namespace Rimbara.UI
         public GameObject Menu;
         public GameObject ZoneSelect;
         public GameObject Settings;
+        public GameObject Achievements;
         public GameObject Briefing;
         public GameObject Controls;
         public GameObject Pause;
@@ -37,13 +38,16 @@ namespace Rimbara.UI
         public RectTransform PlayerDot;
         public RectTransform TargetDot;
         public Button Start;
+        public Button Continue;
         public Button Begin;
         public Button ZoneABegin;
         public Button OpenControls;
         public Button OpenSettings;
+        public Button OpenAchievements;
         public Button ControlsBack;
         public Button BriefingBack;
         public Button SettingsBack;
+        public Button AchievementsBack;
         public Button ZoneSelectBack;
         public Button Resume;
         public Button PauseMenu;

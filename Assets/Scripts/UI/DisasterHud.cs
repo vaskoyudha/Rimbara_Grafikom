@@ -101,28 +101,13 @@ namespace Rimbara.UI
             if (restored != null) restored.Changed += Refresh;
             flow.ModeChanged += RefreshMode;
             dialogueNext.onClick.AddListener(NextPage);
-            TMP_Text caption = dialogueNext.GetComponentInChildren<TMP_Text>();
-            caption.rectTransform.anchorMin = Vector2.zero;
-            caption.rectTransform.anchorMax = Vector2.one;
-            caption.rectTransform.offsetMin = new Vector2(12f, 8f);
-            caption.rectTransform.offsetMax = new Vector2(-12f, -8f);
-            caption.alignment = TextAlignmentOptions.Center;
-            caption.enableAutoSizing = true;
-            caption.fontSizeMin = 14f;
-            caption.fontSizeMax = 22f;
+            dialogueNext.gameObject.SetActive(false);
 
             RectTransform textRect = dialogueText.rectTransform;
             textRect.anchorMin = Vector2.zero;
             textRect.anchorMax = Vector2.one;
-            textRect.offsetMin = new Vector2(40f, 96f);
+            textRect.offsetMin = new Vector2(40f, 88f);
             textRect.offsetMax = new Vector2(-40f, -30f);
-            RectTransform nextRect = dialogueNext.GetComponent<RectTransform>();
-            nextRect.anchorMin = nextRect.anchorMax = new Vector2(1f, 0f);
-            nextRect.pivot = new Vector2(0.5f, 0.5f);
-            nextRect.anchoredPosition = new Vector2(-142f, 44f);
-            nextRect.sizeDelta = new Vector2(220f, 46f);
-            if (dialogueNext.GetComponent<ButtonHoverAnimation>() == null)
-                dialogueNext.gameObject.AddComponent<ButtonHoverAnimation>();
 
             dialogueGroup = dialoguePanel.GetComponent<CanvasGroup>();
             if (dialogueGroup == null) dialogueGroup = dialoguePanel.AddComponent<CanvasGroup>();
@@ -130,7 +115,7 @@ namespace Rimbara.UI
             if (dialogueSurface == null) dialogueSurface = dialoguePanel.AddComponent<Button>();
             dialogueSurface.transition = Selectable.Transition.None;
             dialogueSurface.targetGraphic = dialoguePanel.GetComponent<Image>();
-            dialogueSurface.onClick.AddListener(NextPage);
+            dialogueSurface.onClick.AddListener(OnDialogueSurfaceClicked);
             Transform portrait = dialoguePanel.transform.Find("Dialogue portrait frame");
             if (portrait != null) portraitFrame = portrait.gameObject;
             Transform div = dialoguePanel.transform.Find("Dialogue divider");
@@ -236,7 +221,7 @@ namespace Rimbara.UI
                 { ChooseOption(1); return; }
                 if (keyboard.eKey.wasPressedThisFrame || keyboard.spaceKey.wasPressedThisFrame
                     || keyboard.enterKey.wasPressedThisFrame || keyboard.numpadEnterKey.wasPressedThisFrame)
-                    NextPage();
+                    OnDialogueSurfaceClicked();
             }
         }
 
@@ -362,7 +347,7 @@ namespace Rimbara.UI
                 : new[] { chapter.Instruction };
             optionGroups = acceptingBriefing ? DialogueCopy.CoordinatorBriefingOptions
                 : (finishingChapter && recovery != null) ? DialogueCopy.CoordinatorDebriefOptions
-                : null;
+                : new[] { DialogueCopy.ReminderOptions };
             narration = acceptingBriefing
                 ? "Bima Pratama, Koordinator Misi, menunjuk ke arah asap yang masih membubung di balik posko."
                 : finishingChapter
@@ -393,8 +378,17 @@ namespace Rimbara.UI
             revealTotal = -1;
             revealElapsed = 0f;
             revealing = true;
-            dialogueNext.GetComponentInChildren<TMP_Text>().text = page + 1 == pages.Length ? "LANJUTKAN" : "BERIKUTNYA";
+            if (dialogueNext != null) dialogueNext.gameObject.SetActive(false);
             RefreshChoiceButtons();
+        }
+
+        private void OnDialogueSurfaceClicked()
+        {
+            if (!DialogueOpen || flow.Mode != ScreenMode.Paused) return;
+            if (revealing) { CompleteReveal(); return; }
+            bool hasActiveChoice = (choiceButtons[0] != null && choiceButtons[0].gameObject.activeSelf)
+                || (choiceButtons[1] != null && choiceButtons[1].gameObject.activeSelf);
+            if (!hasActiveChoice) NextPage();
         }
 
         public void NextPage()
@@ -456,7 +450,7 @@ namespace Rimbara.UI
             if (chapter != null) chapter.Changed -= Refresh;
             if (flow != null) flow.ModeChanged -= RefreshMode;
             if (dialogueNext != null) dialogueNext.onClick.RemoveListener(NextPage);
-            if (dialogueSurface != null) dialogueSurface.onClick.RemoveListener(NextPage);
+            if (dialogueSurface != null) dialogueSurface.onClick.RemoveListener(OnDialogueSurfaceClicked);
             for (int i = 0; i < choiceButtons.Length; i++)
                 if (choiceButtons[i] != null) choiceButtons[i].onClick.RemoveAllListeners();
         }
@@ -471,12 +465,13 @@ namespace Rimbara.UI
         private void LayoutDialogueBodyAndChoices()
         {
             float left = portraitShown ? 276f : 40f;
-            bool hasChoices = optionGroups != null && page >= 0 && page < optionGroups.Length
-                && optionGroups[page] != null && optionGroups[page].Length > 0;
+            bool hasChoices = !string.IsNullOrEmpty(reactionOverride)
+                || (optionGroups != null && page >= 0 && page < optionGroups.Length
+                    && optionGroups[page] != null && optionGroups[page].Length > 0);
             if (dialogueText != null)
             {
                 RectTransform textRect = dialogueText.rectTransform;
-                textRect.offsetMin = new Vector2(left, hasChoices ? 124f : 90f);
+                textRect.offsetMin = new Vector2(left, hasChoices ? 94f : 40f);
                 textRect.offsetMax = new Vector2(-40f, -24f);
             }
             float available = 1140f - left;
@@ -497,8 +492,8 @@ namespace Rimbara.UI
                 rect.anchorMin = Vector2.zero;
                 rect.anchorMax = Vector2.zero;
                 rect.pivot = Vector2.zero;
-                rect.sizeDelta = new Vector2(width, 38f);
-                rect.anchoredPosition = new Vector2(left + i * (width + gap), 76f);
+                rect.sizeDelta = new Vector2(width, 54f);
+                rect.anchoredPosition = new Vector2(left + i * (width + gap), 24f);
             }
         }
 
@@ -516,10 +511,10 @@ namespace Rimbara.UI
                 var label = go.GetComponentInChildren<TMP_Text>(true);
                 if (label != null)
                 {
-                    label.fontStyle = FontStyles.Normal;
+                    label.fontStyle = FontStyles.SmallCaps;
                     label.enableAutoSizing = true;
-                    label.fontSizeMin = 12f;
-                    label.fontSizeMax = 15.5f;
+                    label.fontSizeMin = 11f;
+                    label.fontSizeMax = 14.5f;
                     label.alignment = TextAlignmentOptions.Center;
                 }
                 choiceButtons[i] = btn;
@@ -531,7 +526,9 @@ namespace Rimbara.UI
         private void RefreshChoiceButtons()
         {
             LayoutDialogueBodyAndChoices();
-            DialogueOption[] row = optionGroups != null && page >= 0 && page < optionGroups.Length ? optionGroups[page] : null;
+            DialogueOption[] row = !string.IsNullOrEmpty(reactionOverride)
+                ? DialogueCopy.ReactionFollowUpOptions
+                : (optionGroups != null && page >= 0 && page < optionGroups.Length ? optionGroups[page] : null);
             for (int i = 0; i < choiceButtons.Length; i++)
             {
                 if (choiceButtons[i] == null) continue;
@@ -552,10 +549,11 @@ namespace Rimbara.UI
         {
             if (!DialogueOpen || flow.Mode != ScreenMode.Paused) return;
             if (revealing) { CompleteReveal(); return; }
+            if (!string.IsNullOrEmpty(reactionOverride)) { NextPage(); return; }
             DialogueOption[] row = optionGroups != null && page >= 0 && page < optionGroups.Length ? optionGroups[page] : null;
             if (row == null || index < 0 || index >= row.Length) { NextPage(); return; }
             string reaction = row[index].NpcReaction;
-            if (!string.IsNullOrEmpty(reaction) && reactionOverride != reaction)
+            if (!string.IsNullOrEmpty(reaction))
             {
                 reactionOverride = reaction;
                 DisplayPage();
@@ -672,7 +670,10 @@ namespace Rimbara.UI
                 : rangerStage == RecoveryStage.PlantingDebrief ? DialogueCopy.RangerPlantingDebrief(recovery.Progress.WasteGoal)
                 : rangerStage == RecoveryStage.EcosystemDebrief ? DialogueCopy.RangerEcosystemDebrief(restored != null)
                 : new[] { recovery.Instruction };
-            optionGroups = rangerStage == RecoveryStage.Briefing ? DialogueCopy.RangerBriefingOptions : null;
+            optionGroups = rangerStage == RecoveryStage.Briefing ? DialogueCopy.RangerBriefingOptions
+                : rangerStage == RecoveryStage.PlantingDebrief ? DialogueCopy.RangerPlantingDebriefOptions
+                : rangerStage == RecoveryStage.EcosystemDebrief ? DialogueCopy.RangerEcosystemDebriefOptions
+                : new[] { DialogueCopy.ReminderOptions };
             narration = rangerStage == RecoveryStage.Briefing
                 ? "Petugas Hutan menyerahkan sekotak bibit dengan hati-hati."
                 : rangerStage == RecoveryStage.PlantingDebrief
@@ -700,7 +701,7 @@ namespace Rimbara.UI
             speakerRole = string.Empty;
             SetDialoguePortraitVisible(false);
             pages = elderBriefing ? DialogueCopy.ElderBriefing : new[] { restored.Instruction };
-            optionGroups = elderBriefing ? DialogueCopy.ElderBriefingOptions : null;
+            optionGroups = elderBriefing ? DialogueCopy.ElderBriefingOptions : new[] { DialogueCopy.ReminderOptions };
             narration = elderBriefing
                 ? "Tetua Desa berdiri di tengah desa, matanya berkaca-kaca memandang hutan yang kembali hijau."
                 : "Tetua Desa tersenyum dan menepuk bahumu pelan.";

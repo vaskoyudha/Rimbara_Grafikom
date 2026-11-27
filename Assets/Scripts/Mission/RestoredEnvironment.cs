@@ -31,6 +31,18 @@ namespace Rimbara.Mission
         public void Apply()
         {
             if (Applied || chapter.Progress.Stage != RestoredStage.TimeTransition) return;
+            ApplyInternal();
+        }
+
+        /// <summary>Applies the lush restored environment immediately when loading a saved post-transition run.</summary>
+        public void ApplyFromSave()
+        {
+            if (Applied || chapter == null || chapter.Progress.Stage < RestoredStage.TimeTransition) return;
+            ApplyInternal();
+        }
+
+        private void ApplyInternal()
+        {
             Applied = true;
             originalSky = RenderSettings.skybox; RenderSettings.skybox = sky;
             RenderSettings.fog = true; RenderSettings.fogDensity = 0.0015f; RenderSettings.fogColor = new Color(0.66f, 0.78f, 0.72f);

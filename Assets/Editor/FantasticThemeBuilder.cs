@@ -37,6 +37,7 @@ namespace Rimbara.Editor
             if (kit.HeadingFont == null || kit.BodyFont == null)
                 Debug.LogWarning("No TMP font found; import TMP Essential Resources or assign fonts manually.");
 
+            kit.GameLogo = LoadLogoSprite("Assets/Art/UI/RimbaraLogo.png");
             kit.Window = FindSprite(root, "Panel_WoodFrame");
             kit.ParchmentPanel = FindSprite(root, "Panel_Parchment") ?? kit.Window;
             kit.Popup = FindSprite(root, "Panel_Runestone") ?? kit.Window;
@@ -49,14 +50,18 @@ namespace Rimbara.Editor
             kit.Divider = externalDivider != null ? externalDivider : FindSprite(root, "Divider_Gold");
             kit.Ribbon = FindSprite(root, "Ornament_Horizontal");
 
-            kit.ButtonPrimaryNormal = FindSprite(root, "Button_Crimson");
+            kit.ButtonPrimaryNormal = FindSprite(root, "Button_Crimson_Gilded") ?? FindSprite(root, "Button_Crimson");
             kit.ButtonPrimaryHover = FindSprite(root, "Button_Crimson_Gilded") ?? kit.ButtonPrimaryNormal;
-            kit.ButtonPrimaryPressed = FindSprite(root, "Button_Crimson_Gilded") ?? kit.ButtonPrimaryNormal;
+            kit.ButtonPrimaryPressed = FindSprite(root, "Button_Crimson") ?? kit.ButtonPrimaryNormal;
             kit.ButtonPrimaryDisabled = FindSprite(root, "Button_Wood_Dark") ?? kit.ButtonPrimaryNormal;
             kit.ButtonSecondaryNormal = FindSprite(root, "Button_Wood") ?? kit.ButtonPrimaryNormal;
             kit.ButtonSecondaryHover = FindSprite(root, "Button_Leather") ?? kit.ButtonSecondaryNormal;
             kit.ButtonSecondaryPressed = FindSprite(root, "Button_Wood_Dark") ?? kit.ButtonSecondaryNormal;
             kit.ButtonSecondaryDisabled = FindSprite(root, "Button_Leather") ?? kit.ButtonSecondaryNormal;
+            kit.ButtonAccentNormal = FindSprite(root, "Button_Olive_Gilded") ?? kit.ButtonPrimaryNormal;
+            kit.ButtonAccentPressed = FindSprite(root, "Button_Olive") ?? kit.ButtonAccentNormal;
+            kit.ButtonTertiaryNormal = FindSprite(root, "Slot_Emerald") ?? kit.SlotSelected;
+            kit.ButtonTertiaryHover = FindSprite(root, "Slot_Emerald_Glow") ?? kit.ButtonTertiaryNormal;
 
             kit.BarFrame = FindSprite(root, "Track_Dark");
             kit.BarHealthFill = FindSprite(root, "Bar_Fill_Red");
@@ -85,6 +90,12 @@ namespace Rimbara.Editor
             kit.IconBag = FindSprite(root, "Backpack");
             kit.IconCleanup = FindSprite(root, "Broom_Color");
             kit.IconEmber = FindSprite(root, "Feather_Color");
+
+            kit.IconFire = LoadIcon("Icon_Fire");
+            kit.IconRubble = LoadIcon("Icon_Rubble");
+            kit.IconSeedling = LoadIcon("Icon_Seedling");
+            kit.IconZone = LoadIcon("Icon_Zone");
+            kit.IconTree = LoadIcon("Icon_Tree");
 
             kit.WorldMap = AssetDatabase.LoadAssetAtPath<Sprite>(TopDownMapBaker.MapPath);
             kit.RadarBezel = AssetDatabase.LoadAssetAtPath<Sprite>(TopDownMapBaker.BezelPath);
@@ -164,6 +175,41 @@ namespace Rimbara.Editor
                 .Select(AssetDatabase.GUIDToAssetPath)
                 .Select(AssetDatabase.LoadAssetAtPath<TMP_FontAsset>)
                 .FirstOrDefault(f => f != null);
+
+        private static Sprite LoadLogoSprite(string path)
+        {
+            if (AssetImporter.GetAtPath(path) is TextureImporter importer)
+            {
+                bool dirty = false;
+                if (importer.textureType != TextureImporterType.Sprite)
+                {
+                    importer.textureType = TextureImporterType.Sprite;
+                    dirty = true;
+                }
+                if (importer.spriteImportMode != SpriteImportMode.Single)
+                {
+                    importer.spriteImportMode = SpriteImportMode.Single;
+                    dirty = true;
+                }
+                if (!importer.alphaIsTransparency)
+                {
+                    importer.alphaIsTransparency = true;
+                    dirty = true;
+                }
+                if (importer.mipmapEnabled)
+                {
+                    importer.mipmapEnabled = false;
+                    dirty = true;
+                }
+                if (dirty) importer.SaveAndReimport();
+            }
+            return AssetDatabase.LoadAssetAtPath<Sprite>(path);
+        }
+
+        private static Sprite LoadIcon(string name)
+        {
+            return LoadLogoSprite("Assets/Art/UI/Icons/" + name + ".png");
+        }
 
         private static Sprite FindSprite(string root, params string[] keywords)
         {
