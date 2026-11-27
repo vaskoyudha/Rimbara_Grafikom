@@ -190,41 +190,47 @@ namespace Rimbara.UI
             if (restored != null && restored.Active)
             {
                 RestoredProgress p = restored.Progress;
-                view.MissionNumber.text = "ZONA HUTAN PULIH / MISI 05 / 05";
+                view.MissionNumber.text = "ZONA HUTAN PULIH  <sprite name=\"diamond\" tint=1>  MISI 05 / 05";
                 view.MissionTitle.text = "JANJI UNTUK HUTAN";
                 view.MissionDescription.text = KeepPromptTogether(restored.Instruction);
-                view.Seedlings.text = "BIBIT TERAKHIR / DIBAWA " + (p.HasSeedling ? "1" : "0");
-                view.Trees.text = "DITANAM " + (p.Planted ? "1" : "0") + " / 1   DISIRAM " + (p.Watered ? "1" : "0") + " / 1";
-                view.Fires.text = "TITIK PANDANG / " + (p.ViewpointVisited ? "DIKUNJUNGI" : "BELUM DIKUNJUNGI");
-                view.Restoration.text = "MISI 05 / " + (p.Watered ? "Saksikan hasil pemulihan" : "Satu janji untuk masa depan");
+                view.Seedlings.text = FormatCounter("BIBIT TERAKHIR", p.HasSeedling ? "DIBAWA 1" : "DIBAWA 0", p.HasSeedling);
+                view.Trees.text = FormatCounter("DITANAM  /  DISIRAM", (p.Planted ? "1" : "0") + " / 1  •  " + (p.Watered ? "1" : "0") + " / 1", p.Planted && p.Watered);
+                view.Fires.text = FormatCounter("TITIK PANDANG", p.ViewpointVisited ? "DIKUNJUNGI" : "BELUM", p.ViewpointVisited);
+                view.Restoration.text = "MISI 05  <sprite name=\"diamond\" tint=1>  " + (p.Watered ? "Saksikan hasil pemulihan" : "Satu janji untuk masa depan");
                 view.RestorationFill.fillAmount = ((p.Planted ? 1f : 0f) + (p.Watered ? 1f : 0f) + (p.ViewpointVisited ? 1f : 0f)) / 3f;
                 return;
             }
             if (recovery != null && recovery.Active)
             {
                 RecoveryProgress p = recovery.Progress;
-                view.MissionNumber.text = "ZONA PEMULIHAN / MISI " + (p.Stage >= RecoveryStage.Ecosystem ? "04" : "03") + " / 05";
+                view.MissionNumber.text = "ZONA PEMULIHAN  <sprite name=\"diamond\" tint=1>  MISI " + (p.Stage >= RecoveryStage.Ecosystem ? "04" : "03") + " / 05";
                 view.MissionTitle.text = recovery.Title;
                 view.MissionDescription.text = KeepPromptTogether(recovery.Instruction);
-                view.Seedlings.text = "BIBIT DIBAWA   <b>" + p.Carried + "</b> / DIAMBIL " + p.Collected + " / " + p.TreeGoal;
-                view.Trees.text = "DITANAM   " + p.Planted + " / " + p.TreeGoal + "   DISIRAM   " + p.Watered + " / " + p.TreeGoal;
-                view.Fires.text = "SAMPAH   " + p.Waste + " / " + p.WasteGoal + "   HABITAT   " + p.Habitats + " / " + p.HabitatGoal;
+                view.Seedlings.text = FormatCounter("BIBIT", p.Collected + " / " + p.TreeGoal + " (bawa " + p.Carried + ")", p.Collected >= p.TreeGoal);
+                view.Trees.text = FormatCounter("POHON / SIRAM", p.Planted + "/" + p.TreeGoal + "  •  " + p.Watered + "/" + p.TreeGoal, p.Watered >= p.TreeGoal);
+                view.Fires.text = FormatCounter("SAMPAH / HABITAT", p.Waste + "/" + p.WasteGoal + "  •  " + p.Habitats + "/" + p.HabitatGoal, p.Waste >= p.WasteGoal && p.Habitats >= p.HabitatGoal);
                 view.Restoration.text = Mathf.RoundToInt(p.Fraction * 100f) + "% BAB PEMULIHAN";
                 view.RestorationFill.fillAmount = p.Fraction;
                 return;
             }
             DisasterProgress progress = chapter.Progress;
-            view.MissionNumber.text = progress.Stage == DisasterStage.Briefing ? "PROLOG / POSKO DARURAT"
-                : "ZONA BENCANA    " + (progress.Stage >= DisasterStage.CleanTheWasteland ? "02" : "01") + " / 02";
+            view.MissionNumber.text = progress.Stage == DisasterStage.Briefing ? "PROLOG  <sprite name=\"diamond\" tint=1>  POSKO DARURAT"
+                : "ZONA BENCANA  <sprite name=\"diamond\" tint=1>  " + (progress.Stage >= DisasterStage.CleanTheWasteland ? "02" : "01") + " / 02";
             view.MissionTitle.text = chapter.Title;
             view.MissionDescription.text = KeepPromptTogether(chapter.Instruction);
-            view.Seedlings.text = "PERLENGKAPAN   <b>" + (progress.HasEquipment ? "SIAP" : "BELUM DIAMBIL") + "</b>";
-            view.Trees.text = "PUING DIBERSIHKAN   <b>" + progress.Debris + " / " + progress.DebrisGoal + "</b>";
-            view.Fires.text = "API PADAM   <b>" + progress.Fires + " / " + progress.FireGoal + "</b>";
+            view.Seedlings.text = FormatCounter("PERLENGKAPAN", progress.HasEquipment ? "SIAP" : "BELUM DIAMBIL", progress.HasEquipment);
+            view.Trees.text = FormatCounter("PUING DIBERSIHKAN", progress.Debris + " / " + progress.DebrisGoal, progress.Debris >= progress.DebrisGoal);
+            view.Fires.text = FormatCounter("API PADAM", progress.Fires + " / " + progress.FireGoal, progress.Fires >= progress.FireGoal);
             view.Restoration.text = Mathf.RoundToInt(progress.ChapterFraction * 100f) + "% BAB BENCANA";
             view.RestorationFill.fillAmount = progress.ChapterFraction;
             view.BriefingTargets.text = progress.FireGoal + " TITIK API / " + progress.DebrisGoal + " PUING"
                 + (recovery == null ? " / ZONA 1" : " / " + recovery.Progress.TreeGoal + " BIBIT / ZONA 1–2");
+        }
+
+        private static string FormatCounter(string label, string value, bool complete)
+        {
+            string color = complete ? "#6F9E4A" : "#FFF0CC";
+            return label + "<pos=206><b><color=" + color + ">" + value + "</color></b>";
         }
 
         private static string KeepPromptTogether(string text) =>

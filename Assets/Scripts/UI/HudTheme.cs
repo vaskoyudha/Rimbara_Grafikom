@@ -36,6 +36,7 @@ namespace Rimbara.UI
         private static readonly HashSet<string> GoldText = new HashSet<string>
         {
             "Menu eyebrow", "Briefing eyebrow", "Help eyebrow", "Pause eyebrow", "Victory eyebrow",
+            "Mission number", "Counters header",
             "Waypoint instruction", "Briefing targets", "Menu scope", "Restoration percent"
         };
 
@@ -46,7 +47,7 @@ namespace Rimbara.UI
 
         private static readonly HashSet<string> MutedText = new HashSet<string>
         {
-            "Mission number", "Map title", "Volume label", "Menu footer",
+            "Map title", "Volume label", "Menu footer",
             "No fail promise", "Help tip", "Game subtitle"
         };
 
@@ -77,12 +78,21 @@ namespace Rimbara.UI
             }
 
             EnsureSafeArea(canvas);
+            EnsureCornerChrome(canvas, kit);
 
-            foreach (Image image in canvas.GetComponentsInChildren<Image>(true))
+            foreach (UnityEngine.UI.Image image in canvas.GetComponentsInChildren<UnityEngine.UI.Image>(true))
             {
                 if (Surfaces.TryGetValue(image.name, out HudSurface surface))
                 {
                     ApplyPanel(image, kit, surface);
+                    continue;
+                }
+                if (image.name == "Restoration bar background")
+                {
+                    image.sprite = kit.BarFrame != null ? kit.BarFrame : kit.Inset;
+                    image.type = UnityEngine.UI.Image.Type.Sliced;
+                    image.color = Color.white;
+                    image.raycastTarget = false;
                     continue;
                 }
                 if (image.name == "Volume background")
@@ -213,6 +223,77 @@ namespace Rimbara.UI
             image.type = Image.Type.Filled;
             image.fillMethod = Image.FillMethod.Horizontal;
             image.color = Color.white;
+        }
+
+        private static void EnsureCornerChrome(Canvas canvas, UiKit kit)
+        {
+            Transform mission = FindNode(canvas.transform, "Mission card");
+            if (mission != null)
+            {
+                EnsureImageChild(mission, "Mission icon", kit.IconQuest,
+                    UnityEngine.UI.Image.Type.Simple, Color.white, 0, true);
+                EnsureImageChild(mission, "Mission divider", kit.Divider != null ? kit.Divider : kit.Ribbon,
+                    UnityEngine.UI.Image.Type.Sliced, new Color(1f, 1f, 1f, 0.9f), 0);
+                EnsureImageChild(mission, "Mission task inset", kit.Inset,
+                    UnityEngine.UI.Image.Type.Sliced, new Color(1f, 1f, 1f, 0.58f), 0);
+            }
+
+            Transform counters = FindNode(canvas.transform, "Restoration counters");
+            if (counters != null)
+            {
+                EnsureTextChild(counters, "Counters header", IndonesianText.Labels["Counters header"], kit, 12.5f, 1.6f);
+                EnsureImageChild(counters, "Counters icon", kit.IconCompass,
+                    UnityEngine.UI.Image.Type.Simple, kit.Gold, 0, true);
+                EnsureImageChild(counters, "Counters divider", kit.Divider != null ? kit.Divider : kit.Ribbon,
+                    UnityEngine.UI.Image.Type.Sliced, new Color(1f, 1f, 1f, 0.9f), 0);
+                for (int i = 0; i < 3; i++)
+                    EnsureImageChild(counters, "Counter row " + i, kit.Inset,
+                        UnityEngine.UI.Image.Type.Sliced, new Color(1f, 1f, 1f, 0.45f), 0);
+                EnsureImageChild(counters, "Counter icon 0", kit.IconBag,
+                    UnityEngine.UI.Image.Type.Simple, kit.Cream, counters.childCount - 1, true);
+                EnsureImageChild(counters, "Counter icon 1", kit.IconCleanup,
+                    UnityEngine.UI.Image.Type.Simple, Color.white, counters.childCount - 1, true);
+                EnsureImageChild(counters, "Counter icon 2", kit.IconEmber,
+                    UnityEngine.UI.Image.Type.Simple, Color.white, counters.childCount - 1, true);
+            }
+        }
+
+        private static void EnsureImageChild(Transform parent, string name, Sprite sprite, UnityEngine.UI.Image.Type type, Color color, int siblingIndex, bool preserveAspect = false)
+        {
+            Transform existing = parent.Find(name);
+            GameObject go = existing != null ? existing.gameObject : new GameObject(name, typeof(RectTransform), typeof(UnityEngine.UI.Image));
+            go.layer = 5;
+            if (existing == null) go.transform.SetParent(parent, false);
+            go.transform.SetSiblingIndex(Mathf.Clamp(siblingIndex, 0, parent.childCount - 1));
+            var image = go.GetComponent<UnityEngine.UI.Image>();
+            image.sprite = sprite;
+            image.type = type;
+            image.preserveAspect = preserveAspect;
+            image.color = color;
+            image.enabled = sprite != null;
+            image.raycastTarget = false;
+        }
+
+        private static void EnsureTextChild(Transform parent, string name, string copy, UiKit kit, float fontSize, float spacing)
+        {
+            Transform existing = parent.Find(name);
+            GameObject go = existing != null ? existing.gameObject : new GameObject(name, typeof(RectTransform), typeof(TextMeshProUGUI));
+            go.layer = 5;
+            if (existing == null) go.transform.SetParent(parent, false);
+            var text = go.GetComponent<TMP_Text>();
+            text.text = copy;
+            text.font = kit.HeadingFont != null ? kit.HeadingFont : kit.BodyFont;
+            text.fontSize = fontSize;
+            text.characterSpacing = spacing;
+            text.color = kit.Gold;
+            text.raycastTarget = false;
+        }
+
+        private static Transform FindNode(Transform root, string name)
+        {
+            foreach (Transform t in root.GetComponentsInChildren<Transform>(true))
+                if (t.name == name) return t;
+            return null;
         }
 
         private static void EnsureSafeArea(Canvas canvas)

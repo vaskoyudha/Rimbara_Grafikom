@@ -13,8 +13,8 @@ namespace Rimbara.UI
 
         private static readonly Dictionary<string, Action<RectTransform>> Placements = new Dictionary<string, Action<RectTransform>>
         {
-            { "Mission card", r => TopLeft(r, new Vector2(480f, 214f)) },
-            { "Restoration counters", r => TopRight(r, new Vector2(360f, 212f)) },
+            { "Mission card", r => TopLeft(r, new Vector2(484f, 192f)) },
+            { "Restoration counters", r => TopRight(r, new Vector2(428f, 248f)) },
             { "Next destination", r => TopCenter(r, new Vector2(520f, 44f), new Vector2(0f, -72f)) },
             { "Interaction prompt", r => BottomCenter(r, new Vector2(780f, 56f), new Vector2(0f, 72f)) },
             { "Feedback toast", r => BottomCenter(r, new Vector2(840f, 60f), new Vector2(0f, 140f)) },

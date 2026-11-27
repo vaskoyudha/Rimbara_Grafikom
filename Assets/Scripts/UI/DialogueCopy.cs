@@ -7,6 +7,30 @@ namespace Rimbara.UI
         public const string CoordinatorSpeaker = "KOORDINATOR MISI";
         public const string RangerSpeaker = "PETUGAS HUTAN";
         public const string ElderSpeaker = "TETUA DESA";
+        public const string NarratorSpeaker = "NARATOR";
+        public const string VillagerSpeaker = "WARGA DESA";
+
+        public static readonly string[] OpeningSpeakers =
+        {
+            NarratorSpeaker,
+            VillagerSpeaker,
+            CoordinatorSpeaker,
+            NarratorSpeaker
+        };
+
+        public static readonly string[] OpeningLines =
+        {
+            "Kebakaran hebat telah melanda Hutan Arunika. Yang tersisa kini hanya abu, batang hangus, dan titik api yang masih menolak padam.",
+            "Asapnya belum benar-benar hilang di ujung hutan... Banyak warga terpaksa meninggalkan rumah, berharap ada yang datang membantu.",
+            "Relawan baru sudah tiba? Bagus. Segera datangi posko darurat di depan sana—kita harus memadamkan sisa api sebelum menyebar lagi.",
+            "Kamu datang bukan untuk berperang, melainkan untuk memulihkan. Setiap langkah kecil berarti. Setiap pohon menyimpan cerita."
+        };
+
+        public static string FormatOpeningSubtitle(int shotIndex)
+        {
+            int index = shotIndex < 0 ? 0 : (shotIndex >= OpeningLines.Length ? OpeningLines.Length - 1 : shotIndex);
+            return "<color=#C99A3F><b>" + OpeningSpeakers[index] + "</b></color>\n" + OpeningLines[index];
+        }
 
         public static readonly string[] CoordinatorBriefing =
         {
@@ -50,6 +74,7 @@ namespace Rimbara.UI
 
         public static IEnumerable<string> AllPages(int wasteGoal)
         {
+            foreach (string line in OpeningLines) yield return line;
             foreach (string page in CoordinatorBriefing) yield return page;
             foreach (string page in CoordinatorDebrief) yield return page;
             foreach (string page in RangerBriefing) yield return page;

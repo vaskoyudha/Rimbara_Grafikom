@@ -1,5 +1,6 @@
 using System;
 using Rimbara.Player;
+using Rimbara.UI;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -15,11 +16,14 @@ namespace Rimbara.Mission
         [SerializeField] private VolunteerRig rig;
         [SerializeField] private VolunteerInput input;
         [SerializeField] private GameObject inventoryPanel;
+        [SerializeField] private OpeningDirector opening;
         private static ScreenMode nextLaunchMode = ScreenMode.Menu;
         private ScreenMode resumeMode = ScreenMode.Playing;
         public ScreenMode Mode { get; private set; } = ScreenMode.Menu;
         public float ElapsedSeconds { get; private set; }
+        public OpeningDirector Opening => opening;
         public bool DiagnosticMode => CommandLine.Value("--rimbara-smoke") != null;
+        public void ConfigureOpening(OpeningDirector openingDirector) => opening = openingDirector;
         public event Action<ScreenMode> ModeChanged;
 
         public void Configure(GameState gameState, MissionSystem missionSystem, VolunteerRig player, VolunteerInput controls)
@@ -69,7 +73,16 @@ namespace Rimbara.Mission
         public void Begin()
         {
             if (Mode != ScreenMode.Briefing && Mode != ScreenMode.Menu) return;
+            if (opening != null && opening.TryBegin()) return;
             SetMode(ScreenMode.Playing);
+        }
+
+        public void BeginOpeningCinematic() => SetMode(ScreenMode.Cinematic);
+
+        public void EndOpeningCinematic()
+        {
+            if (Mode == ScreenMode.Cinematic || Mode == ScreenMode.Paused)
+                SetMode(ScreenMode.Playing);
         }
 
         public void Pause()
