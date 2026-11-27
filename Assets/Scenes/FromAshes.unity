@@ -312843,11 +312843,11 @@ MonoBehaviour:
   primaryHover: {fileID: 21300000, guid: 832f65ab34ff38a4890485d93027479d, type: 3}
   primaryPressed: {fileID: 21300000, guid: 44d35726a8c963840b9a5d3197a853dd, type: 3}
   primaryDisabled: {fileID: 21300000, guid: b75607dc8c2060b479abc8440d743cc1, type: 3}
-  secondaryNormal: {fileID: 21300000, guid: e549ff40fec1c019b9018c5f24c175be, type: 3}
-  secondaryHover: {fileID: 21300000, guid: 7bc872c892ae70e47baac2a9f8ada9ac, type: 3}
-  secondaryPressed: {fileID: 21300000, guid: 316fb7bf24ef1524298cea2fea11405d, type: 3}
+  secondaryNormal: {fileID: 21300000, guid: 604b979094f00854dba61dd4a7d720cd, type: 3}
+  secondaryHover: {fileID: 21300000, guid: 27acf368c2d431a4b97fbe47bd163dbe, type: 3}
+  secondaryPressed: {fileID: 21300000, guid: 604b979094f00854dba61dd4a7d720cd, type: 3}
   creamTextColor: {r: 1, g: 0.9411765, b: 0.8, a: 1}
-  parchmentTextColor: {r: 0.9529412, g: 0.8901961, b: 0.7647059, a: 1}
+  parchmentTextColor: {r: 1, g: 0.9411765, b: 0.8, a: 1}
   achievementSummaryFill: {fileID: 792098861}
   achievementSummaryText: {fileID: 541189329}
   achievementCardBgs:

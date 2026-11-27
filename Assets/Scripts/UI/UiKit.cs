@@ -60,6 +60,8 @@ namespace Rimbara.UI
         public Sprite ButtonSecondaryDisabled;
         public Sprite ButtonAccentNormal;
         public Sprite ButtonAccentPressed;
+        public Sprite ButtonTertiaryNormal;
+        public Sprite ButtonTertiaryHover;
 
         [Header("Bars")]
         public Sprite BarFrame;

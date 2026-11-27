@@ -60,6 +60,8 @@ namespace Rimbara.Editor
             kit.ButtonSecondaryDisabled = FindSprite(root, "Button_Leather") ?? kit.ButtonSecondaryNormal;
             kit.ButtonAccentNormal = FindSprite(root, "Button_Olive_Gilded") ?? kit.ButtonPrimaryNormal;
             kit.ButtonAccentPressed = FindSprite(root, "Button_Olive") ?? kit.ButtonAccentNormal;
+            kit.ButtonTertiaryNormal = FindSprite(root, "Slot_Emerald") ?? kit.SlotSelected;
+            kit.ButtonTertiaryHover = FindSprite(root, "Slot_Emerald_Glow") ?? kit.ButtonTertiaryNormal;
 
             kit.BarFrame = FindSprite(root, "Track_Dark");
             kit.BarHealthFill = FindSprite(root, "Bar_Fill_Red");

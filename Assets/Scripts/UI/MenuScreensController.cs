@@ -74,11 +74,13 @@ namespace Rimbara.UI
                 primaryHover = kit.ButtonPrimaryHover;
                 primaryPressed = kit.ButtonPrimaryPressed;
                 primaryDisabled = kit.ButtonPrimaryDisabled;
-                secondaryNormal = kit.CardInset != null ? kit.CardInset : kit.Tooltip;
-                secondaryHover = kit.Tooltip != null ? kit.Tooltip : secondaryNormal;
-                secondaryPressed = kit.Inset != null ? kit.Inset : secondaryNormal;
+                secondaryNormal = kit.ButtonTertiaryNormal != null ? kit.ButtonTertiaryNormal
+                    : (kit.SlotSelected != null ? kit.SlotSelected : kit.ButtonSecondaryNormal);
+                secondaryHover = kit.ButtonTertiaryHover != null ? kit.ButtonTertiaryHover
+                    : (kit.SlotSelected != null ? kit.SlotSelected : secondaryNormal);
+                secondaryPressed = kit.ButtonTertiaryNormal != null ? kit.ButtonTertiaryNormal : secondaryNormal;
                 creamTextColor = kit.Cream;
-                parchmentTextColor = kit.Parchment;
+                parchmentTextColor = kit.Cream;
             }
         }
 
