@@ -101,24 +101,46 @@ namespace Rimbara.UI
         private void RefreshProgress(ProgressSnapshot progress)
         {
             if (missions.DisasterChapter != null) return;
-            view.Seedlings.text = "BIBIT   <b>" + progress.Seedlings + " / " + progress.SeedlingGoal + "</b>"
-                + "  <color=#8A6242>(dibawa " + progress.CarriedSeedlings + ")</color>";
-            view.Trees.text = "POHON DITANAM   <b>" + progress.Trees + " / " + progress.TreeGoal + "</b>";
-            view.Fires.text = "API PADAM   <b>" + progress.Fires + " / " + progress.FireGoal + "</b>";
-            view.Restoration.text = Mathf.RoundToInt(progress.Restoration * 100f) + "% DIPULIHKAN";
-            view.RestorationFill.fillAmount = progress.Restoration;
-            view.BriefingTargets.text = progress.SeedlingGoal + " BIBIT LOKAL   /   " + progress.TreeGoal + " POHON   /   " + progress.FireGoal + " TITIK API";
+            ApplyScore(BuildView(progress, missions.Stage));
         }
 
         private void RefreshMission(MissionStage stage)
         {
             if (missions.DisasterChapter != null) return;
-            int index = Mathf.Min(4, (int)stage + 1);
-            view.MissionNumber.text = "MISI LAPANGAN    " + index.ToString("00") + " / " + GameScope.Chapters.ToString("00");
-            view.MissionTitle.text = missions.Title;
-            view.MissionDescription.text = missions.Instruction;
+            RestorationScoreView model = BuildView(state.Snapshot, stage);
+            ApplyScore(model);
             if (flow.Mode == ScreenMode.Playing)
-                ShowToast("MISI " + index + "  /  " + missions.Title, true);
+                ShowToast("MISI " + model.MissionNumber + "  /  " + model.MissionTitle, true);
+        }
+
+        private RestorationScoreView BuildView(ProgressSnapshot snapshot, MissionStage stage)
+        {
+            return RestorationScoreView.From(snapshot, stage, missions.Title, missions.Instruction, flow.ElapsedSeconds);
+        }
+
+        public void ApplyScore(RestorationScoreView model)
+        {
+            WriteCounters(view, model);
+            WriteMission(view, model);
+        }
+
+        public static void WriteCounters(HudReferences target, RestorationScoreView model)
+        {
+            RestorationScore score = model.Score;
+            target.Seedlings.text = "BIBIT   <b>" + score.Seedlings + " / " + score.SeedlingGoal + "</b>"
+                + "  <color=#8A6242>(dibawa " + score.CarriedSeedlings + ")</color>";
+            target.Trees.text = "POHON DITANAM   <b>" + score.Trees + " / " + score.TreeGoal + "</b>";
+            target.Fires.text = "API PADAM   <b>" + score.Fires + " / " + score.FireGoal + "</b>";
+            target.Restoration.text = score.Percent + "% DIPULIHKAN";
+            target.RestorationFill.fillAmount = score.Fraction;
+            target.BriefingTargets.text = score.SeedlingGoal + " BIBIT LOKAL   /   " + score.TreeGoal + " POHON   /   " + score.FireGoal + " TITIK API";
+        }
+
+        public static void WriteMission(HudReferences target, RestorationScoreView model)
+        {
+            target.MissionNumber.text = "MISI LAPANGAN    " + model.MissionNumber.ToString("00") + " / " + model.ChapterCount.ToString("00");
+            target.MissionTitle.text = model.MissionTitle;
+            target.MissionDescription.text = model.MissionInstruction;
         }
 
         private void RefreshMode(ScreenMode mode)
@@ -132,10 +154,10 @@ namespace Rimbara.UI
             view.Dimmer.SetActive(mode != ScreenMode.Playing);
             if (mode == ScreenMode.Victory)
             {
-                ProgressSnapshot progress = state.Snapshot;
+                RestorationScoreView model = BuildView(state.Snapshot, missions.Stage);
                 int minutes = Mathf.FloorToInt(flow.ElapsedSeconds / 60f);
                 int seconds = Mathf.FloorToInt(flow.ElapsedSeconds % 60f);
-                view.VictoryResult.text = "<b>" + progress.Trees + " pohon ditanam   /   " + progress.Fires + " titik api dipadamkan</b>\n"
+                view.VictoryResult.text = "<b>" + model.Score.Trees + " pohon ditanam   /   " + model.Score.Fires + " titik api dipadamkan</b>\n"
                     + "Seluruh misi pemulihan selesai\n\nWaktu di lapangan  " + minutes.ToString("00") + ":" + seconds.ToString("00");
             }
         }
