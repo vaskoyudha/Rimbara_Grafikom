@@ -248,7 +248,15 @@ namespace Rimbara.Diagnostics
             QueueMouse(new Vector2(100f, 0f));
             yield return new WaitForSecondsRealtime(0.25f);
             Check("Mouse delta orbits the third-person camera", Mathf.Abs(Mathf.DeltaAngle(yaw, rig.CameraTarget.eulerAngles.y)) > 6f);
-            QueueMouse(new Vector2(0f, 1800f));
+
+            rig.SetCameraOrbit(0f, 0f);
+            QueueMouse(new Vector2(0f, 600f));
+            yield return new WaitForSecondsRealtime(0.2f);
+            float upPitch = Mathf.DeltaAngle(0f, rig.CameraTarget.eulerAngles.x);
+            Check("Mouse up tilts the camera up", upPitch < rig.OfficialController.CameraAngleOverride - 5f,
+                upPitch.ToString("0.0") + " degrees");
+
+            QueueMouse(new Vector2(0f, -3000f));
             yield return new WaitForSecondsRealtime(0.2f);
             float pitch = Mathf.DeltaAngle(0f, rig.CameraTarget.eulerAngles.x);
             Check("Camera pitch clamps at the official limit", pitch <= rig.OfficialController.TopClamp + rig.OfficialController.CameraAngleOverride + 0.2f

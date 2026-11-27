@@ -70,7 +70,8 @@ namespace Rimbara.Player
         {
             if (!ControlsEnabled) return;
             starterInputs.MoveInput(controls.Move);
-            starterInputs.LookInput(controls.Look * 0.12f);
+            Vector2 look = controls.Look;
+            starterInputs.LookInput(new Vector2(look.x, -look.y) * 0.12f);
             starterInputs.SprintInput(controls.SprintHeld);
             starterInputs.JumpInput(controls.JumpPressed);
         }
