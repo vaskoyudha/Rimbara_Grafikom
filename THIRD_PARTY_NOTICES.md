@@ -84,6 +84,19 @@ which are preserved in the imported `Assets/TextMesh Pro` content.
 - MakeHuman/MPFB program code is used externally for authoring, not shipped in
   Unity. Its separate AGPL/GPL terms remain unchanged.
 
+## Wikimedia Commons SVG text dividers
+
+The ornamental UI divider sprites under `Assets/Art/UI/Dividers/` were
+converted to white-on-transparent PNGs (`ElegantDivider_Ornate.png`,
+`ElegantDivider_Slim.png`, `ElegantDivider_Ring.png`,
+`ElegantDivider_Flare.png`) from **Public domain** SVG works in
+Wikimedia Commons (`Category:SVG_text_dividers`):
+
+- `File:Decorative text divider 5.svg` (`https://upload.wikimedia.org/wikipedia/commons/2/21/Decorative_text_divider_5.svg`) -> `Assets/Art/UI/Dividers/ElegantDivider_Ornate.png`
+- `File:Decorative text divider 3.svg` (`https://upload.wikimedia.org/wikipedia/commons/9/9e/Decorative_text_divider_3.svg`) -> `Assets/Art/UI/Dividers/ElegantDivider_Slim.png`
+- `File:Decorative text divider.svg` (`https://upload.wikimedia.org/wikipedia/commons/6/63/Decorative_text_divider.svg`) -> `Assets/Art/UI/Dividers/ElegantDivider_Ring.png`
+- `File:Decorative text divider - central flare.svg` (`https://upload.wikimedia.org/wikipedia/commons/7/7c/Decorative_text_divider_-_central_flare.svg`) -> `Assets/Art/UI/Dividers/ElegantDivider_Flare.png`
+
 ## Original project content
 
 RIMBARA's gameplay scripts, mission/profile setup, scene/UI/effect generators,

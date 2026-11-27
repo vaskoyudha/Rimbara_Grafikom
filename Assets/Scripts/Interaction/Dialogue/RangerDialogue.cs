@@ -17,7 +17,7 @@ namespace Rimbara.Interaction
         public override InteractionResult Interact(VolunteerActor actor)
         {
             if (!Available || !InRange(actor)) return new InteractionResult(false, "Dekati Petugas Hutan setelah menyelesaikan Zona Bencana.");
-            hud.OpenRangerDialogue();
+            hud.OpenRangerDialogue(transform);
             return new InteractionResult(true, "Petugas Hutan / Pemulihan Arunika");
         }
     }

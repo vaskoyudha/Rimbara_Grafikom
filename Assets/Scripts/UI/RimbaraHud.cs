@@ -20,6 +20,8 @@ namespace Rimbara.UI
         [SerializeField] private VolunteerRig rig;
         [SerializeField] private GameAudio audioSystem;
         private float toastUntil;
+        private WaypointArrow3D waypointArrow;
+        private TMPro.TMP_Text waypointDistance;
         public HudReferences View => view;
 
         public void Configure(HudReferences references, GameState gameState, MissionSystem missionSystem,
@@ -56,6 +58,17 @@ namespace Rimbara.UI
             foreach (var button in view.Quit) button.onClick.AddListener(flow.Quit);
             view.Volume.SetValueWithoutNotify(audioSystem.Volume);
             view.Volume.onValueChanged.AddListener(audioSystem.SetVolume);
+            if (view.Waypoint != null && view.Waypoint.transform.parent != null)
+            {
+                HudTheme.ApplyReadableShadow(view.Waypoint, 0.25f);
+                waypointArrow = view.Waypoint.transform.parent.GetComponentInChildren<WaypointArrow3D>(true);
+                Transform dist = view.Waypoint.transform.parent.Find("Waypoint distance");
+                if (dist != null)
+                {
+                    waypointDistance = dist.GetComponent<TMPro.TMP_Text>();
+                    HudTheme.ApplyReadableShadow(waypointDistance, 0.25f);
+                }
+            }
         }
 
         private void Start()
@@ -81,8 +94,11 @@ namespace Rimbara.UI
                 float angle = Vector3.SignedAngle(forward, toTarget, Vector3.up);
                 string direction = angle > 35f ? "KANAN" : angle < -35f ? "KIRI" : "DEPAN";
                 if (Mathf.Abs(angle) > 140f) direction = "BELAKANG";
-                view.Waypoint.text = guide.DestinationName.ToUpperInvariant() + "   " + guide.Distance.ToString("0") + " m  /  " + direction;
+                view.Waypoint.text = guide.DestinationName.ToUpperInvariant() + "  /  " + direction;
+                if (waypointDistance != null) waypointDistance.text = guide.Distance.ToString("0") + " M";
             }
+            if (waypointArrow != null)
+                waypointArrow.UpdateDirection(actor.transform.position, rig.ViewCamera != null ? rig.ViewCamera.transform : null, guide.Destination);
             view.PlayerDot.anchoredPosition = MapPosition(actor.transform.position);
             view.TargetDot.gameObject.SetActive(guide.Destination != null);
             if (guide.Destination != null) view.TargetDot.anchoredPosition = MapPosition(guide.Destination.position);

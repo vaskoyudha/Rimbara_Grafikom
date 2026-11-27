@@ -8,14 +8,14 @@ namespace Rimbara.UI
     {
         public const float ReferenceWidth = 1920f;
         public const float ReferenceHeight = 1080f;
-        public const float Margin = 40f;
+        public const float Margin = 0f;
         public const float Gap = 16f;
 
         private static readonly Dictionary<string, Action<RectTransform>> Placements = new Dictionary<string, Action<RectTransform>>
         {
             { "Mission card", r => TopLeft(r, new Vector2(484f, 192f)) },
             { "Restoration counters", r => TopRight(r, new Vector2(428f, 248f)) },
-            { "Next destination", r => TopCenter(r, new Vector2(520f, 44f), new Vector2(0f, -72f)) },
+            { "Next destination", r => TopCenter(r, new Vector2(480f, 148f), new Vector2(0f, -6f)) },
             { "Interaction prompt", r => BottomCenter(r, new Vector2(780f, 56f), new Vector2(0f, 72f)) },
             { "Feedback toast", r => BottomCenter(r, new Vector2(840f, 60f), new Vector2(0f, 140f)) },
             { "Controls reminder", r => BottomLeft(r, new Vector2(680f, 38f)) },
@@ -28,7 +28,7 @@ namespace Rimbara.UI
             { "How to play card", r => Center(r, new Vector2(800f, 680f)) },
             { "Pause card", r => Center(r, new Vector2(540f, 500f)) },
             { "Restoration ending", r => Center(r, new Vector2(840f, 660f)) },
-            { "Coordinator dialogue", r => BottomCenter(r, new Vector2(1180f, 300f), new Vector2(0f, 56f)) }
+            { "Coordinator dialogue", r => BottomCenter(r, new Vector2(1180f, 300f), new Vector2(0f, 48f)) }
         };
 
         public static void Apply(Canvas canvas)

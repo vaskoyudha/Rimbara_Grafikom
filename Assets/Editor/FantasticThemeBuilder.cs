@@ -42,7 +42,8 @@ namespace Rimbara.Editor
             kit.Popup = FindSprite(root, "Panel_Runestone") ?? kit.Window;
             kit.Tooltip = FindSprite(root, "Tooltip_Ink") ?? kit.Popup;
             kit.Inset = FindSprite(root, "Tile_Leather") ?? kit.Window;
-            kit.Divider = FindSprite(root, "Divider_Gold");
+            Sprite externalDivider = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Art/UI/Dividers/ElegantDivider_Ornate.png");
+            kit.Divider = externalDivider != null ? externalDivider : FindSprite(root, "Divider_Gold");
             kit.Ribbon = FindSprite(root, "Ornament_Horizontal");
 
             kit.ButtonPrimaryNormal = FindSprite(root, "Button_Crimson");
@@ -75,6 +76,12 @@ namespace Rimbara.Editor
             kit.SlotEmpty = FindSprite(root, "Slot_Bone");
             kit.SlotSelected = FindSprite(root, "Slot_Emerald_Glow");
             kit.SlotLocked = FindSprite(root, "Slot_Obsidian_Deep");
+
+            kit.IconQuest = FindSprite(root, "Scroll_Color");
+            kit.IconCompass = FindSprite(root, "Compass");
+            kit.IconBag = FindSprite(root, "Backpack");
+            kit.IconCleanup = FindSprite(root, "Broom_Color");
+            kit.IconEmber = FindSprite(root, "Feather_Color");
 
             if (created) AssetDatabase.CreateAsset(kit, AssetPath);
             EditorUtility.SetDirty(kit);

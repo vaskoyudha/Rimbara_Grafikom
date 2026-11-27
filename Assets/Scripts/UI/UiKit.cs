@@ -66,6 +66,13 @@ namespace Rimbara.UI
         public Sprite SlotSelected;
         public Sprite SlotLocked;
 
+        [Header("Icons")]
+        public Sprite IconQuest;
+        public Sprite IconCompass;
+        public Sprite IconBag;
+        public Sprite IconCleanup;
+        public Sprite IconEmber;
+
         public bool IsComplete => MissingRoles().Count == 0;
 
         public List<string> MissingRoles()
