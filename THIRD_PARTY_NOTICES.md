@@ -97,6 +97,13 @@ Wikimedia Commons (`Category:SVG_text_dividers`):
 - `File:Decorative text divider.svg` (`https://upload.wikimedia.org/wikipedia/commons/6/63/Decorative_text_divider.svg`) -> `Assets/Art/UI/Dividers/ElegantDivider_Ring.png`
 - `File:Decorative text divider - central flare.svg` (`https://upload.wikimedia.org/wikipedia/commons/7/7c/Decorative_text_divider_-_central_flare.svg`) -> `Assets/Art/UI/Dividers/ElegantDivider_Flare.png`
 
+## FreeGameUI CC0 9-slice UI panels
+
+The card inset sprite under `Assets/Art/UI/Panels/` was converted to PNG from a
+**CC0 1.0 (Public Domain)** SVG panel asset from Free Game UI (`freegameui.net`):
+
+- `panel_rect_tinted-dark_bracket_03.svg` (`https://cdn.freegameui.net/svg/panel/rect/tinted-dark/panel_rect_tinted-dark_bracket_03.svg`) -> `Assets/Art/UI/Panels/CardInset_DarkGoldBracket.png`
+
 ## Original project content
 
 RIMBARA's gameplay scripts, mission/profile setup, scene/UI/effect generators,

@@ -73,6 +73,7 @@ namespace Rimbara.UI
         private Quaternion camStartRot;
         private Quaternion camTargetRot;
         private float stageBlend;
+        private GtaRadarController radar;
         [SerializeField] private Vector2 mapCenter = new Vector2(0f, 22f);
         [SerializeField] private Vector2 mapHalfSize = new Vector2(60f, 65f);
         public void ConfigureMap(Vector2 center, Vector2 halfSize) { mapCenter = center; mapHalfSize = halfSize; }
@@ -153,6 +154,7 @@ namespace Rimbara.UI
                 Transform cv = view.Gameplay.transform.Find("Crosshair vertical");
                 if (ch != null) crosshairH = ch.gameObject;
                 if (cv != null) crosshairV = cv.gameObject;
+                radar = view.Gameplay.GetComponentInChildren<GtaRadarController>(true);
             }
         }
 
@@ -166,17 +168,18 @@ namespace Rimbara.UI
                 else { view.Pause.SetActive(false); UpdateDialogue(); }
             }
             if (flow.Mode != ScreenMode.Playing && flow.Mode != ScreenMode.Paused) return;
-            view.PlayerDot.anchoredPosition = MapPosition(rig.transform.position);
+            bool useGtaRadar = radar != null && radar.HasWorldMap;
+            if (!useGtaRadar) view.PlayerDot.anchoredPosition = MapPosition(rig.transform.position);
             bool recovering = recovery != null && recovery.Active;
             Transform target = recovering ? recovery.Destination(rig.transform.position) : chapter.Destination(rig.transform.position);
-            view.TargetDot.gameObject.SetActive(target != null);
+            if (!useGtaRadar) view.TargetDot.gameObject.SetActive(target != null);
             string destination = target == null ? (recovering ? recovery.Title : chapter.Title)
                 : (recovering ? recovery.DestinationLabel(target) : chapter.DestinationLabel(target));
             view.Waypoint.text = destination.ToUpperInvariant();
             if (waypointDistance != null)
                 waypointDistance.text = target == null ? string.Empty
                     : Vector3.Distance(rig.transform.position, target.position).ToString("0") + " M";
-            if (target != null)
+            if (target != null && !useGtaRadar)
                 view.TargetDot.anchoredPosition = MapPosition(target.position);
             if (restored != null && restored.Active)
             {
@@ -184,7 +187,7 @@ namespace Rimbara.UI
                 view.Waypoint.text = restored.DestinationLabel.ToUpperInvariant();
                 if (waypointDistance != null)
                     waypointDistance.text = Vector3.Distance(rig.transform.position, target.position).ToString("0") + " M";
-                view.TargetDot.anchoredPosition = MapPosition(target.position);
+                if (!useGtaRadar) view.TargetDot.anchoredPosition = MapPosition(target.position);
             }
             if (waypointArrow != null)
                 waypointArrow.UpdateDirection(rig.transform.position, rig.ViewCamera != null ? rig.ViewCamera.transform : null, target);

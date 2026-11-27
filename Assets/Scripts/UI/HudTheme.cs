@@ -17,7 +17,7 @@ namespace Rimbara.UI
             { "Restoration counters", HudSurface.Window },
             { "Interaction prompt", HudSurface.Window },
             { "Feedback toast", HudSurface.Tooltip },
-            { "Controls reminder", HudSurface.Inset },
+            { "Controls reminder", HudSurface.Tooltip },
             { "Arunika field map", HudSurface.Window },
             { "Main menu card", HudSurface.Window },
             { "Volunteer briefing", HudSurface.Window },
@@ -141,7 +141,9 @@ namespace Rimbara.UI
 
             foreach (TMP_Text text in canvas.GetComponentsInChildren<TMP_Text>(true))
             {
-                if (text.name == "Nameplate text" || text.name.StartsWith("Choice ")) continue;
+                if (text.name == "Nameplate text" || text.name.StartsWith("Choice ")
+                    || text.name.StartsWith("Tactical ") || text.name == "Map M hint" || text.name == "North U text")
+                    continue;
                 bool isButtonLabel = text.name.EndsWith(" label") && text.transform.parent != null
                     && text.transform.parent.GetComponent<Button>() != null;
                 if (isButtonLabel)
@@ -258,8 +260,9 @@ namespace Rimbara.UI
                     UnityEngine.UI.Image.Type.Simple, Color.white, 0, true);
                 EnsureImageChild(mission, "Mission divider", kit.Divider != null ? kit.Divider : kit.Ribbon,
                     UnityEngine.UI.Image.Type.Simple, new Color(0.86f, 0.68f, 0.28f, 0.92f), 0);
-                EnsureImageChild(mission, "Mission task inset", kit.Inset,
-                    UnityEngine.UI.Image.Type.Sliced, new Color(1f, 1f, 1f, 0.58f), 0);
+                EnsureImageChild(mission, "Mission task inset",
+                    kit.CardInset != null ? kit.CardInset : kit.Tooltip,
+                    UnityEngine.UI.Image.Type.Sliced, new Color(1f, 1f, 1f, 0.90f), 0);
             }
 
             Transform counters = FindNode(canvas.transform, "Restoration counters");
@@ -271,8 +274,9 @@ namespace Rimbara.UI
                 EnsureImageChild(counters, "Counters divider", kit.Divider != null ? kit.Divider : kit.Ribbon,
                     UnityEngine.UI.Image.Type.Simple, new Color(0.86f, 0.68f, 0.28f, 0.92f), 0);
                 for (int i = 0; i < 3; i++)
-                    EnsureImageChild(counters, "Counter row " + i, kit.Inset,
-                        UnityEngine.UI.Image.Type.Sliced, new Color(1f, 1f, 1f, 0.45f), 0);
+                    EnsureImageChild(counters, "Counter row " + i,
+                        kit.RowInset != null ? kit.RowInset : kit.Inset,
+                        UnityEngine.UI.Image.Type.Sliced, new Color(1f, 1f, 1f, 0.80f), 0);
                 EnsureImageChild(counters, "Counter icon 0", kit.IconBag,
                     UnityEngine.UI.Image.Type.Simple, kit.Cream, counters.childCount - 1, true);
                 EnsureImageChild(counters, "Counter icon 1", kit.IconCleanup,
@@ -299,6 +303,226 @@ namespace Rimbara.UI
             if (dialogue != null) EnsureDialogueChoices(dialogue, kit);
 
             EnsureCoordinatorNameplate(canvas, kit);
+            EnsureGtaRadar(canvas, kit);
+        }
+
+        private static void EnsureGtaRadar(Canvas canvas, UiKit kit)
+        {
+            Transform map = FindNode(canvas.transform, "Arunika field map");
+            Transform gameplay = FindNode(canvas.transform, "Gameplay HUD");
+            if (map == null || kit.WorldMap == null) return;
+
+            var toggleBtn = map.GetComponent<Button>() ?? map.gameObject.AddComponent<Button>();
+            toggleBtn.transition = Selectable.Transition.None;
+            toggleBtn.targetGraphic = map.GetComponent<Image>();
+
+            EnsureTextChild(map, "Map M hint", "[M]", kit, 11f, 0.8f, kit.Gold, FontStyles.Bold);
+            var hintText = map.Find("Map M hint")?.GetComponent<TMP_Text>();
+            if (hintText != null) hintText.alignment = TextAlignmentOptions.Right;
+
+            Transform coords = map.Find("Map coordinates");
+            if (coords == null) return;
+            if (coords.GetComponent<RectMask2D>() == null) coords.gameObject.AddComponent<RectMask2D>();
+
+            string[] legacyNodes = { "Zone A", "Zone B", "Zone C", "Trail", "A label", "B label", "C label" };
+            foreach (string legacy in legacyNodes)
+            {
+                Transform t = coords.Find(legacy);
+                if (t != null) t.gameObject.SetActive(false);
+            }
+
+            // Solid dark ground backing behind rotated map corners
+            Transform backdropT = EnsureRectImage(coords, "Radar map backdrop", null, new Color(0.08f, 0.06f, 0.045f, 1f), 0);
+            StretchFull(backdropT as RectTransform);
+
+            Transform mapImgT = EnsureRectImage(coords, "Radar topdown image", kit.WorldMap, Color.white, 1);
+            var mapImg = mapImgT.GetComponent<Image>();
+            mapImg.preserveAspect = false;
+
+            Transform gpsT = EnsureRectImage(coords, "Radar GPS route", null, new Color(0.95f, 0.72f, 0.22f, 0.82f), 2);
+            gpsT.gameObject.SetActive(false);
+
+            Transform blipsT = EnsureEmptyRect(coords, "Radar secondary blips", 3);
+            StretchFull(blipsT as RectTransform);
+
+            Transform targetT = coords.Find("Destination dot");
+            if (targetT == null) targetT = EnsureRectImage(coords, "Destination dot", kit.RadarBlipDiamond, new Color(0.95f, 0.72f, 0.22f, 1f), 4);
+            targetT.SetSiblingIndex(4);
+            var targetImg = targetT.GetComponent<Image>();
+            if (kit.RadarBlipDiamond != null) targetImg.sprite = kit.RadarBlipDiamond;
+            targetImg.color = new Color(0.95f, 0.72f, 0.22f, 1f);
+            targetImg.raycastTarget = false;
+            (targetT as RectTransform).sizeDelta = new Vector2(15f, 15f);
+
+            Transform fovT = EnsureRectImage(coords, "Radar FOV cone", kit.RadarFov, Color.white, 5);
+            var fovRect = fovT as RectTransform;
+            fovRect.anchorMin = fovRect.anchorMax = new Vector2(0.5f, 0.5f);
+            fovRect.pivot = new Vector2(0.5f, 0f);
+            fovRect.anchoredPosition = Vector2.zero;
+            fovRect.sizeDelta = new Vector2(88f, 88f);
+
+            Transform playerT = coords.Find("Volunteer dot");
+            if (playerT == null) playerT = EnsureRectImage(coords, "Volunteer dot", kit.RadarChevron, Color.white, 6);
+            playerT.SetSiblingIndex(6);
+            var playerImg = playerT.GetComponent<Image>();
+            if (kit.RadarChevron != null) playerImg.sprite = kit.RadarChevron;
+            playerImg.color = Color.white;
+            playerImg.raycastTarget = false;
+            (playerT as RectTransform).sizeDelta = new Vector2(18f, 18f);
+
+            Transform bezelT = EnsureRectImage(coords, "Radar bezel frame", kit.RadarBezel, Color.white, 7);
+            StretchFull(bezelT as RectTransform);
+            var bezelImg = bezelT.GetComponent<Image>();
+            bezelImg.type = Image.Type.Sliced;
+
+            Transform northT = EnsureRectImage(coords, "Radar north badge", kit.RadarBlipDot, new Color(0.11f, 0.08f, 0.05f, 0.96f), 8);
+            var northRect = northT as RectTransform;
+            northRect.anchorMin = northRect.anchorMax = new Vector2(0.5f, 0.5f);
+            northRect.pivot = new Vector2(0.5f, 0.5f);
+            northRect.sizeDelta = new Vector2(18f, 18f);
+            EnsureTextChild(northT, "North U text", "U", kit, 10f, 0f, kit.Gold, FontStyles.Bold);
+            var northLabel = northT.Find("North U text") as RectTransform;
+            if (northLabel != null)
+            {
+                StretchFull(northLabel);
+                northLabel.GetComponent<TMP_Text>().alignment = TextAlignmentOptions.Center;
+            }
+
+            var controller = map.GetComponent<GtaRadarController>() ?? map.gameObject.AddComponent<GtaRadarController>();
+            controller.ConfigureMinimap(
+                kit.WorldMin, kit.WorldSize, kit.RadarBlipDot,
+                coords as RectTransform, mapImgT as RectTransform,
+                playerT as RectTransform, fovRect,
+                targetT as RectTransform, gpsT as RectTransform,
+                northRect, blipsT as RectTransform);
+
+            if (gameplay == null) return;
+            Transform overlayT = gameplay.Find("Arunika tactical map");
+            GameObject overlayGo = overlayT != null ? overlayT.gameObject
+                : new GameObject("Arunika tactical map", typeof(RectTransform), typeof(Image));
+            overlayGo.layer = 5;
+            if (overlayT == null) overlayGo.transform.SetParent(gameplay, false);
+            var overlayBg = overlayGo.GetComponent<Image>();
+            ApplyPanel(overlayBg, kit, HudSurface.Window);
+            overlayBg.raycastTarget = true;
+
+            EnsureTextChild(overlayGo.transform, "Tactical map title", "PETA TAKTIS ARUNIKA", kit, 22f, 2.2f, kit.Gold, FontStyles.Bold);
+            var titleRect = overlayGo.transform.Find("Tactical map title") as RectTransform;
+            if (titleRect != null)
+            {
+                titleRect.anchorMin = new Vector2(0f, 1f);
+                titleRect.anchorMax = new Vector2(1f, 1f);
+                titleRect.pivot = new Vector2(0.5f, 1f);
+                titleRect.anchoredPosition = new Vector2(0f, -22f);
+                titleRect.sizeDelta = new Vector2(-60f, 30f);
+                titleRect.GetComponent<TMP_Text>().alignment = TextAlignmentOptions.Center;
+            }
+
+            EnsureImageChild(overlayGo.transform, "Tactical map divider", kit.Divider != null ? kit.Divider : kit.Ribbon,
+                Image.Type.Simple, new Color(0.86f, 0.68f, 0.28f, 0.92f), 1);
+            var divRect = overlayGo.transform.Find("Tactical map divider") as RectTransform;
+            if (divRect != null)
+            {
+                divRect.anchorMin = new Vector2(0f, 1f);
+                divRect.anchorMax = new Vector2(1f, 1f);
+                divRect.pivot = new Vector2(0.5f, 1f);
+                divRect.anchoredPosition = new Vector2(0f, -54f);
+                divRect.sizeDelta = new Vector2(-80f, 10f);
+            }
+
+            Transform surfaceT = EnsureEmptyRect(overlayGo.transform, "Tactical map surface", 2);
+            var surfaceRect = surfaceT as RectTransform;
+            surfaceRect.anchorMin = surfaceRect.anchorMax = new Vector2(0.5f, 0.5f);
+            surfaceRect.pivot = new Vector2(0.5f, 0.5f);
+            surfaceRect.anchoredPosition = new Vector2(0f, -4f);
+            surfaceRect.sizeDelta = new Vector2(560f, 560f);
+            if (surfaceT.GetComponent<RectMask2D>() == null) surfaceT.gameObject.AddComponent<RectMask2D>();
+
+            Transform fullImgT = EnsureRectImage(surfaceT, "Tactical topdown image", kit.WorldMap, Color.white, 0);
+            StretchFull(fullImgT as RectTransform);
+
+            Transform fullGpsT = EnsureRectImage(surfaceT, "Tactical GPS route", null, new Color(0.95f, 0.72f, 0.22f, 0.85f), 1);
+            fullGpsT.gameObject.SetActive(false);
+
+            Transform fullBlipsT = EnsureEmptyRect(surfaceT, "Tactical secondary blips", 2);
+            StretchFull(fullBlipsT as RectTransform);
+
+            Transform fullTargetT = EnsureRectImage(surfaceT, "Tactical target dot", kit.RadarBlipDiamond, new Color(0.95f, 0.72f, 0.22f, 1f), 3);
+            (fullTargetT as RectTransform).sizeDelta = new Vector2(20f, 20f);
+
+            Transform fullFovT = EnsureRectImage(surfaceT, "Tactical FOV cone", kit.RadarFov, Color.white, 4);
+            var fullFovRect = fullFovT as RectTransform;
+            fullFovRect.anchorMin = fullFovRect.anchorMax = new Vector2(0.5f, 0.5f);
+            fullFovRect.pivot = new Vector2(0.5f, 0f);
+            fullFovRect.sizeDelta = new Vector2(96f, 96f);
+
+            Transform fullPlayerT = EnsureRectImage(surfaceT, "Tactical player chevron", kit.RadarChevron, Color.white, 5);
+            (fullPlayerT as RectTransform).sizeDelta = new Vector2(22f, 22f);
+
+            Transform fullBezelT = EnsureRectImage(surfaceT, "Tactical bezel frame", kit.RadarBezel, Color.white, 6);
+            StretchFull(fullBezelT as RectTransform);
+            fullBezelT.GetComponent<Image>().type = Image.Type.Sliced;
+
+            EnsureTextChild(overlayGo.transform, "Tactical map legend",
+                "<color=#FFF4D2>▲</color> Relawan   <color=#F2B838><sprite name=\"diamond\" tint=1></color> Tujuan   <color=#EB5738>●</color> Api   <color=#7AC75C>●</color> Tugas   <color=#8CD6F2>●</color> NPC   |   [M] Tutup",
+                kit, 13.5f, 0.4f, kit.Cream, FontStyles.Normal);
+            var legendRect = overlayGo.transform.Find("Tactical map legend") as RectTransform;
+            if (legendRect != null)
+            {
+                legendRect.anchorMin = new Vector2(0f, 0f);
+                legendRect.anchorMax = new Vector2(1f, 0f);
+                legendRect.pivot = new Vector2(0.5f, 0f);
+                legendRect.anchoredPosition = new Vector2(0f, 26f);
+                legendRect.sizeDelta = new Vector2(-60f, 24f);
+                var lTxt = legendRect.GetComponent<TMP_Text>();
+                if (kit.SeparatorSprite != null) lTxt.spriteAsset = kit.SeparatorSprite;
+                lTxt.richText = true;
+                lTxt.alignment = TextAlignmentOptions.Center;
+            }
+
+            overlayGo.SetActive(false);
+            controller.ConfigureExpandedMap(
+                overlayGo, surfaceRect,
+                fullPlayerT as RectTransform, fullFovRect,
+                fullTargetT as RectTransform, fullGpsT as RectTransform,
+                fullBlipsT as RectTransform);
+        }
+
+        private static Transform EnsureRectImage(Transform parent, string name, Sprite sprite, Color color, int sibling)
+        {
+            Transform existing = parent.Find(name);
+            GameObject go = existing != null ? existing.gameObject : new GameObject(name, typeof(RectTransform), typeof(Image));
+            go.layer = 5;
+            if (existing == null) go.transform.SetParent(parent, false);
+            go.transform.SetSiblingIndex(Mathf.Clamp(sibling, 0, parent.childCount - 1));
+            var rect = go.GetComponent<RectTransform>();
+            rect.anchorMin = rect.anchorMax = new Vector2(0.5f, 0.5f);
+            rect.pivot = new Vector2(0.5f, 0.5f);
+            var img = go.GetComponent<Image>();
+            img.sprite = sprite;
+            img.color = color;
+            img.raycastTarget = false;
+            return go.transform;
+        }
+
+        private static Transform EnsureEmptyRect(Transform parent, string name, int sibling)
+        {
+            Transform existing = parent.Find(name);
+            GameObject go = existing != null ? existing.gameObject : new GameObject(name, typeof(RectTransform));
+            go.layer = 5;
+            if (existing == null) go.transform.SetParent(parent, false);
+            go.transform.SetSiblingIndex(Mathf.Clamp(sibling, 0, parent.childCount - 1));
+            return go.transform;
+        }
+
+        private static void StretchFull(RectTransform rect)
+        {
+            if (rect == null) return;
+            rect.anchorMin = Vector2.zero;
+            rect.anchorMax = Vector2.one;
+            rect.pivot = new Vector2(0.5f, 0.5f);
+            rect.offsetMin = Vector2.zero;
+            rect.offsetMax = Vector2.zero;
         }
 
         private static void EnsureCoordinatorNameplate(Canvas canvas, UiKit kit)

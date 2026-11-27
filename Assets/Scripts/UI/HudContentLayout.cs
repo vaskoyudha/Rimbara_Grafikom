@@ -51,6 +51,9 @@ namespace Rimbara.UI
 
             // Thin strips and prompts: centred, with side padding.
             Text(canvas, "Controls reminder", "Controls text", 26f, 17f, TextAlignmentOptions.Center, 18f, -6f);
+            TextAt(canvas, "Arunika field map", "Map title", 18f, 11.5f, TextAlignmentOptions.Left, 24f, 64f, -18f);
+            TextAt(canvas, "Arunika field map", "Map M hint", 18f, 11f, TextAlignmentOptions.Right, 24f, 24f, -18f);
+            Rect(canvas, "Arunika field map", "Map coordinates", 204f, 24f, -44f);
             Text(canvas, "Next destination", "Waypoint distance", 22f, 16f, TextAlignmentOptions.Center, 16f, -4f);
             CenterChild(canvas, "Next destination", "Waypoint 3D arrow", new Vector2(84f, 84f), new Vector2(0f, -22f));
             Text(canvas, "Next destination", "Waypoint instruction", 24f, 15.5f, TextAlignmentOptions.Center, 16f, -112f);
