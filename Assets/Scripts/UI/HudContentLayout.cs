@@ -24,20 +24,20 @@ namespace Rimbara.UI
         {
             if (canvas == null) return;
 
-            // Mission card (480x196).
-            Text(canvas, "Mission card", "Mission number", 16f, 14f, TextAlignmentOptions.Left, 18f, -14f);
-            Text(canvas, "Mission card", "Mission title", 34f, 26f, TextAlignmentOptions.Left, 18f, -36f);
-            Text(canvas, "Mission card", "Mission description", 96f, 19f, TextAlignmentOptions.TopLeft, 18f, -76f);
+            // Mission card (480x214).
+            Text(canvas, "Mission card", "Mission number", 18f, 13f, TextAlignmentOptions.Left, 26f, -24f);
+            Text(canvas, "Mission card", "Mission title", 34f, 26f, TextAlignmentOptions.Left, 26f, -50f);
+            Text(canvas, "Mission card", "Mission description", 100f, 18f, TextAlignmentOptions.TopLeft, 26f, -94f);
 
-            // Restoration counters (340x200).
-            Text(canvas, "Restoration counters", "Seedling counter", 34f, 26f, TextAlignmentOptions.Left, 18f, -14f);
-            Text(canvas, "Restoration counters", "Tree counter", 24f, 18f, TextAlignmentOptions.Left, 18f, -56f);
-            Text(canvas, "Restoration counters", "Fire counter", 24f, 18f, TextAlignmentOptions.Left, 18f, -86f);
-            Text(canvas, "Restoration counters", "Restoration percent", 22f, 16f, TextAlignmentOptions.Left, 18f, -118f);
-            Rect(canvas, "Restoration counters", "Restoration bar background", 8f, 18f, -150f);
+            // Restoration counters (360x212). Long labels must stay one line.
+            Text(canvas, "Restoration counters", "Seedling counter", 24f, 14f, TextAlignmentOptions.Left, 26f, -28f);
+            Text(canvas, "Restoration counters", "Tree counter", 24f, 15f, TextAlignmentOptions.Left, 26f, -62f);
+            Text(canvas, "Restoration counters", "Fire counter", 24f, 15f, TextAlignmentOptions.Left, 26f, -94f);
+            Text(canvas, "Restoration counters", "Restoration percent", 22f, 14f, TextAlignmentOptions.Left, 26f, -126f);
+            Rect(canvas, "Restoration counters", "Restoration bar background", 7f, 26f, -158f);
 
             // Thin strips and prompts: centred, with side padding.
-            Text(canvas, "Controls reminder", "Controls text", 24f, 15f, TextAlignmentOptions.Center, 16f, -7f);
+            Text(canvas, "Controls reminder", "Controls text", 26f, 17f, TextAlignmentOptions.Center, 18f, -6f);
             Text(canvas, "Next destination", "Waypoint instruction", 28f, 18f, TextAlignmentOptions.Center, 16f, -8f);
             Text(canvas, "Interaction prompt", "Interaction text", 30f, 20f, TextAlignmentOptions.Center, 20f, -13f);
             Text(canvas, "Feedback toast", "Feedback text", 34f, 20f, TextAlignmentOptions.Center, 20f, -13f);
@@ -129,6 +129,7 @@ namespace Rimbara.UI
             TMP_Text text = child.GetComponent<TMP_Text>();
             if (text != null)
             {
+                text.enableAutoSizing = false;
                 text.fontSize = fontSize;
                 text.alignment = alignment;
             }

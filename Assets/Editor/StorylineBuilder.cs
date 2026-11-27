@@ -177,7 +177,9 @@ namespace Rimbara.Editor
             var rect = panel.GetComponent<RectTransform>();
             Transform parent = view.SafeArea != null ? view.SafeArea.transform : view.Canvas.transform;
             rect.SetParent(parent, false);
-            rect.anchorMin = rect.anchorMax = rect.pivot = new Vector2(0.5f, 0.5f); rect.sizeDelta = new Vector2(860f, 440f);
+            rect.anchorMin = rect.anchorMax = rect.pivot = new Vector2(0.5f, 0f);
+            rect.anchoredPosition = new Vector2(0f, 96f);
+            rect.sizeDelta = new Vector2(1180f, 300f);
             Image background = panel.GetComponent<Image>(); background.color = new Color(0.08f, 0.12f, 0.09f, 0.98f);
             background.raycastTarget = true;
             UiKit kit = AssetDatabase.LoadAssetAtPath<UiKit>(FantasticThemeBuilder.AssetPath);
@@ -187,8 +189,8 @@ namespace Rimbara.Editor
                 background.raycastTarget = true;
             }
             text = new GameObject("Dialogue text", typeof(RectTransform), typeof(TextMeshProUGUI)).GetComponent<TMP_Text>();
-            text.rectTransform.SetParent(rect, false); text.rectTransform.anchorMin = new Vector2(0f, 0.25f); text.rectTransform.anchorMax = Vector2.one;
-            text.rectTransform.offsetMin = new Vector2(35f, 10f); text.rectTransform.offsetMax = new Vector2(-35f, -30f);
+            text.rectTransform.SetParent(rect, false); text.rectTransform.anchorMin = Vector2.zero; text.rectTransform.anchorMax = Vector2.one;
+            text.rectTransform.offsetMin = new Vector2(40f, 96f); text.rectTransform.offsetMax = new Vector2(-40f, -30f);
             text.font = kit != null ? kit.BodyFont : view.MissionDescription.font;
             text.fontSize = 23f; text.color = kit != null ? kit.Parchment : Color.white; text.raycastTarget = false;
             text.textWrappingMode = TextWrappingModes.Normal; text.enableAutoSizing = true; text.fontSizeMin = 18f; text.fontSizeMax = 23f;
@@ -198,8 +200,8 @@ namespace Rimbara.Editor
                 Image nextImage = next.GetComponent<Image>();
                 if (nextImage != null) HudTheme.ApplyButton(next, nextImage, kit, true);
             }
-            RectTransform button = next.GetComponent<RectTransform>(); button.anchorMin = button.anchorMax = new Vector2(0.5f, 0f);
-            button.pivot = new Vector2(0.5f, 0f); button.anchoredPosition = new Vector2(0f, 25f); button.sizeDelta = new Vector2(260f, 58f);
+            RectTransform button = next.GetComponent<RectTransform>(); button.anchorMin = button.anchorMax = new Vector2(1f, 0f);
+            button.pivot = new Vector2(0.5f, 0.5f); button.anchoredPosition = new Vector2(-152f, 52f); button.sizeDelta = new Vector2(240f, 56f);
             next.onClick = new Button.ButtonClickedEvent();
             TMP_Text caption = next.GetComponentInChildren<TMP_Text>();
             caption.rectTransform.anchorMin = Vector2.zero; caption.rectTransform.anchorMax = Vector2.one;

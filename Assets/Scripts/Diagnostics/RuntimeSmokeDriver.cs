@@ -546,6 +546,7 @@ namespace Rimbara.Diagnostics
             Check("Paused dialogue cannot mutate chapter", !chapter.AcceptBriefing());
             Check("Coordinator dialogue uses Indonesian", storyHud.GetComponentsInChildren<TMPro.TMP_Text>(true)
                 .Any(t => t.text.Contains("Selamat datang di posko darurat")));
+            yield return WaitForDialogue(storyHud);
             yield return Capture("02-coordinator.png");
             yield return AdvanceDialogue(storyHud);
             Check("First pointer advances dialogue without accepting early", chapter.Progress.Stage == DisasterStage.Briefing && storyHud.DialogueOpen);
@@ -687,6 +688,7 @@ namespace Rimbara.Diagnostics
             Check("Ranger opens Indonesian ecological briefing", storyHud.DialogueOpen && !state.SessionRunning
                 && storyHud.GetComponentsInChildren<TMPro.TMP_Text>(true).Any(t => t.text.Contains("hutan adalah rumah")));
             Check("Paused ranger cannot accept briefing", !recovery.AcceptBriefing());
+            yield return WaitForDialogue(storyHud);
             yield return Capture("06-ranger-briefing.png");
             input.EnableTestDriver(false); QueueKeys(Key.Escape); yield return new WaitForSecondsRealtime(0.15f); QueueKeys(); yield return new WaitForSecondsRealtime(0.15f);
             Check("Escape dismisses ranger without accepting mission", !storyHud.DialogueOpen && p.Stage == RecoveryStage.Briefing && state.SessionRunning);
@@ -860,6 +862,7 @@ namespace Rimbara.Diagnostics
             detector.Scan(); Check("Physical route finds village elder", detector.Focused == elder);
             yield return PressE();
             Check("Elder has Indonesian recognition dialogue", storyHud.DialogueOpen && storyHud.GetComponentsInChildren<TMPro.TMP_Text>(true).Any(t => t.text.Contains("hutan ini dipenuhi api dan abu")));
+            yield return WaitForDialogue(storyHud);
             yield return Capture("14-elder-dialogue.png");
             input.EnableTestDriver(false); QueueKeys(Key.Escape); yield return new WaitForSecondsRealtime(0.15f); QueueKeys(); yield return new WaitForSecondsRealtime(0.15f);
             Check("Dismissing elder does not grant final seedling", p.Stage == RestoredStage.ElderBriefing && !p.HasSeedling);
@@ -975,6 +978,12 @@ namespace Rimbara.Diagnostics
             detector.Scan();
             Check("Nearby unobstructed interaction selects " + target.name, detector.Focused != null && detector.Focused.transform == target,
                 "player=" + rig.transform.position + " target=" + target.position + " focus=" + (detector.Focused == null ? "none" : detector.Focused.name));
+        }
+
+        private IEnumerator WaitForDialogue(DisasterHud storyHud)
+        {
+            for (float until = Time.realtimeSinceStartup + 8f; storyHud.DialogueRevealing && Time.realtimeSinceStartup < until;)
+                yield return null;
         }
 
         private IEnumerator AdvanceDialogue(DisasterHud storyHud)

@@ -46,7 +46,7 @@ namespace Rimbara.UI
 
         private static readonly HashSet<string> MutedText = new HashSet<string>
         {
-            "Mission number", "Controls text", "Map title", "Volume label", "Menu footer",
+            "Mission number", "Map title", "Volume label", "Menu footer",
             "No fail promise", "Help tip", "Game subtitle"
         };
 
@@ -139,6 +139,13 @@ namespace Rimbara.UI
                 else if (SuccessText.Contains(text.name)) text.color = kit.Cream;
                 else if (MutedText.Contains(text.name)) text.color = kit.Muted;
                 else text.color = kit.Parchment;
+
+                if (text.name == "Controls text" || text.name == "Waypoint instruction")
+                {
+                    text.fontMaterial.EnableKeyword("OUTLINE_ON");
+                    text.outlineWidth = 0.18f;
+                    text.outlineColor = new Color32(20, 12, 6, 255);
+                }
 
                 if (CenteredText.Contains(text.name))
                 {
