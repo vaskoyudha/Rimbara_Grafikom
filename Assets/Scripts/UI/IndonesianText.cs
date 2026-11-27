@@ -54,6 +54,7 @@ namespace Rimbara.UI
             { "Mission number", "PROLOG  <sprite name=\"diamond\" tint=1>  POSKO DARURAT" },
             { "Mission title", "KEDATANGAN" },
             { "Mission description", "Datangi posko darurat. Tekan E untuk berbicara dengan koordinator." },
+            { "Counters header", "STATUS PEMULIHAN" },
             { "Seedling counter", "PERLENGKAPAN   BELUM DIAMBIL" },
             { "Tree counter", "PUING DIBERSIHKAN   0 / 4" },
             { "Fire counter", "API PADAM   0 / 10" },
@@ -64,7 +65,8 @@ namespace Rimbara.UI
             { "Mission results", "Zona Hutan Pulih masih dalam pengembangan." },
             { "Dialogue text", "KOORDINATOR MISI" },
             { "Ending subtitle", "" },
-            { "Skip cinematic label", "LEWATI SINEMATIK" }
+            { "Skip cinematic label", "LEWATI SINEMATIK" },
+            { "Skip opening cinematic label", "LEWATI SINEMATIK" }
         };
 
         private static readonly Dictionary<string, string> WorldLabels = new Dictionary<string, string>
