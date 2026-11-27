@@ -92,6 +92,9 @@ namespace Rimbara.Editor
             kit.RadarFov = AssetDatabase.LoadAssetAtPath<Sprite>(TopDownMapBaker.FovPath);
             kit.RadarBlipDiamond = AssetDatabase.LoadAssetAtPath<Sprite>(TopDownMapBaker.DiamondPath);
             kit.RadarBlipDot = AssetDatabase.LoadAssetAtPath<Sprite>(TopDownMapBaker.DotPath);
+            kit.ZoneAThumbnail = AssetDatabase.LoadAssetAtPath<Sprite>(TopDownMapBaker.ZoneAPath);
+            kit.ZoneBThumbnail = AssetDatabase.LoadAssetAtPath<Sprite>(TopDownMapBaker.ZoneBPath);
+            kit.ZoneCThumbnail = AssetDatabase.LoadAssetAtPath<Sprite>(TopDownMapBaker.ZoneCPath);
             Terrain activeTerrain = Terrain.activeTerrain;
             if (activeTerrain != null && activeTerrain.terrainData != null)
             {

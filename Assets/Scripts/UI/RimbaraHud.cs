@@ -46,18 +46,27 @@ namespace Rimbara.UI
             missions.MissionChanged += RefreshMission;
             flow.ModeChanged += RefreshMode;
             actor.ActionPerformed += ShowAction;
-            view.Start.onClick.AddListener(flow.ShowBriefing);
+            view.Start.onClick.AddListener(flow.ShowZoneSelect);
             view.Begin.onClick.AddListener(flow.Begin);
+            if (view.ZoneABegin != null) view.ZoneABegin.onClick.AddListener(flow.ShowBriefing);
             view.OpenControls.onClick.AddListener(flow.ShowControls);
+            if (view.OpenSettings != null) view.OpenSettings.onClick.AddListener(flow.ShowSettings);
             view.ControlsBack.onClick.AddListener(flow.ShowMenu);
-            view.BriefingBack.onClick.AddListener(flow.ShowMenu);
+            view.BriefingBack.onClick.AddListener(flow.ShowZoneSelect);
+            if (view.SettingsBack != null) view.SettingsBack.onClick.AddListener(flow.ShowMenu);
+            if (view.ZoneSelectBack != null) view.ZoneSelectBack.onClick.AddListener(flow.ShowMenu);
             view.Resume.onClick.AddListener(flow.Resume);
             view.PauseMenu.onClick.AddListener(flow.ReturnToMenu);
             view.Replay.onClick.AddListener(flow.Replay);
             view.VictoryMenu.onClick.AddListener(flow.ReturnToMenu);
             foreach (var button in view.Quit) button.onClick.AddListener(flow.Quit);
             view.Volume.SetValueWithoutNotify(audioSystem.Volume);
-            view.Volume.onValueChanged.AddListener(audioSystem.SetVolume);
+            view.Volume.onValueChanged.AddListener(val =>
+            {
+                audioSystem.SetVolume(val);
+                if (view.MenuScreens != null) view.MenuScreens.SyncVolumeFromPause(val);
+            });
+            if (view.MenuScreens != null) view.MenuScreens.Bind(audioSystem, view.Volume);
             if (view.Waypoint != null && view.Waypoint.transform.parent != null)
             {
                 HudTheme.ApplyReadableShadow(view.Waypoint, 0.25f);
@@ -163,11 +172,20 @@ namespace Rimbara.UI
         {
             view.Gameplay.SetActive(mode == ScreenMode.Playing || mode == ScreenMode.Paused);
             view.Menu.SetActive(mode == ScreenMode.Menu);
+            if (view.ZoneSelect != null) view.ZoneSelect.SetActive(mode == ScreenMode.ZoneSelect);
+            if (view.Settings != null) view.Settings.SetActive(mode == ScreenMode.Settings);
             view.Briefing.SetActive(mode == ScreenMode.Briefing);
             view.Controls.SetActive(mode == ScreenMode.Controls);
             view.Pause.SetActive(mode == ScreenMode.Paused);
             view.Victory.SetActive(mode == ScreenMode.Victory);
             view.Dimmer.SetActive(mode != ScreenMode.Playing);
+            if (mode == ScreenMode.ZoneSelect && view.MenuScreens != null)
+            {
+                float frac = missions.DisasterChapter != null
+                    ? missions.DisasterChapter.Progress.ChapterFraction
+                    : RestorationScore.From(state.Snapshot, 1).Fraction;
+                view.MenuScreens.RefreshZoneProgress(frac);
+            }
             if (mode == ScreenMode.Victory)
             {
                 RestorationScoreView model = BuildView(state.Snapshot, missions.Stage);

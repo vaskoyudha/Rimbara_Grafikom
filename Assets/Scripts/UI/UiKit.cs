@@ -43,6 +43,11 @@ namespace Rimbara.UI
         public Vector2 WorldMin = new Vector2(-60f, -55f);
         public Vector2 WorldSize = new Vector2(120f, 120f);
 
+        [Header("Zone Thumbnails")]
+        public Sprite ZoneAThumbnail;
+        public Sprite ZoneBThumbnail;
+        public Sprite ZoneCThumbnail;
+
         [Header("Buttons")]
         public Sprite ButtonPrimaryNormal;
         public Sprite ButtonPrimaryHover;

@@ -178,6 +178,8 @@ namespace Rimbara.Diagnostics
             Check("Volume slider is wired", Mathf.Abs(audioSystem.Volume - 0.37f) < 0.001f);
             hud.View.Volume.value = originalVolume;
             yield return Click(hud.View.Start);
+            Check("Mouse click opens zone select screen", flow.Mode == ScreenMode.ZoneSelect && hud.View.ZoneSelect.activeInHierarchy);
+            yield return Click(hud.View.ZoneABegin);
             Check("Mouse click opens profile-specific briefing", flow.Mode == ScreenMode.Briefing && hud.View.Briefing.activeInHierarchy
                 && hud.View.BriefingTargets.text.Contains(state.Profile.Seedlings + " BIBIT LOKAL"));
             QueueKeys(Key.W, Key.LeftShift);
@@ -522,6 +524,8 @@ namespace Rimbara.Diagnostics
             yield return Capture("01a-controls-id.png");
             yield return Click(hud.View.ControlsBack);
             yield return Click(hud.View.Start);
+            Check("Pointer opens zone select screen", flow.Mode == ScreenMode.ZoneSelect);
+            yield return Click(hud.View.ZoneABegin);
             Check("Pointer opens storyline briefing", flow.Mode == ScreenMode.Briefing);
             yield return Capture("01b-briefing-id.png");
             yield return Click(hud.View.Begin);

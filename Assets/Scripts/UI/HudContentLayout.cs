@@ -13,7 +13,7 @@ namespace Rimbara.UI
     {
         private static readonly Dictionary<string, float> CenteredCards = new Dictionary<string, float>
         {
-            { "Main menu card", 584f },
+            { "Main menu card", 604f },
             { "Volunteer briefing", 728f },
             { "How to play card", 670f },
             { "Pause card", 434f },

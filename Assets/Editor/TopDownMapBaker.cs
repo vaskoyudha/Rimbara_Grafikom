@@ -18,12 +18,18 @@ namespace Rimbara.Editor
         public const string DotPath = Folder + "/RadarBlipDot.png";
         public const string BezelPath = Folder + "/RadarBezelFrame.png";
 
+        // Zone thumbnails (cropped from full map)
+        public const string ZoneAPath = Folder + "/ZoneA_Thumbnail.png";
+        public const string ZoneBPath = Folder + "/ZoneB_Thumbnail.png";
+        public const string ZoneCPath = Folder + "/ZoneC_Thumbnail.png";
+
         [MenuItem("RIMBARA/UI/Bake Arunika Top-Down Map")]
         public static void BakeToProject()
         {
             Directory.CreateDirectory(Folder);
             BakeWorldTexture(out Vector2 worldMin, out Vector2 worldSize);
             CreateRadarSprites();
+            CropZoneThumbnails();
             AssetDatabase.Refresh(ImportAssetOptions.ForceUpdate);
 
             ImportSprite(MapPath, mipmaps: true, Vector4.zero, FilterMode.Bilinear);
@@ -32,6 +38,9 @@ namespace Rimbara.Editor
             ImportSprite(DiamondPath, mipmaps: false, Vector4.zero, FilterMode.Bilinear);
             ImportSprite(DotPath, mipmaps: false, Vector4.zero, FilterMode.Bilinear);
             ImportSprite(BezelPath, mipmaps: false, new Vector4(16f, 16f, 16f, 16f), FilterMode.Bilinear);
+            ImportSprite(ZoneAPath, mipmaps: true, Vector4.zero, FilterMode.Bilinear);
+            ImportSprite(ZoneBPath, mipmaps: true, Vector4.zero, FilterMode.Bilinear);
+            ImportSprite(ZoneCPath, mipmaps: true, Vector4.zero, FilterMode.Bilinear);
 
             Debug.Log($"TopDownMapBaker complete: bounds min={worldMin}, size={worldSize}");
         }
@@ -286,6 +295,57 @@ namespace Rimbara.Editor
             tex.Apply();
             File.WriteAllBytes(path, tex.EncodeToPNG());
             Object.DestroyImmediate(tex);
+        }
+
+        /// <summary>
+        /// Crops three zone regions from the full 1024x1024 top-down map into 384x384 thumbnails.
+        /// Zone A = top-left (Hutan Terdampak), Zone B = center (Pemulihan), Zone C = bottom-right (Titik Api).
+        /// </summary>
+        private static void CropZoneThumbnails()
+        {
+            if (!File.Exists(MapPath)) return;
+            byte[] mapBytes = File.ReadAllBytes(MapPath);
+            var fullTex = new Texture2D(2, 2, TextureFormat.RGBA32, false);
+            fullTex.LoadImage(mapBytes);
+
+            // Crop regions on the 1024x1024 map (note: tex coords start at bottom-left)
+            // Zone A: top-left of map = world top-left area → pixel(0, 640) to (384, 1024)
+            CropAndSave(fullTex, ZoneAPath, 0, 640, 384, 384);
+            // Zone B: center of map → pixel(320, 320) to (704, 704)
+            CropAndSave(fullTex, ZoneBPath, 320, 320, 384, 384);
+            // Zone C: bottom-right of map = world bottom-right → pixel(640, 0) to (1024, 384)
+            CropAndSave(fullTex, ZoneCPath, 640, 0, 384, 384);
+
+            Object.DestroyImmediate(fullTex);
+        }
+
+        private static void CropAndSave(Texture2D source, string path, int x, int y, int w, int h)
+        {
+            x = Mathf.Clamp(x, 0, source.width - w);
+            y = Mathf.Clamp(y, 0, source.height - h);
+            Color[] pixels = source.GetPixels(x, y, w, h);
+            // Add a subtle vignette for card-thumbnail look
+            for (int py = 0; py < h; py++)
+            {
+                for (int px = 0; px < w; px++)
+                {
+                    float u = (px + 0.5f) / w * 2f - 1f;
+                    float v = (py + 0.5f) / h * 2f - 1f;
+                    float d = Mathf.Sqrt(u * u + v * v);
+                    float vignette = Mathf.Clamp01(1f - Mathf.SmoothStep(0.7f, 1.4f, d) * 0.65f);
+                    int idx = py * w + px;
+                    Color c = pixels[idx];
+                    c.r = Mathf.Clamp01((c.r * 1.45f + 0.05f) * vignette);
+                    c.g = Mathf.Clamp01((c.g * 1.45f + 0.045f) * vignette);
+                    c.b = Mathf.Clamp01((c.b * 1.40f + 0.035f) * vignette);
+                    pixels[idx] = c;
+                }
+            }
+            var thumb = new Texture2D(w, h, TextureFormat.RGBA32, false);
+            thumb.SetPixels(pixels);
+            thumb.Apply();
+            File.WriteAllBytes(path, thumb.EncodeToPNG());
+            Object.DestroyImmediate(thumb);
         }
 
         private static void ImportSprite(string path, bool mipmaps, Vector4 border, FilterMode filter)

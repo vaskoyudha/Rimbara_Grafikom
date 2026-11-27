@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 
 namespace Rimbara.Mission
 {
-    public enum ScreenMode { Menu, Briefing, Controls, Playing, Paused, Victory, Transition, Cinematic, Inventory }
+    public enum ScreenMode { Menu, ZoneSelect, Settings, Briefing, Controls, Playing, Paused, Victory, Transition, Cinematic, Inventory }
 
     [DefaultExecutionOrder(-40)]
     public sealed class GameFlow : MonoBehaviour
@@ -62,11 +62,14 @@ namespace Rimbara.Mission
             {
                 if (Mode == ScreenMode.Playing || Mode == ScreenMode.Cinematic || Mode == ScreenMode.Transition) Pause();
                 else if (Mode == ScreenMode.Paused) Resume();
-                else if (Mode == ScreenMode.Briefing || Mode == ScreenMode.Controls) ShowMenu();
+                else if (Mode == ScreenMode.Briefing || Mode == ScreenMode.Controls
+                    || Mode == ScreenMode.ZoneSelect || Mode == ScreenMode.Settings) ShowMenu();
             }
         }
 
         public void ShowMenu() { SetMode(ScreenMode.Menu); }
+        public void ShowZoneSelect() { SetMode(ScreenMode.ZoneSelect); }
+        public void ShowSettings() { SetMode(ScreenMode.Settings); }
         public void ShowBriefing() { SetMode(ScreenMode.Briefing); }
         public void ShowControls() { SetMode(ScreenMode.Controls); }
 
