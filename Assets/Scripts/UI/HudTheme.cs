@@ -15,13 +15,14 @@ namespace Rimbara.UI
         {
             { "Mission card", HudSurface.Window },
             { "Restoration counters", HudSurface.Window },
-            { "Interaction prompt", HudSurface.Window },
+            { "Interaction prompt", HudSurface.Tooltip },
             { "Feedback toast", HudSurface.Tooltip },
             { "Controls reminder", HudSurface.Tooltip },
             { "Arunika field map", HudSurface.Window },
             { "Main menu card", HudSurface.Window },
             { "Zone select card", HudSurface.Window },
             { "Settings card", HudSurface.Window },
+            { "Achievements card", HudSurface.Window },
             { "Volunteer briefing", HudSurface.Window },
             { "How to play card", HudSurface.Window },
             { "Pause card", HudSurface.Window },
@@ -33,7 +34,13 @@ namespace Rimbara.UI
 
         private static readonly HashSet<string> PrimaryButtons = new HashSet<string>
         {
-            "Start restoration", "Enter Arunika", "Zone A begin", "Resume mission", "Play again", "Help back", "Dialogue next"
+            "Start restoration", "Continue button", "Enter Arunika", "Zone A begin", "Resume mission", "Play again", "Help back", "Dialogue next"
+        };
+
+        /// <summary>Buttons styled by ApplyCustomButtonStyle — skip them in the generic ApplyButton loop.</summary>
+        private static readonly HashSet<string> CustomStyledButtons = new HashSet<string>
+        {
+            "Controls button", "Settings button", "Menu quit", "Achievements button", "Dialogue choice 0", "Dialogue choice 1"
         };
 
         private static readonly HashSet<string> GoldText = new HashSet<string>
@@ -137,6 +144,7 @@ namespace Rimbara.UI
 
             foreach (Button button in canvas.GetComponentsInChildren<Button>(true))
             {
+                if (CustomStyledButtons.Contains(button.name)) continue;
                 Image image = button.GetComponent<Image>();
                 if (image != null) ApplyButton(button, image, kit, PrimaryButtons.Contains(button.name));
             }
@@ -283,10 +291,11 @@ namespace Rimbara.UI
                         UnityEngine.UI.Image.Type.Sliced, new Color(1f, 1f, 1f, 0.80f), 0);
                 EnsureImageChild(counters, "Counter icon 0", kit.IconBag,
                     UnityEngine.UI.Image.Type.Simple, kit.Cream, counters.childCount - 1, true);
-                EnsureImageChild(counters, "Counter icon 1", kit.IconCleanup,
+                EnsureImageChild(counters, "Counter icon 1", kit.IconRubble,
                     UnityEngine.UI.Image.Type.Simple, Color.white, counters.childCount - 1, true);
-                EnsureImageChild(counters, "Counter icon 2", kit.IconEmber,
+                EnsureImageChild(counters, "Counter icon 2", kit.IconFire,
                     UnityEngine.UI.Image.Type.Simple, Color.white, counters.childCount - 1, true);
+                EnsureTopBorderBadge(counters, "Progress header badge", "Progress header label", "PROGRESS", 156f, kit);
             }
 
             Transform waypoint = FindNode(canvas.transform, "Next destination");
@@ -321,9 +330,13 @@ namespace Rimbara.UI
             toggleBtn.transition = Selectable.Transition.None;
             toggleBtn.targetGraphic = map.GetComponent<Image>();
 
-            EnsureTextChild(map, "Map M hint", "[M]", kit, 11f, 0.8f, kit.Gold, FontStyles.Bold);
-            var hintText = map.Find("Map M hint")?.GetComponent<TMP_Text>();
-            if (hintText != null) hintText.alignment = TextAlignmentOptions.Right;
+            Transform mapTitle = map.Find("Map title");
+            if (mapTitle != null) mapTitle.gameObject.SetActive(false);
+
+            Transform mapHint = map.Find("Map M hint");
+            if (mapHint != null) mapHint.gameObject.SetActive(false);
+
+            EnsureTopBorderBadge(map, "Map header badge", "Map header label", "MAP", 120f, kit);
 
             Transform coords = map.Find("Map coordinates");
             if (coords == null) return;
@@ -493,6 +506,36 @@ namespace Rimbara.UI
                 fullBlipsT as RectTransform);
         }
 
+        private static void EnsureTopBorderBadge(Transform parent, string badgeName, string labelName, string copy, float width, UiKit kit)
+        {
+            if (parent == null) return;
+            Transform badgeT = EnsureRectImage(
+                parent,
+                badgeName,
+                kit.CardInset != null ? kit.CardInset : (kit.Tooltip != null ? kit.Tooltip : kit.Window),
+                Color.white,
+                parent.childCount - 1);
+            var badgeImg = badgeT.GetComponent<Image>();
+            badgeImg.type = Image.Type.Sliced;
+            badgeImg.raycastTarget = false;
+            var badgeRect = badgeT as RectTransform;
+            badgeRect.anchorMin = badgeRect.anchorMax = new Vector2(0.5f, 1f);
+            badgeRect.pivot = new Vector2(0.5f, 0.5f);
+            badgeRect.anchoredPosition = Vector2.zero;
+            badgeRect.sizeDelta = new Vector2(width, 36f);
+
+            EnsureTextChild(badgeT, labelName, copy, kit, 18f, 2.0f, kit.Cream, FontStyles.Bold);
+            var badgeLabel = badgeT.Find(labelName)?.GetComponent<TMP_Text>();
+            if (badgeLabel != null)
+            {
+                badgeLabel.alignment = TextAlignmentOptions.Center;
+                badgeLabel.raycastTarget = false;
+                StretchFull(badgeLabel.rectTransform);
+                ApplyReadableShadow(badgeLabel, 0.2f);
+            }
+            badgeT.SetAsLastSibling();
+        }
+
         private static Transform EnsureRectImage(Transform parent, string name, Sprite sprite, Color color, int sibling)
         {
             Transform existing = parent.Find(name);
@@ -603,6 +646,7 @@ namespace Rimbara.UI
             EnsureImageChild(dialogue, "Dialogue divider", kit.Divider != null ? kit.Divider : kit.Ribbon,
                 UnityEngine.UI.Image.Type.Simple, new Color(0.86f, 0.68f, 0.28f, 0.92f), dialogue.childCount - 1);
             Transform nextTransform = dialogue.Find("Dialogue next");
+            if (nextTransform != null) nextTransform.gameObject.SetActive(false);
             for (int i = 0; i < 2; i++)
             {
                 string choiceName = "Dialogue choice " + i;
@@ -630,7 +674,19 @@ namespace Rimbara.UI
                 var btn = go.GetComponent<UnityEngine.UI.Button>();
                 var img = go.GetComponent<UnityEngine.UI.Image>();
                 btn.onClick = new UnityEngine.UI.Button.ButtonClickedEvent();
-                ApplyButton(btn, img, kit, false);
+                if (i == 0)
+                {
+                    ApplyButton(btn, img, kit, true);
+                }
+                else
+                {
+                    ApplyCustomButtonStyle(
+                        btn,
+                        kit.ButtonAccentNormal != null ? kit.ButtonAccentNormal : kit.ButtonPrimaryNormal,
+                        kit.ButtonAccentNormal != null ? kit.ButtonAccentNormal : kit.ButtonPrimaryNormal,
+                        kit.ButtonAccentPressed != null ? kit.ButtonAccentPressed : kit.ButtonPrimaryPressed,
+                        kit.Cream);
+                }
                 if (go.GetComponent<ButtonHoverAnimation>() == null)
                     go.AddComponent<ButtonHoverAnimation>();
 
@@ -638,12 +694,12 @@ namespace Rimbara.UI
                 if (label != null)
                 {
                     label.name = "Choice " + i + " text";
-                    label.font = kit.BodyFont != null ? kit.BodyFont : kit.HeadingFont;
-                    label.fontStyle = FontStyles.Normal;
+                    label.font = kit.HeadingFont != null ? kit.HeadingFont : kit.BodyFont;
+                    label.fontStyle = FontStyles.SmallCaps;
                     label.color = kit.Cream;
                     label.enableAutoSizing = true;
-                    label.fontSizeMin = 12f;
-                    label.fontSizeMax = 15.5f;
+                    label.fontSizeMin = 11f;
+                    label.fontSizeMax = 14.5f;
                     label.alignment = TextAlignmentOptions.Center;
                     label.rectTransform.anchorMin = Vector2.zero;
                     label.rectTransform.anchorMax = Vector2.one;
@@ -698,64 +754,130 @@ namespace Rimbara.UI
             Transform safe = canvas.transform.Find("Safe area") ?? canvas.transform;
             Transform mainMenuCard = FindNode(canvas.transform, "Main menu card");
             Button settingsOpenBtn = null;
+            Button achievementsOpenBtn = null;
+            Button continueBtn = null;
+            Button startMenuBtn = null;
             if (mainMenuCard != null)
             {
-                // Ornate divider & story/scope insets to match the HUD's fantasy craft
+                var eyebrow = mainMenuCard.Find("Menu eyebrow");
+                if (eyebrow != null) eyebrow.gameObject.SetActive(false);
+
+                var rimbaraTitle = mainMenuCard.Find("RIMBARA title") as RectTransform;
+                Transform oldInnerLogo = mainMenuCard.Find("RIMBARA logo");
+                if (oldInnerLogo != null) oldInnerLogo.gameObject.SetActive(false);
+
+                Transform menuScreen = mainMenuCard.parent;
+                if (kit.GameLogo != null && menuScreen != null)
+                {
+                    if (rimbaraTitle != null) rimbaraTitle.gameObject.SetActive(false);
+                    EnsureImageChild(menuScreen, "RIMBARA logo", kit.GameLogo, Image.Type.Simple, Color.white, menuScreen.childCount);
+                    var logoRect = menuScreen.Find("RIMBARA logo") as RectTransform;
+                    if (logoRect != null)
+                    {
+                        logoRect.gameObject.SetActive(true);
+                        var logoImg = logoRect.GetComponent<Image>();
+                        if (logoImg != null) logoImg.preserveAspect = true;
+                        logoRect.anchorMin = logoRect.anchorMax = new Vector2(0.5f, 0.5f);
+                        logoRect.pivot = new Vector2(0.5f, 0f);
+                        logoRect.anchoredPosition = new Vector2(0f, 166f);
+                        logoRect.sizeDelta = new Vector2(640f, 214f);
+                        logoRect.SetAsLastSibling();
+                    }
+                }
+                else
+                {
+                    var oldLogo = menuScreen != null ? menuScreen.Find("RIMBARA logo") : null;
+                    if (oldLogo != null) oldLogo.gameObject.SetActive(false);
+                    if (rimbaraTitle != null)
+                    {
+                        rimbaraTitle.gameObject.SetActive(true);
+                        PositionTopCenter(rimbaraTitle, new Vector2(594f, 99f), -46f);
+                    }
+                }
+
+                var gameSubtitle = mainMenuCard.Find("Game subtitle") as RectTransform;
+                if (gameSubtitle != null)
+                    PositionTopCenter(gameSubtitle, new Vector2(584f, 28f), -24f);
+
+                // Ornate divider & story inset to match the HUD's fantasy craft
                 EnsureImageChild(mainMenuCard, "Menu divider", kit.Divider != null ? kit.Divider : kit.Ribbon,
                     Image.Type.Simple, new Color(0.86f, 0.68f, 0.28f, 0.92f), 3);
-                PositionTopCenter(mainMenuCard.Find("Menu divider") as RectTransform, new Vector2(604f, 10f), -214f);
+                PositionTopCenter(mainMenuCard.Find("Menu divider") as RectTransform, new Vector2(604f, 10f), -58f);
 
                 EnsureImageChild(mainMenuCard, "Menu story inset", kit.CardInset != null ? kit.CardInset : kit.Tooltip,
                     Image.Type.Sliced, new Color(1f, 1f, 1f, 0.92f), 4);
-                PositionTopCenter(mainMenuCard.Find("Menu story inset") as RectTransform, new Vector2(604f, 142f), -234f);
+                PositionTopCenter(mainMenuCard.Find("Menu story inset") as RectTransform, new Vector2(604f, 130f), -76f);
 
-                EnsureImageChild(mainMenuCard, "Menu scope inset", kit.RowInset != null ? kit.RowInset : kit.Inset,
-                    Image.Type.Sliced, new Color(1f, 1f, 1f, 0.85f), 5);
-                PositionTopCenter(mainMenuCard.Find("Menu scope inset") as RectTransform, new Vector2(604f, 36f), -386f);
+                Transform scopeInset = mainMenuCard.Find("Menu scope inset");
+                if (scopeInset != null) scopeInset.gameObject.SetActive(false);
 
                 var story = mainMenuCard.Find("Menu story") as RectTransform;
                 if (story != null)
                 {
                     story.SetAsLastSibling();
-                    PositionTopCenter(story, new Vector2(564f, 118f), -246f);
+                    PositionTopCenter(story, new Vector2(564f, 110f), -86f);
                 }
 
                 var scope = mainMenuCard.Find("Menu scope") as RectTransform;
                 if (scope != null)
-                {
-                    scope.SetAsLastSibling();
-                    PositionTopCenter(scope, new Vector2(604f, 26f), -391f);
-                }
+                    scope.gameObject.SetActive(false);
 
                 var startBtn = mainMenuCard.Find("Start restoration") as RectTransform;
                 if (startBtn != null)
-                    PositionTopLeft(startBtn, 58f, -440f, 604f, 60f);
+                {
+                    PositionTopLeft(startBtn, 58f, -222f, 604f, 58f);
+                    FixButtonLabel(startBtn, 18f);
+                    startMenuBtn = startBtn.GetComponent<Button>();
+                }
+
+                continueBtn = EnsureStyledButton(mainMenuCard, "Continue button",
+                    IndonesianText.Labels["Continue button label"], kit, true);
+                var continueRect = continueBtn.GetComponent<RectTransform>();
+                PositionTopLeft(continueRect, 58f, -222f, 374f, 58f);
+                FixButtonLabel(continueRect, 18f);
+                continueBtn.gameObject.SetActive(false);
 
                 var controlsBtn = mainMenuCard.Find("Controls button") as RectTransform;
                 var quitBtn = mainMenuCard.Find("Menu quit") as RectTransform;
+                achievementsOpenBtn = EnsureStyledButton(mainMenuCard, "Achievements button",
+                    IndonesianText.Labels["Achievements button label"], kit, false);
+                ApplyCustomButtonStyle(
+                    achievementsOpenBtn,
+                    kit.ButtonAccentNormal != null ? kit.ButtonAccentNormal : kit.ButtonPrimaryNormal,
+                    kit.ButtonAccentNormal != null ? kit.ButtonAccentNormal : kit.ButtonPrimaryNormal,
+                    kit.ButtonAccentPressed != null ? kit.ButtonAccentPressed : kit.ButtonPrimaryPressed,
+                    kit.Cream);
+                var achievementsRect = achievementsOpenBtn.GetComponent<RectTransform>();
+                PositionTopLeft(achievementsRect, 58f, -292f, 604f, 50f);
+                FixButtonLabel(achievementsRect, 16f);
+
                 settingsOpenBtn = EnsureStyledButton(mainMenuCard, "Settings button",
                     IndonesianText.Labels["Settings button label"], kit, false);
                 var settingsRect = settingsOpenBtn.GetComponent<RectTransform>();
 
+                Sprite cardNormal = kit.CardInset != null ? kit.CardInset : kit.Tooltip;
+                Sprite cardHover = kit.Tooltip != null ? kit.Tooltip : cardNormal;
+                Sprite cardPressed = kit.Inset != null ? kit.Inset : cardNormal;
+
                 if (controlsBtn != null)
                 {
-                    PositionTopLeft(controlsBtn, 58f, -516f, 192f, 50f);
-                    FixButtonLabel(controlsBtn, 15f);
+                    PositionTopLeft(controlsBtn, 58f, -356f, 192f, 46f);
+                    ApplyCustomButtonStyle(controlsBtn.GetComponent<Button>(), cardNormal, cardHover, cardPressed, kit.Parchment);
+                    FixButtonLabel(controlsBtn, 14f);
                 }
-                PositionTopLeft(settingsRect, 264f, -516f, 192f, 50f);
-                FixButtonLabel(settingsRect, 15f);
+                PositionTopLeft(settingsRect, 264f, -356f, 192f, 46f);
+                ApplyCustomButtonStyle(settingsOpenBtn, cardNormal, cardHover, cardPressed, kit.Parchment);
+                FixButtonLabel(settingsRect, 14f);
                 if (quitBtn != null)
                 {
-                    PositionTopLeft(quitBtn, 470f, -516f, 192f, 50f);
-                    FixButtonLabel(quitBtn, 15f);
+                    PositionTopLeft(quitBtn, 470f, -356f, 192f, 46f);
+                    ApplyCustomButtonStyle(quitBtn.GetComponent<Button>(), cardNormal, cardHover, cardPressed, kit.Parchment);
+                    FixButtonLabel(quitBtn, 14f);
                 }
 
-                var footer = mainMenuCard.Find("Menu footer") as RectTransform;
+                var footer = mainMenuCard.Find("Menu footer");
                 if (footer != null)
-                {
-                    footer.SetAsLastSibling();
-                    PositionTopCenter(footer, new Vector2(604f, 54f), -594f);
-                }
+                    footer.gameObject.SetActive(false);
             }
 
             // 1. Zone Selection Screen
@@ -936,10 +1058,10 @@ namespace Rimbara.UI
                 Transform cardsRow = EnsureEmptyRect(briefingCard, "Briefing target cards", briefingCard.childCount);
                 PositionTopCenter(cardsRow as RectTransform, new Vector2(728f, 68f), -428f);
 
-                BuildBriefingTargetCard(cardsRow, 0, -273f, kit, kit.IconEmber, "10", "TITIK API");
-                BuildBriefingTargetCard(cardsRow, 1, -91f, kit, kit.IconCleanup, "6", "PUING");
-                BuildBriefingTargetCard(cardsRow, 2, 91f, kit, kit.IconBag, "5", "BIBIT");
-                BuildBriefingTargetCard(cardsRow, 3, 273f, kit, kit.IconCompass, "1–2", "ZONA");
+                BuildBriefingTargetCard(cardsRow, 0, -273f, kit, kit.IconFire, "10", "TITIK API");
+                BuildBriefingTargetCard(cardsRow, 1, -91f, kit, kit.IconRubble, "6", "PUING");
+                BuildBriefingTargetCard(cardsRow, 2, 91f, kit, kit.IconSeedling, "5", "BIBIT");
+                BuildBriefingTargetCard(cardsRow, 3, 273f, kit, kit.IconZone, "1–2", "ZONA");
 
                 var noFail = briefingCard.Find("No fail promise") as RectTransform;
                 if (noFail != null) PositionTopCenter(noFail, new Vector2(728f, 28f), -512f);
@@ -950,6 +1072,107 @@ namespace Rimbara.UI
                 if (backBtn != null) backBtn.anchoredPosition = new Vector2(backBtn.anchoredPosition.x, -562f);
             }
 
+            // 3. Achievements / Badges Screen
+            Transform achLayerT = safe.Find("Achievements screen");
+            GameObject achLayer = achLayerT != null ? achLayerT.gameObject : CreateLayer(safe, "Achievements screen");
+            Transform achCardT = achLayer.transform.Find("Achievements card");
+            if (achCardT == null)
+            {
+                var cardGo = new GameObject("Achievements card", typeof(RectTransform), typeof(Image));
+                cardGo.layer = 5;
+                cardGo.transform.SetParent(achLayer.transform, false);
+                achCardT = cardGo.transform;
+            }
+            ApplyPanel(achCardT.GetComponent<Image>(), kit, HudSurface.Window);
+            achCardT.GetComponent<Image>().raycastTarget = true;
+
+            EnsureTextChild(achCardT, "Achievements eyebrow", IndonesianText.Labels["Achievements eyebrow"], kit, 13f, 2.2f, kit.Gold, FontStyles.Bold);
+            var achEyeRect = achCardT.Find("Achievements eyebrow") as RectTransform;
+            PositionTopCenter(achEyeRect, new Vector2(820f, 24f), -34f);
+            achEyeRect.GetComponent<TMP_Text>().alignment = TextAlignmentOptions.Center;
+
+            EnsureTextChild(achCardT, "Achievements title", IndonesianText.Labels["Achievements title"], kit, 32f, 2f, kit.Cream, FontStyles.Bold);
+            var achTitleRect = achCardT.Find("Achievements title") as RectTransform;
+            PositionTopCenter(achTitleRect, new Vector2(820f, 44f), -60f);
+            var achTitleTxt = achTitleRect.GetComponent<TMP_Text>();
+            achTitleTxt.alignment = TextAlignmentOptions.Center;
+            if (kit.TitleMaterial != null) achTitleTxt.fontSharedMaterial = kit.TitleMaterial;
+
+            EnsureImageChild(achCardT, "Achievements divider", kit.Divider != null ? kit.Divider : kit.Ribbon,
+                Image.Type.Simple, new Color(0.86f, 0.68f, 0.28f, 0.92f), 2);
+            PositionTopCenter(achCardT.Find("Achievements divider") as RectTransform, new Vector2(820f, 10f), -114f);
+
+            // Summary progress bar
+            Transform achSummaryBox = EnsureRectImage(achCardT, "Achievements summary box",
+                kit.CardInset != null ? kit.CardInset : kit.Tooltip,
+                new Color(1f, 1f, 1f, 0.94f), achCardT.childCount);
+            achSummaryBox.GetComponent<Image>().type = Image.Type.Sliced;
+            PositionTopCenter(achSummaryBox as RectTransform, new Vector2(820f, 58f), -134f);
+            EnsureTextChild(achSummaryBox, "Achievements summary label", "LENCANA TERBUKA  0 / 6", kit, 13f, 1.4f, kit.Gold, FontStyles.Bold);
+            var achSumLbl = achSummaryBox.Find("Achievements summary label") as RectTransform;
+            PositionTopCenter(achSumLbl, new Vector2(780f, 20f), -8f);
+            achSumLbl.GetComponent<TMP_Text>().alignment = TextAlignmentOptions.Center;
+
+            Transform achBarBg = EnsureRectImage(achSummaryBox, "Achievements bar bg", kit.BarFrame, Color.white, 1);
+            achBarBg.GetComponent<Image>().type = Image.Type.Sliced;
+            PositionTopCenter(achBarBg as RectTransform, new Vector2(760f, 12f), -34f);
+            Transform achBarFillT = EnsureRectImage(achBarBg, "Achievements bar fill", kit.BarXpFill, Color.white, 0);
+            StretchFull(achBarFillT as RectTransform);
+            var achBarFillImg = achBarFillT.GetComponent<Image>();
+            achBarFillImg.type = Image.Type.Filled;
+            achBarFillImg.fillMethod = Image.FillMethod.Horizontal;
+            achBarFillImg.fillAmount = 0f;
+
+            // 2x3 Grid of Achievement Badges
+            var badgeTitles = new[]
+            {
+                "RELAWAN BARU",
+                "PEMADAM API",
+                "PENJAGA HUTAN",
+                "PEMBERSIH PUING",
+                "PENANAM HARAPAN",
+                "PAHLAWAN ARUNIKA"
+            };
+            var badgeDescs = new[]
+            {
+                "Memulai misi pemulihan di Zona A Arunika.",
+                "Memadamkan titik api pertama di lapangan.",
+                "Memadamkan seluruh titik api di zona bencana.",
+                "Membersihkan seluruh puing bertanda.",
+                "Menanam pohon pertama untuk memulihkan hutan.",
+                "Menyelesaikan seluruh bab pemulihan Arunika."
+            };
+            var badgeIcons = new[]
+            {
+                kit.IconQuest,
+                kit.IconFire,
+                kit.IconTree,
+                kit.IconRubble,
+                kit.IconSeedling,
+                kit.IconZone
+            };
+
+            var badgeCardBgs = new Image[6];
+            var badgeSlotBgs = new Image[6];
+            var badgeStatusLabels = new TMP_Text[6];
+            for (int i = 0; i < 6; i++)
+            {
+                int col = i % 2;
+                int row = i / 2;
+                float xPos = col == 0 ? -210f : 210f;
+                float yPos = -212f - row * 124f;
+                BuildAchievementCard(
+                    achCardT, i, xPos, yPos, kit, badgeIcons[i], badgeTitles[i], badgeDescs[i],
+                    out badgeCardBgs[i], out badgeSlotBgs[i], out badgeStatusLabels[i]);
+            }
+
+            Button achBackBtn = EnsureStyledButton(achCardT, "Achievements back",
+                IndonesianText.Labels["Achievements back label"], kit, false);
+            var achBackRect = achBackBtn.GetComponent<RectTransform>();
+            PositionTopCenter(achBackRect, new Vector2(260f, 52f), -612f);
+            FixButtonLabel(achBackRect, 15f);
+            achLayer.SetActive(false);
+
             // Wire MenuScreensController and HudReferences
             var menuController = canvas.GetComponent<MenuScreensController>() ?? canvas.gameObject.AddComponent<MenuScreensController>();
             menuController.Configure(
@@ -958,14 +1181,29 @@ namespace Rimbara.UI
                 new[] { qLow, qMed, qHigh },
                 zoneAProgressFill,
                 zoneAProgressText);
+            menuController.ConfigureMainMenu(
+                continueBtn,
+                startMenuBtn,
+                kit);
+            menuController.ConfigureAchievements(
+                achBarFillImg,
+                achSumLbl.GetComponent<TMP_Text>(),
+                badgeCardBgs,
+                badgeSlotBgs,
+                badgeStatusLabels);
+            menuController.RefreshAchievements();
 
             var hud = Object.FindFirstObjectByType<RimbaraHud>(FindObjectsInactive.Include);
             if (hud != null && hud.View != null)
             {
                 hud.View.ZoneSelect = zoneLayer;
                 hud.View.Settings = settingsLayer;
+                hud.View.Achievements = achLayer;
+                hud.View.Continue = continueBtn;
                 hud.View.OpenSettings = settingsOpenBtn;
+                hud.View.OpenAchievements = achievementsOpenBtn;
                 hud.View.SettingsBack = settingsBackBtn;
+                hud.View.AchievementsBack = achBackBtn;
                 hud.View.ZoneSelectBack = zoneBackBtn;
                 hud.View.ZoneABegin = zoneABegin;
                 hud.View.MenuScreens = menuController;
@@ -973,6 +1211,28 @@ namespace Rimbara.UI
                 UnityEditor.EditorUtility.SetDirty(hud);
 #endif
             }
+        }
+
+        private static void ApplyCustomButtonStyle(Button button, Sprite normal, Sprite hover, Sprite pressed, Color labelColor)
+        {
+            if (button == null || normal == null) return;
+            var image = button.GetComponent<Image>();
+            if (image != null)
+            {
+                image.sprite = normal;
+                image.type = Image.Type.Sliced;
+                image.color = Color.white;
+            }
+            button.transition = Selectable.Transition.SpriteSwap;
+            button.spriteState = new SpriteState
+            {
+                highlightedSprite = hover != null ? hover : normal,
+                pressedSprite = pressed != null ? pressed : normal,
+                selectedSprite = hover != null ? hover : normal,
+                disabledSprite = normal
+            };
+            var label = button.GetComponentInChildren<TMP_Text>(true);
+            if (label != null) label.color = labelColor;
         }
 
         private static void FixButtonLabel(RectTransform btnRect, float maxFontSize)
@@ -1006,6 +1266,79 @@ namespace Rimbara.UI
             box.GetComponent<Image>().type = Image.Type.Sliced;
             PositionTopCenter(box as RectTransform, new Vector2(width, height), y);
             return box;
+        }
+
+        private static void BuildAchievementCard(
+            Transform parent,
+            int index,
+            float xOffset,
+            float topY,
+            UiKit kit,
+            Sprite icon,
+            string titleCopy,
+            string descCopy,
+            out Image cardBg,
+            out Image slotBg,
+            out TMP_Text statusLabel)
+        {
+            string cardName = "AchievementCard " + index;
+            Transform cardT = EnsureRectImage(parent, cardName,
+                kit.CardInset != null ? kit.CardInset : kit.Tooltip,
+                new Color(1f, 1f, 1f, 0.96f), parent.childCount);
+            cardBg = cardT.GetComponent<Image>();
+            cardBg.type = Image.Type.Sliced;
+            var rect = cardT as RectTransform;
+            rect.anchorMin = rect.anchorMax = new Vector2(0.5f, 1f);
+            rect.pivot = new Vector2(0.5f, 1f);
+            rect.anchoredPosition = new Vector2(xOffset, topY);
+            rect.sizeDelta = new Vector2(400f, 110f);
+
+            Transform slotT = EnsureRectImage(cardT, "AchSlot " + index,
+                kit.SlotSelected != null ? kit.SlotSelected : kit.SlotEmpty,
+                Color.white, 0);
+            slotBg = slotT.GetComponent<Image>();
+            slotBg.type = Image.Type.Sliced;
+            var slotRect = slotT as RectTransform;
+            slotRect.anchorMin = slotRect.anchorMax = new Vector2(0f, 0.5f);
+            slotRect.pivot = new Vector2(0f, 0.5f);
+            slotRect.anchoredPosition = new Vector2(16f, 0f);
+            slotRect.sizeDelta = new Vector2(68f, 68f);
+
+            Transform iconT = EnsureRectImage(slotT, "AchIcon " + index, icon, Color.white, 0);
+            var iconRect = iconT as RectTransform;
+            iconRect.anchorMin = iconRect.anchorMax = new Vector2(0.5f, 0.5f);
+            iconRect.pivot = new Vector2(0.5f, 0.5f);
+            iconRect.anchoredPosition = Vector2.zero;
+            iconRect.sizeDelta = new Vector2(40f, 40f);
+            iconT.GetComponent<Image>().preserveAspect = true;
+
+            EnsureTextChild(cardT, "AchTitle " + index, titleCopy, kit, 15f, 0.8f, kit.Cream, FontStyles.Bold);
+            var tRect = cardT.Find("AchTitle " + index) as RectTransform;
+            tRect.anchorMin = tRect.anchorMax = new Vector2(0f, 1f);
+            tRect.pivot = new Vector2(0f, 1f);
+            tRect.anchoredPosition = new Vector2(96f, -16f);
+            tRect.sizeDelta = new Vector2(190f, 24f);
+            tRect.GetComponent<TMP_Text>().alignment = TextAlignmentOptions.Left;
+
+            EnsureTextChild(cardT, "AchStatus " + index, IndonesianText.Labels["Badge locked label"], kit, 11f, 1.4f, kit.Muted, FontStyles.Bold);
+            var sRect = cardT.Find("AchStatus " + index) as RectTransform;
+            sRect.anchorMin = sRect.anchorMax = new Vector2(1f, 1f);
+            sRect.pivot = new Vector2(1f, 1f);
+            sRect.anchoredPosition = new Vector2(-14f, -18f);
+            sRect.sizeDelta = new Vector2(92f, 20f);
+            statusLabel = sRect.GetComponent<TMP_Text>();
+            statusLabel.alignment = TextAlignmentOptions.Right;
+
+            EnsureTextChild(cardT, "AchDesc " + index, descCopy, kit, 13f, 0f, kit.Parchment, FontStyles.Normal);
+            var dRect = cardT.Find("AchDesc " + index) as RectTransform;
+            dRect.anchorMin = dRect.anchorMax = new Vector2(0f, 1f);
+            dRect.pivot = new Vector2(0f, 1f);
+            dRect.anchoredPosition = new Vector2(96f, -44f);
+            dRect.sizeDelta = new Vector2(288f, 52f);
+            var dTxt = dRect.GetComponent<TMP_Text>();
+            dTxt.font = kit.BodyFont != null ? kit.BodyFont : kit.HeadingFont;
+            dTxt.alignment = TextAlignmentOptions.TopLeft;
+            dTxt.textWrappingMode = TextWrappingModes.Normal;
         }
 
         private static void BuildBriefingTargetCard(

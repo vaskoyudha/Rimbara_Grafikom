@@ -23,6 +23,7 @@ namespace Rimbara.UI
         public Color Muted = new Color32(0xA8, 0x94, 0x72, 0xFF);
 
         [Header("Windows")]
+        public Sprite GameLogo;
         public Sprite Window;
         public Sprite ParchmentPanel;
         public Sprite Popup;
@@ -57,6 +58,8 @@ namespace Rimbara.UI
         public Sprite ButtonSecondaryHover;
         public Sprite ButtonSecondaryPressed;
         public Sprite ButtonSecondaryDisabled;
+        public Sprite ButtonAccentNormal;
+        public Sprite ButtonAccentPressed;
 
         [Header("Bars")]
         public Sprite BarFrame;
@@ -89,6 +92,11 @@ namespace Rimbara.UI
         public Sprite IconBag;
         public Sprite IconCleanup;
         public Sprite IconEmber;
+        public Sprite IconFire;
+        public Sprite IconRubble;
+        public Sprite IconSeedling;
+        public Sprite IconZone;
+        public Sprite IconTree;
 
         public bool IsComplete => MissingRoles().Count == 0;
 

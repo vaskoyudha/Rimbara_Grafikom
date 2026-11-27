@@ -28,5 +28,45 @@ namespace Rimbara.Editor
             EditorSceneManager.SaveScene(scene);
             Debug.Log($"Fantastic theme applied to {scene.name}.");
         }
+
+        [MenuItem("RIMBARA/UI/Preview Coordinator Dialogue")]
+        public static void PreviewCoordinatorDialogue()
+        {
+            if (!Application.isPlaying) return;
+            var flow = UnityEngine.Object.FindFirstObjectByType<Rimbara.Mission.GameFlow>();
+            var hud = UnityEngine.Object.FindFirstObjectByType<DisasterHud>();
+            var opening = UnityEngine.Object.FindFirstObjectByType<OpeningDirector>();
+            if (opening != null) opening.MarkCompleted();
+            if (flow != null)
+            {
+                flow.Begin();
+                flow.EndOpeningCinematic();
+            }
+            if (hud != null)
+            {
+                hud.OpenCoordinatorDialogue();
+            }
+        }
+
+        [MenuItem("RIMBARA/UI/Preview Gameplay HUD")]
+        public static void PreviewGameplayHud()
+        {
+            if (!Application.isPlaying) return;
+            var flow = UnityEngine.Object.FindFirstObjectByType<Rimbara.Mission.GameFlow>();
+            var opening = UnityEngine.Object.FindFirstObjectByType<OpeningDirector>();
+            if (opening != null) opening.MarkCompleted();
+            if (flow != null)
+            {
+                flow.Begin();
+                flow.EndOpeningCinematic();
+            }
+        }
+
+        [MenuItem("RIMBARA/UI/Clear Saved Game")]
+        public static void ClearSavedGame()
+        {
+            Rimbara.Mission.GameSaveSystem.Clear();
+            Debug.Log("Cleared saved RIMBARA progress.");
+        }
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Rimbara.Mission
 {
@@ -61,6 +62,27 @@ namespace Rimbara.Mission
             if (Debris == DebrisGoal) Stage = DisasterStage.RecoveryReady;
             Changed?.Invoke();
             return true;
+        }
+
+        public bool IsFireExtinguished(string id) => !string.IsNullOrWhiteSpace(id) && fires.Contains(id);
+        public bool IsDebrisCleared(string id) => !string.IsNullOrWhiteSpace(id) && debris.Contains(id);
+        public string[] ExportExtinguishedFires() => fires.ToArray();
+        public string[] ExportClearedDebris() => debris.ToArray();
+
+        /// <summary>Restores saved chapter state from persistent storage.</summary>
+        public void RestoreState(DisasterStage stage, bool hasEquipment, IEnumerable<string> fireIds, IEnumerable<string> debrisIds)
+        {
+            fires.Clear();
+            debris.Clear();
+            if (fireIds != null)
+                foreach (string id in fireIds)
+                    if (!string.IsNullOrWhiteSpace(id) && fires.Count < FireGoal) fires.Add(id);
+            if (debrisIds != null)
+                foreach (string id in debrisIds)
+                    if (!string.IsNullOrWhiteSpace(id) && debris.Count < DebrisGoal) debris.Add(id);
+            HasEquipment = hasEquipment;
+            Stage = stage;
+            Changed?.Invoke();
         }
 
         public void Reset()

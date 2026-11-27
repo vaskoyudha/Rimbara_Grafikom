@@ -58,6 +58,26 @@ namespace Rimbara.Mission
         public bool CollectEquipment() => Progress.CollectEquipment(state.SessionRunning);
         private void Notify() { UpdateEquipmentVisuals(); Changed?.Invoke(); }
 
+        /// <summary>Syncs fire, debris, and equipment world visuals with loaded progress.</summary>
+        public void SyncVisualsFromProgress()
+        {
+            if (Progress == null) return;
+            UpdateEquipmentVisuals();
+            if (equipment != null)
+            {
+                EquipmentPickup pickup = equipment.GetComponent<EquipmentPickup>();
+                if (pickup != null) pickup.SyncFromProgress();
+            }
+            if (fires != null)
+                foreach (FirePoint fire in fires)
+                    if (fire != null && Progress.IsFireExtinguished(fire.ObjectId))
+                        fire.RestoreExtinguished();
+            if (debris != null)
+                foreach (DebrisPickup item in debris)
+                    if (item != null && Progress.IsDebrisCleared(item.ObjectId))
+                        item.RestoreCleared();
+        }
+
         private void UpdateEquipmentVisuals()
         {
             if (equipmentRenderers == null) return;

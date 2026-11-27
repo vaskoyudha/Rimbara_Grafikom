@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 
 namespace Rimbara.Mission
 {
-    public enum ScreenMode { Menu, ZoneSelect, Settings, Briefing, Controls, Playing, Paused, Victory, Transition, Cinematic, Inventory }
+    public enum ScreenMode { Menu, ZoneSelect, Settings, Achievements, Briefing, Controls, Playing, Paused, Victory, Transition, Cinematic, Inventory }
 
     [DefaultExecutionOrder(-40)]
     public sealed class GameFlow : MonoBehaviour
@@ -19,10 +19,15 @@ namespace Rimbara.Mission
         [SerializeField] private OpeningDirector opening;
         private static ScreenMode nextLaunchMode = ScreenMode.Menu;
         private ScreenMode resumeMode = ScreenMode.Playing;
+        private bool sessionStarted;
+        private DisasterChapter subscribedDisaster;
+        private RecoveryChapter subscribedRecovery;
+        private RestoredChapter subscribedRestored;
         public ScreenMode Mode { get; private set; } = ScreenMode.Menu;
         public float ElapsedSeconds { get; private set; }
         public OpeningDirector Opening => opening;
         public bool DiagnosticMode => CommandLine.Value("--rimbara-smoke") != null;
+        public bool CanContinue => !DiagnosticMode && GameSaveSystem.HasSaveForScene(SceneManager.GetActiveScene().name);
         public void ConfigureOpening(OpeningDirector openingDirector) => opening = openingDirector;
         public event Action<ScreenMode> ModeChanged;
 
@@ -38,9 +43,26 @@ namespace Rimbara.Mission
 
         private void Start()
         {
+            SubscribeChapters();
             ScreenMode initial = nextLaunchMode;
             nextLaunchMode = ScreenMode.Menu;
             SetMode(initial);
+        }
+
+        private void SubscribeChapters()
+        {
+            subscribedDisaster = missions != null ? missions.DisasterChapter : null;
+            if (subscribedDisaster != null)
+            {
+                subscribedDisaster.Changed += SaveCurrentProgress;
+                subscribedRecovery = subscribedDisaster.Recovery;
+                if (subscribedRecovery != null)
+                {
+                    subscribedRecovery.Changed += SaveCurrentProgress;
+                    subscribedRestored = subscribedRecovery.Restored;
+                    if (subscribedRestored != null) subscribedRestored.Changed += SaveCurrentProgress;
+                }
+            }
         }
 
         private void Update()
@@ -63,20 +85,40 @@ namespace Rimbara.Mission
                 if (Mode == ScreenMode.Playing || Mode == ScreenMode.Cinematic || Mode == ScreenMode.Transition) Pause();
                 else if (Mode == ScreenMode.Paused) Resume();
                 else if (Mode == ScreenMode.Briefing || Mode == ScreenMode.Controls
-                    || Mode == ScreenMode.ZoneSelect || Mode == ScreenMode.Settings) ShowMenu();
+                    || Mode == ScreenMode.ZoneSelect || Mode == ScreenMode.Settings
+                    || Mode == ScreenMode.Achievements) ShowMenu();
             }
         }
 
         public void ShowMenu() { SetMode(ScreenMode.Menu); }
         public void ShowZoneSelect() { SetMode(ScreenMode.ZoneSelect); }
         public void ShowSettings() { SetMode(ScreenMode.Settings); }
+        public void ShowAchievements() { SetMode(ScreenMode.Achievements); }
         public void ShowBriefing() { SetMode(ScreenMode.Briefing); }
         public void ShowControls() { SetMode(ScreenMode.Controls); }
 
         public void Begin()
         {
             if (Mode != ScreenMode.Briefing && Mode != ScreenMode.Menu) return;
+            if (!DiagnosticMode) GameSaveSystem.Clear();
             if (opening != null && opening.TryBegin()) return;
+            SetMode(ScreenMode.Playing);
+        }
+
+        /// <summary>Loads the saved game checkpoint for the active scene and resumes playing.</summary>
+        public void Continue()
+        {
+            if (Mode != ScreenMode.Menu) return;
+            string sceneName = SceneManager.GetActiveScene().name;
+            if (!GameSaveSystem.TryLoadForScene(sceneName, out SavedProgressData data))
+            {
+                ShowZoneSelect();
+                return;
+            }
+            if (opening != null) opening.MarkCompleted();
+            GameSaveSystem.Apply(data, state, missions, rig);
+            ElapsedSeconds = data.elapsedSeconds;
+            sessionStarted = true;
             SetMode(ScreenMode.Playing);
         }
 
@@ -91,10 +133,16 @@ namespace Rimbara.Mission
         public void Pause()
         {
             if (Mode != ScreenMode.Playing && Mode != ScreenMode.Cinematic && Mode != ScreenMode.Transition) return;
+            SaveCurrentProgress();
             resumeMode = Mode; SetMode(ScreenMode.Paused);
         }
         public void Resume() { if (Mode == ScreenMode.Paused) SetMode(resumeMode); }
-        private void ShowVictory() { SetMode(ScreenMode.Victory); }
+        private void ShowVictory()
+        {
+            sessionStarted = false;
+            if (!DiagnosticMode) GameSaveSystem.Clear();
+            SetMode(ScreenMode.Victory);
+        }
 
         public void CompleteDisasterChapter()
         {
@@ -126,12 +174,15 @@ namespace Rimbara.Mission
 
         public void Replay()
         {
+            sessionStarted = false;
+            if (!DiagnosticMode) GameSaveSystem.Clear();
             nextLaunchMode = ScreenMode.Briefing;
             ReloadScene();
         }
 
         public void ReturnToMenu()
         {
+            SaveCurrentProgress();
             nextLaunchMode = ScreenMode.Menu;
             ReloadScene();
         }
@@ -146,6 +197,7 @@ namespace Rimbara.Mission
 
         public void Quit()
         {
+            SaveCurrentProgress();
             Time.timeScale = 1f;
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
@@ -156,9 +208,20 @@ namespace Rimbara.Mission
 #endif
         }
 
+        private void SaveCurrentProgress()
+        {
+            if (DiagnosticMode || !sessionStarted || Mode == ScreenMode.Victory || Mode == ScreenMode.Menu) return;
+            GameSaveSystem.Save(SceneManager.GetActiveScene().name, ElapsedSeconds, state, missions, rig);
+        }
+
         private void SetMode(ScreenMode mode)
         {
             Mode = mode;
+            if (mode == ScreenMode.Playing && !sessionStarted)
+            {
+                sessionStarted = true;
+                SaveCurrentProgress();
+            }
 
             bool playing = mode == ScreenMode.Playing;
             bool bagOpen = mode == ScreenMode.Inventory;
@@ -191,8 +254,16 @@ namespace Rimbara.Mission
 #endif
         }
 
+        private void OnApplicationQuit()
+        {
+            SaveCurrentProgress();
+        }
+
         private void OnDestroy()
         {
+            if (subscribedDisaster != null) subscribedDisaster.Changed -= SaveCurrentProgress;
+            if (subscribedRecovery != null) subscribedRecovery.Changed -= SaveCurrentProgress;
+            if (subscribedRestored != null) subscribedRestored.Changed -= SaveCurrentProgress;
             if (missions != null) missions.Completed -= ShowVictory;
             Time.timeScale = 1f;
         }

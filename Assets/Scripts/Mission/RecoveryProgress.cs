@@ -122,6 +122,40 @@ namespace Rimbara.Mission
         public bool IsCollected(string id) => seeds.Contains(id);
         public bool IsWasteCleaned(string id) => waste.Contains(id);
         public bool IsHabitatRestored(string id) => habitats.Contains(id);
+        public string[] ExportCollected() => seeds.ToArray();
+        public string[] ExportDug() => dug.ToArray();
+        public string[] ExportPlanted() => planted.ToArray();
+        public string[] ExportWatered() => watered.ToArray();
+        public string[] ExportWaste() => waste.ToArray();
+        public string[] ExportHabitats() => habitats.ToArray();
+
+        /// <summary>Restores saved recovery chapter state from persistent storage.</summary>
+        public void RestoreState(
+            RecoveryStage stage,
+            IEnumerable<string> seedIds,
+            IEnumerable<string> dugIds,
+            IEnumerable<string> plantedIds,
+            IEnumerable<string> wateredIds,
+            IEnumerable<string> wasteIds,
+            IEnumerable<string> habitatIds)
+        {
+            seeds.Clear(); dug.Clear(); planted.Clear(); watered.Clear(); waste.Clear(); habitats.Clear();
+            AddValid(seedIds, seedTargets, seeds);
+            AddValid(dugIds, plantTargets, dug);
+            AddValid(plantedIds, plantTargets, planted);
+            AddValid(wateredIds, plantTargets, watered);
+            AddValid(wasteIds, wasteTargets, waste);
+            AddValid(habitatIds, habitatTargets, habitats);
+            Stage = stage;
+            Changed?.Invoke();
+        }
+
+        private static void AddValid(IEnumerable<string> ids, HashSet<string> allowed, HashSet<string> target)
+        {
+            if (ids == null) return;
+            foreach (string id in ids)
+                if (!string.IsNullOrWhiteSpace(id) && allowed.Contains(id)) target.Add(id);
+        }
 
         public void Reset()
         {

@@ -53,6 +53,17 @@ namespace Rimbara.Mission
             if (!directorAllowed || Stage != RestoredStage.Ending || !ViewpointVisited) return false;
             EndingSkipped = skipped; Stage = RestoredStage.Complete; Changed?.Invoke(); return true;
         }
+        /// <summary>Restores saved final-chapter state from persistent storage.</summary>
+        public void RestoreState(RestoredStage stage, bool hasSeedling, bool planted, bool watered, bool viewpointVisited, bool endingSkipped)
+        {
+            Stage = stage;
+            HasSeedling = hasSeedling;
+            Planted = planted;
+            Watered = watered;
+            ViewpointVisited = viewpointVisited;
+            EndingSkipped = endingSkipped;
+            Changed?.Invoke();
+        }
         public void Reset()
         {
             Stage = RestoredStage.Dormant; HasSeedling = Planted = Watered = ViewpointVisited = EndingSkipped = false; Changed?.Invoke();

@@ -48,60 +48,60 @@ namespace Rimbara.UI
 
         public static readonly string[] CoordinatorBriefing =
         {
-            "Selamat datang di posko darurat. Terima kasih sudah datang membantu.",
-            "Api masih hidup di beberapa titik. Tugas pertamamu sederhana: padamkan semuanya.",
-            "Ambil perlengkapan di samping posko. Dekati api bertanda, arahkan bidikan, lalu tahan KLIK KIRI. Setelah kawasan aman, kita mulai menanam."
+            "Selamat datang di posko darurat Arunika, Relawan. Udara di sini masih pekat oleh bau kayu hangus, dan warga menatap bukit dengan cemas. Terima kasih sudah datang saat hutan ini hampir kehabisan waktu.",
+            "Api utama memang sudah mereda, tetapi bara masih bersembunyi di balik semak kering dan tunggul kayu. Jika angin malam bertiup kencang, hutan ini bisa terbakar lagi. Tugas pertamamu adalah memadamkan semua titik api yang tersisa.",
+            "Ambil alat pemadam di samping posko, lalu dekati setiap titik api bertanda, arahkan bidikan, dan tahan KLIK KIRI hingga padam. Setelah kawasan ini aman dan puingnya bersih, barulah kita bisa menanam kehidupan baru."
         };
 
         public static readonly string[] CoordinatorDebrief =
         {
-            "Lahan akhirnya bersih. Masih gersang, tetapi setiap upaya kecil membawa kita lebih dekat ke pemulihan.",
-            "Setiap pemulihan dimulai dari satu langkah. Temui Petugas Hutan di persemaian. Ia akan membimbingmu menanam bibit dan memulihkan habitat."
+            "Lihatlah sekelilingmu—asap tebal itu akhirnya berhenti mengepul. Tanahnya masih kelabu dan gersang, tetapi untuk pertama kalinya sejak kebakaran, Arunika terasa tenang kembali.",
+            "Memadamkan api hanyalah awal dari pemulihan. Sekarang saatnya menumbuhkan harapan baru. Temui Petugas Hutan di area persemaian; ia telah menyiapkan bibit asli Arunika dan menunggumu di sana."
         };
 
         public static readonly string[] RangerBriefing =
         {
-            "Kamu sudah melakukan pekerjaan luar biasa. Api padam dan kawasan ini bersih. Namun hutan bukan sekadar kumpulan pohon; hutan adalah rumah bagi banyak makhluk hidup.",
-            "Kita harus mengembalikan kehidupan itu. Ambil bibit di persemaian. Gali lubang pada lahan bertanda, tanam bibit, lalu siram setiap pohon muda. Beri mereka waktu untuk tumbuh."
+            "Selamat datang di persemaian, Relawan. Bima sudah mengabarkan kerja kerasmu memadamkan sisa api. Namun hutan bukan sekadar deretan batang kayu—ia adalah rumah bagi burung, serangga, dan mata air desa.",
+            "Kita harus mengembalikan denyut kehidupan itu perlahan-lahan. Ambil bibit di persemaian ini, gali lubang di lahan bertanda, tanam setiap bibit dengan hati-hati, lalu sirami agar akarnya kuat mencengkeram tanah."
         };
 
         public static string[] RangerPlantingDebrief(int wasteGoal) => new[]
         {
-            "Setiap bibit yang kamu tanam adalah janji untuk masa depan. Pohon-pohon muda telah disiram. Rawat mereka dan beri waktu untuk tumbuh. Suatu hari, tanah ini akan kembali hijau.",
-            "Sekarang kita perlu memulihkan sungai dan habitat. Kumpulkan " + wasteGoal + " sampah di kedua tepian sungai. Gunakan jembatan untuk menyeberang, lalu pulihkan tempat berlindung dan tanaman penutup pada habitat bertanda."
+            "Barisan tunas hijau itu tampak kokoh di atas tanah yang dulu hangus. Setiap bibit yang kamu tanam dan sirami hari ini adalah janji bagi generasi mendatang bahwa Arunika akan kembali rimbun.",
+            "Namun pekerjaan kita belum selesai—aliran sungai di lembah masih tersumbat sisa sampah dan puing. Kumpulkan " + wasteGoal + " sampah di kedua tepian sungai, seberangi jembatan, lalu pulihkan tempat berlindung satwa dan tanaman penutupnya."
         };
 
         public static string[] RangerEcosystemDebrief(bool restoredExists) => new[]
         {
-            "Lahan ini tidak lagi kosong. Pohon muda mulai tumbuh, air lebih bersih, dan tanda kehidupan satwa mulai muncul. Upayamu telah memberi hutan ini kesempatan kedua.",
+            "Dengarkan suara airnya... sungai kembali mengalir jernih, tunas-tunas muda mulai meninggi, dan jejak satwa kecil mulai terlihat lagi di tepian. Kerja kerasmu memberi hutan ini kesempatan kedua.",
             restoredExists
-                ? "Pemulihan membutuhkan waktu dan perawatan bersama. Musim demi musim, hutan akan tumbuh. Suatu hari, kembalilah dan temui Tetua Desa untuk melihat harapan yang telah kita tanam."
-                : "Zona Pemulihan selesai. Zona Hutan Pulih masih dalam pengembangan."
+                ? "Pemulihan sejati membutuhkan kesabaran dan kepedulian bersama. Musim demi musim akan menyembuhkan luka tanah ini. Temuilah Tetua Desa di kawasan yang telah pulih untuk melihat buah dari harapan yang kamu tanam."
+                : "Zona Pemulihan telah selesai dengan baik. Zona Hutan Pulih masih dalam tahap pengembangan."
         };
 
         public static readonly string[] ElderBriefing =
         {
-            "Lihat apa yang telah kita capai. Dulu hutan ini dipenuhi api dan abu. Desa kami diliputi ketakutan, dan kami khawatir akan kehilangan rumah ini.",
-            "Kini pepohonan tumbuh kembali, burung-burung kembali, dan desa kami hidup lagi. Terima kasih. Kamu tidak hanya menyelamatkan hutan; kamu membantu menghidupkan kembali rumah kami.",
-            "Bawalah bibit terakhir ini ke lahan pemulihan desa. Tanam dan siram sebagai janji untuk menjaga hutan. Setelah itu, datangi titik pandang dan lihat apa yang telah kita pulihkan bersama."
+            "Lihatlah ke sekelilingmu, anak muda. Dulu langit desa kami tertutup jelaga, dan setiap malam kami tidur dalam ketakutan akan kehilangan tanah kelahiran ini. Kini kicau burung kembali terdengar di antara dedaunan.",
+            "Pepohonan tumbuh kembali, udara terasa sejuk, dan anak-anak mulai berani bermain di tepi hutan lagi. Terima kasih—kamu bukan hanya menyelamatkan pepohonan, tetapi juga menghidupkan kembali harapan seluruh warga desa.",
+            "Sebagai penutup perjalanan ini, bawalah bibit terakhir ini ke lahan pemulihan desa. Tanam dan sirami sebagai janji abadi untuk menjaga hutan, lalu naiklah ke titik pandang untuk menyaksikan apa yang telah kita pulihkan bersama."
         };
 
         public static readonly DialogueOption[][] CoordinatorBriefingOptions =
         {
             new[]
             {
-                new DialogueOption("Siap membantu. Apa situasinya sekarang?", string.Empty),
-                new DialogueOption("Bagaimana kondisi warga di posko?", "Warga sudah dievakuasi ke area aman di sekitar posko. Mereka berharap api di hutan segera padam sebelum angin malam datang.")
+                new DialogueOption("Saya siap membantu, Pak Bima. Bagaimana situasinya sekarang?", string.Empty),
+                new DialogueOption("Bagaimana kondisi warga yang mengungsi di posko?", "Warga sudah kami evakuasi ke tenda aman di balik posko. Mereka terus menatap ke arah bukit—berharap api benar-benar padam sebelum angin malam turun.")
             },
             new[]
             {
-                new DialogueOption("Di mana saya ambil alat pemadam?", string.Empty),
-                new DialogueOption("Apakah apinya masih bisa menyebar?", "Masih berisiko jika dibiarkan. Karena itu kita harus memadamkan semua titik bertanda lebih dulu sebelum mulai menanam.")
+                new DialogueOption("Di mana saya bisa mengambil perlengkapan pemadam?", string.Empty),
+                new DialogueOption("Seberapa cepat bara yang tersisa bisa menyebar lagi?", "Dalam kondisi tanah sekering ini, satu hembusan angin saja bisa menyulut kobaran baru. Karena itu setiap titik api bertanda harus dipadamkan tuntas.")
             },
             new[]
             {
-                new DialogueOption("Siap, saya ambil perlengkapan sekarang!", string.Empty),
-                new DialogueOption("Dimengerti, saya akan berhati-hati.", string.Empty)
+                new DialogueOption("Baik, saya ambil perlengkapan dan langsung bergerak!", string.Empty),
+                new DialogueOption("Mengerti, saya akan pastikan semuanya padam.", string.Empty)
             }
         };
 
@@ -109,13 +109,13 @@ namespace Rimbara.UI
         {
             new[]
             {
-                new DialogueOption("Lahan sudah aman. Apa langkah selanjutnya?", string.Empty),
-                new DialogueOption("Apakah tanahnya sudah siap ditanami?", "Lahan yang bersih sudah siap digemburkan. Petugas Hutan di persemaian sudah menyiapkan bibit asli Arunika untukmu.")
+                new DialogueOption("Syukurlah kawasan ini aman. Apa langkah kita berikutnya?", string.Empty),
+                new DialogueOption("Apakah tanah yang hangus ini masih bisa ditanami?", "Lapisan abunya justru bisa menyuburkan tanah jika dibersihkan dengan benar. Petugas Hutan di persemaian sudah menyiapkan bibit asli Arunika untukmu.")
             },
             new[]
             {
-                new DialogueOption("Baik, saya temui Petugas Hutan.", string.Empty),
-                new DialogueOption("Saya segera menuju persemaian!", string.Empty)
+                new DialogueOption("Baik, saya segera menemui Petugas Hutan.", string.Empty),
+                new DialogueOption("Siap, saya menuju persemaian sekarang!", string.Empty)
             }
         };
 
@@ -123,13 +123,41 @@ namespace Rimbara.UI
         {
             new[]
             {
-                new DialogueOption("Apa yang paling dibutuhkan hutan ini?", string.Empty),
-                new DialogueOption("Apakah satwa akan kembali setelah ini?", "Ya, perlahan. Begitu pohon muda tumbuh dan sungai bersih, burung dan satwa kecil akan berani kembali ke sini.")
+                new DialogueOption("Apa yang paling dibutuhkan hutan ini agar pulih?", string.Empty),
+                new DialogueOption("Apakah satwa liar akan kembali setelah pohon ditanam?", "Perlahan-lahan mereka pasti pulang. Saat tunas mulai rindang dan air bersih mengalir, burung dan satwa kecil akan berani kembali bersarang di sini.")
             },
             new[]
             {
-                new DialogueOption("Saya ambil bibitnya dan mulai menanam!", string.Empty),
-                new DialogueOption("Dimengerti, akan saya rawat tiap bibit.", string.Empty)
+                new DialogueOption("Saya ambil bibitnya dan mulai menanam sekarang!", string.Empty),
+                new DialogueOption("Dimengerti, akan saya rawat setiap tunasnya.", string.Empty)
+            }
+        };
+
+        public static readonly DialogueOption[][] RangerPlantingDebriefOptions =
+        {
+            new[]
+            {
+                new DialogueOption("Senang melihat bibitnya tumbuh. Apa tugas berikutnya?", string.Empty),
+                new DialogueOption("Mengapa kebersihan sungai sangat penting bagi hutan?", "Sungai adalah nadi hutan ini. Jika alirannya tersumbat sampah dan puing, akar pohon muda takkan mendapat air bersih dan satwa takkan bertahan.")
+            },
+            new[]
+            {
+                new DialogueOption("Baik, saya bersihkan sungai dan pulihkan habitatnya!", string.Empty),
+                new DialogueOption("Saya segera menyeberangi jembatan untuk bekerja.", string.Empty)
+            }
+        };
+
+        public static readonly DialogueOption[][] RangerEcosystemDebriefOptions =
+        {
+            new[]
+            {
+                new DialogueOption("Lega rasanya melihat kehidupan mulai kembali di sini.", string.Empty),
+                new DialogueOption("Apakah ekosistem Arunika sudah benar-benar stabil?", "Tanda-tandanya sangat baik—air mulai jernih dan burung sudah singgah. Namun hutan ini tetap butuh penjaga agar terus lestari dari musim ke musim.")
+            },
+            new[]
+            {
+                new DialogueOption("Saya akan menemui Tetua Desa sekarang.", string.Empty),
+                new DialogueOption("Terima kasih atas bimbingannya selama ini.", string.Empty)
             }
         };
 
@@ -137,19 +165,31 @@ namespace Rimbara.UI
         {
             new[]
             {
-                new DialogueOption("Saya senang melihat desa kembali hidup.", string.Empty),
-                new DialogueOption("Bagaimana perasaan warga sekarang?", "Semua bersyukur. Anak-anak mulai berani bermain di tepi hutan lagi, dan udara desa terasa segar kembali.")
+                new DialogueOption("Saya ikut bahagia melihat desa ini hidup kembali.", string.Empty),
+                new DialogueOption("Bagaimana perasaan warga melihat hutan mulai menghijau?", "Air mata haru tak henti mengalir di desa kami. Kini warga kembali percaya bahwa alam selalu memberi kesempatan kedua bagi siapa saja yang mau merawatnya.")
             },
             new[]
             {
-                new DialogueOption("Perjalanan ini milik kita semua.", string.Empty),
-                new DialogueOption("Apa janji terakhir untuk hutan ini?", string.Empty)
+                new DialogueOption("Pemulihan ini adalah hasil kerja kita semua.", string.Empty),
+                new DialogueOption("Apa pesan terakhir Tetua untuk menjaga hutan ini?", "Jangan pernah lupakan bau tanah basah setelah hujan pertama, dan ajarkan generasi berikutnya bahwa menjaga hutan berarti menjaga kehidupan kita sendiri.")
             },
             new[]
             {
-                new DialogueOption("Saya tanam bibit terakhir sekarang.", string.Empty),
-                new DialogueOption("Dengan senang hati, Tetua.", string.Empty)
+                new DialogueOption("Saya akan menanam bibit terakhir itu sekarang.", string.Empty),
+                new DialogueOption("Dengan penuh hormat, saya terima amanah ini.", string.Empty)
             }
+        };
+
+        public static readonly DialogueOption[] ReactionFollowUpOptions =
+        {
+            new DialogueOption("Saya mengerti. Mari lanjutkan pembicaraan.", string.Empty),
+            new DialogueOption("Terima kasih penjelasannya, mari lanjut.", string.Empty)
+        };
+
+        public static readonly DialogueOption[] ReminderOptions =
+        {
+            new DialogueOption("Baik, saya segera laksanakan tugas ini.", string.Empty),
+            new DialogueOption("Terima kasih atas pengingatnya!", string.Empty)
         };
 
         public static IEnumerable<string> AllPages(int wasteGoal)
@@ -162,13 +202,15 @@ namespace Rimbara.UI
             foreach (string page in RangerEcosystemDebrief(true)) yield return page;
             foreach (string page in RangerEcosystemDebrief(false)) yield return page;
             foreach (string page in ElderBriefing) yield return page;
-            foreach (DialogueOption[][] group in new[] { CoordinatorBriefingOptions, CoordinatorDebriefOptions, RangerBriefingOptions, ElderBriefingOptions })
+            foreach (DialogueOption[][] group in new[] { CoordinatorBriefingOptions, CoordinatorDebriefOptions, RangerBriefingOptions, RangerPlantingDebriefOptions, RangerEcosystemDebriefOptions, ElderBriefingOptions })
                 foreach (DialogueOption[] row in group)
                     foreach (DialogueOption opt in row)
                     {
                         yield return opt.Prompt;
                         if (!string.IsNullOrEmpty(opt.NpcReaction)) yield return opt.NpcReaction;
                     }
+            foreach (DialogueOption opt in ReactionFollowUpOptions) yield return opt.Prompt;
+            foreach (DialogueOption opt in ReminderOptions) yield return opt.Prompt;
         }
     }
 }

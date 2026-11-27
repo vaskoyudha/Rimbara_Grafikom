@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Rimbara.Mission
 {
@@ -69,6 +70,28 @@ namespace Rimbara.Mission
             if (string.IsNullOrWhiteSpace(id) || fires.Count >= FireGoal || !fires.Add(id)) return false;
             Changed?.Invoke(Snapshot);
             return true;
+        }
+
+        public string[] ExportSeedlings() => seedlings.ToArray();
+        public string[] ExportTrees() => trees.ToArray();
+        public string[] ExportFires() => fires.ToArray();
+
+        /// <summary>Restores saved progress counters silently before notifying listeners.</summary>
+        public void RestoreState(IEnumerable<string> seedlingIds, IEnumerable<string> treeIds, IEnumerable<string> fireIds)
+        {
+            seedlings.Clear();
+            trees.Clear();
+            fires.Clear();
+            if (seedlingIds != null)
+                foreach (string id in seedlingIds)
+                    if (!string.IsNullOrWhiteSpace(id) && seedlings.Count < SeedlingGoal) seedlings.Add(id);
+            if (treeIds != null)
+                foreach (string id in treeIds)
+                    if (!string.IsNullOrWhiteSpace(id) && trees.Count < TreeGoal) trees.Add(id);
+            if (fireIds != null)
+                foreach (string id in fireIds)
+                    if (!string.IsNullOrWhiteSpace(id) && fires.Count < FireGoal) fires.Add(id);
+            Changed?.Invoke(Snapshot);
         }
 
         public void Reset()

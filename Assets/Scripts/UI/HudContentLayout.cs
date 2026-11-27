@@ -32,32 +32,30 @@ namespace Rimbara.UI
             Rect(canvas, "Mission card", "Mission task inset", 74f, 26f, -92f);
             Text(canvas, "Mission card", "Mission description", 54f, 17f, TextAlignmentOptions.TopLeft, 40f, -102f);
 
-            // Restoration counters (428x248) with proper icons and clean wood-frame clearance.
-            Icon(canvas, "Restoration counters", "Counters icon", 18f, 28f, -23f);
-            TextAt(canvas, "Restoration counters", "Counters header", 18f, 12.5f, TextAlignmentOptions.Left, 54f, 28f, -23f);
-            Rect(canvas, "Restoration counters", "Counters divider", 9f, 28f, -44f);
-            Rect(canvas, "Restoration counters", "Counter row 0", 32f, 26f, -56f);
-            Rect(canvas, "Restoration counters", "Counter row 1", 32f, 26f, -94f);
-            Rect(canvas, "Restoration counters", "Counter row 2", 32f, 26f, -132f);
-            Icon(canvas, "Restoration counters", "Counter icon 0", 20f, 38f, -62f);
-            Icon(canvas, "Restoration counters", "Counter icon 1", 20f, 38f, -100f);
-            Icon(canvas, "Restoration counters", "Counter icon 2", 20f, 38f, -138f);
-            TextAt(canvas, "Restoration counters", "Seedling counter", 24f, 13.5f, TextAlignmentOptions.Left, 66f, 36f, -60f);
-            TextAt(canvas, "Restoration counters", "Tree counter", 24f, 13.5f, TextAlignmentOptions.Left, 66f, 36f, -98f);
-            TextAt(canvas, "Restoration counters", "Fire counter", 24f, 13.5f, TextAlignmentOptions.Left, 66f, 36f, -136f);
-            Text(canvas, "Restoration counters", "Restoration percent", 20f, 13f, TextAlignmentOptions.Left, 28f, -176f);
-            Rect(canvas, "Restoration counters", "Restoration bar background", 16f, 28f, -200f);
+            // Restoration counters (428x258) with top border PROGRESS badge clearance.
+            Icon(canvas, "Restoration counters", "Counters icon", 18f, 28f, -32f);
+            TextAt(canvas, "Restoration counters", "Counters header", 18f, 12.5f, TextAlignmentOptions.Left, 54f, 28f, -32f);
+            Rect(canvas, "Restoration counters", "Counters divider", 9f, 28f, -54f);
+            Rect(canvas, "Restoration counters", "Counter row 0", 32f, 26f, -66f);
+            Rect(canvas, "Restoration counters", "Counter row 1", 32f, 26f, -104f);
+            Rect(canvas, "Restoration counters", "Counter row 2", 32f, 26f, -142f);
+            Icon(canvas, "Restoration counters", "Counter icon 0", 20f, 38f, -72f);
+            Icon(canvas, "Restoration counters", "Counter icon 1", 20f, 38f, -110f);
+            Icon(canvas, "Restoration counters", "Counter icon 2", 20f, 38f, -148f);
+            TextAt(canvas, "Restoration counters", "Seedling counter", 24f, 13.5f, TextAlignmentOptions.Left, 66f, 36f, -70f);
+            TextAt(canvas, "Restoration counters", "Tree counter", 24f, 13.5f, TextAlignmentOptions.Left, 66f, 36f, -108f);
+            TextAt(canvas, "Restoration counters", "Fire counter", 24f, 13.5f, TextAlignmentOptions.Left, 66f, 36f, -146f);
+            Text(canvas, "Restoration counters", "Restoration percent", 20f, 13f, TextAlignmentOptions.Left, 28f, -186f);
+            Rect(canvas, "Restoration counters", "Restoration bar background", 16f, 28f, -210f);
             InsetFill(canvas, "Restoration counters", "Restoration bar background", "Restoration bar fill", 3f);
 
             // Thin strips and prompts: centred, with side padding.
             Text(canvas, "Controls reminder", "Controls text", 26f, 17f, TextAlignmentOptions.Center, 18f, -6f);
-            TextAt(canvas, "Arunika field map", "Map title", 18f, 11.5f, TextAlignmentOptions.Left, 24f, 64f, -18f);
-            TextAt(canvas, "Arunika field map", "Map M hint", 18f, 11f, TextAlignmentOptions.Right, 24f, 24f, -18f);
-            Rect(canvas, "Arunika field map", "Map coordinates", 204f, 24f, -44f);
+            Rect(canvas, "Arunika field map", "Map coordinates", 204f, 24f, -24f);
             Text(canvas, "Next destination", "Waypoint distance", 22f, 16f, TextAlignmentOptions.Center, 16f, -4f);
             CenterChild(canvas, "Next destination", "Waypoint 3D arrow", new Vector2(84f, 84f), new Vector2(0f, -22f));
             Text(canvas, "Next destination", "Waypoint instruction", 24f, 15.5f, TextAlignmentOptions.Center, 16f, -112f);
-            Text(canvas, "Interaction prompt", "Interaction text", 30f, 20f, TextAlignmentOptions.Center, 20f, -13f);
+            Text(canvas, "Interaction prompt", "Interaction text", 30f, 18f, TextAlignmentOptions.Center, 20f, -12f);
             Text(canvas, "Feedback toast", "Feedback text", 34f, 20f, TextAlignmentOptions.Center, 20f, -13f);
 
             foreach (KeyValuePair<string, float> card in CenteredCards)
@@ -83,6 +81,7 @@ namespace Rimbara.UI
 
                 if (rect.GetComponent<Button>() != null)
                 {
+                    if (!rect.gameObject.activeSelf) continue;
                     int rowKey = Mathf.RoundToInt(rect.anchoredPosition.y);
                     if (!rows.TryGetValue(rowKey, out List<RectTransform> row))
                         rows[rowKey] = row = new List<RectTransform>();

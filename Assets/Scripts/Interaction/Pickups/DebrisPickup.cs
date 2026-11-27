@@ -43,5 +43,17 @@ namespace Rimbara.Interaction
             gameObject.SetActive(false);
             return new InteractionResult(true, "Awal yang bersih. Lahan ini siap untuk pemulihan.");
         }
+
+        /// <summary>Applies cleared visuals when loading a saved game.</summary>
+        public void RestoreCleared()
+        {
+            if (Cleared) return;
+            Cleared = true;
+            SetFocused(false);
+            if (burntVisual != null) burntVisual.SetActive(false);
+            if (preparedGround != null) preparedGround.SetActive(true);
+            if (clearDust != null) clearDust.SetActive(false);
+            gameObject.SetActive(false);
+        }
     }
 }

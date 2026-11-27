@@ -89,6 +89,16 @@ namespace Rimbara.UI
             return true;
         }
 
+        /// <summary>Marks the opening prologue as already watched when resuming a saved session.</summary>
+        public void MarkCompleted()
+        {
+            if (sequence != null) { StopCoroutine(sequence); sequence = null; }
+            IsOpening = false;
+            HasPlayed = true;
+            if (overlay != null) overlay.SetActive(false);
+            if (skip != null) skip.gameObject.SetActive(false);
+        }
+
         private IEnumerator PlayOpening()
         {
             SequenceSeconds = 0f;

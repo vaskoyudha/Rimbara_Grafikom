@@ -104,6 +104,23 @@ The card inset sprite under `Assets/Art/UI/Panels/` was converted to PNG from a
 
 - `panel_rect_tinted-dark_bracket_03.svg` (`https://cdn.freegameui.net/svg/panel/rect/tinted-dark/panel_rect_tinted-dark_bracket_03.svg`) -> `Assets/Art/UI/Panels/CardInset_DarkGoldBracket.png`
 
+## game-icons.net interface icons
+
+The HUD briefing and restoration icons under `Assets/Art/UI/Icons/` were
+converted to white-on-transparent PNGs (then tinted at runtime) from
+**game-icons.net** works, licensed **CC BY 3.0**:
+
+- `flame.svg` by **Carl Olsen** (`https://game-icons.net/1x1/carl-olsen/flame.html`) -> `Assets/Art/UI/Icons/Icon_Fire.png`
+- `brick-pile.svg` by **Delapouite** (`https://game-icons.net/1x1/delapouite/brick-pile.html`) -> `Assets/Art/UI/Icons/Icon_Rubble.png`
+- `sprout.svg` by **Lorc** (`https://game-icons.net/1x1/lorc/sprout.html`) -> `Assets/Art/UI/Icons/Icon_Seedling.png`
+- `compass.svg` by **Lorc** (`https://game-icons.net/1x1/lorc/compass.html`) -> `Assets/Art/UI/Icons/Icon_Zone.png`
+- `pine-tree.svg` by **Lorc** (`https://game-icons.net/1x1/lorc/pine-tree.html`) -> `Assets/Art/UI/Icons/Icon_Tree.png`
+
+Modifications: original 512x512 SVGs rasterised to 256x256 and recoloured to a
+single white silhouette so the UI can tint them. The originals remain under the
+authors' CC BY 3.0 terms; attribution above is the required credit.
+[CC BY 3.0](https://creativecommons.org/licenses/by/3.0/)
+
 ## Original project content
 
 RIMBARA's gameplay scripts, mission/profile setup, scene/UI/effect generators,

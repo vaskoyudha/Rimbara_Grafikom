@@ -54,5 +54,14 @@ namespace Rimbara.Interaction
 
             return new InteractionResult(true, "Perlengkapan siap. Dekati api bertanda.");
         }
+
+        /// <summary>Hides pickup prop and beacon when equipment is already collected in a saved run.</summary>
+        public void SyncFromProgress()
+        {
+            if (chapter == null || chapter.Progress == null || !chapter.Progress.HasEquipment) return;
+            SetFocused(false);
+            if (pickupVisual != null) pickupVisual.SetActive(false);
+            if (beacon != null) beacon.SetActive(false);
+        }
     }
 }

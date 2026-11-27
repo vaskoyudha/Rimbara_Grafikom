@@ -64,5 +64,19 @@ namespace Rimbara.Interaction
         }
 
         public void ConfigureAudio(AudioSource source) { crackle = source; }
+
+        /// <summary>Applies extinguished visuals when loading a saved game.</summary>
+        public void RestoreExtinguished()
+        {
+            if (recorded) return;
+            recorded = true;
+            if (fireAndSmoke != null)
+                foreach (ParticleSystem particles in fireAndSmoke)
+                    if (particles != null) particles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+            if (glow != null) glow.enabled = false;
+            if (crackle != null) crackle.Stop();
+            foreach (Collider collider in GetComponentsInChildren<Collider>()) collider.enabled = false;
+            if (steamEffect != null) steamEffect.SetActive(false);
+        }
     }
 }

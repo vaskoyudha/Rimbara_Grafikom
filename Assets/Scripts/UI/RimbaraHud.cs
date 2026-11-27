@@ -47,13 +47,16 @@ namespace Rimbara.UI
             flow.ModeChanged += RefreshMode;
             actor.ActionPerformed += ShowAction;
             view.Start.onClick.AddListener(flow.ShowZoneSelect);
+            if (view.Continue != null) view.Continue.onClick.AddListener(flow.Continue);
             view.Begin.onClick.AddListener(flow.Begin);
             if (view.ZoneABegin != null) view.ZoneABegin.onClick.AddListener(flow.ShowBriefing);
             view.OpenControls.onClick.AddListener(flow.ShowControls);
             if (view.OpenSettings != null) view.OpenSettings.onClick.AddListener(flow.ShowSettings);
+            if (view.OpenAchievements != null) view.OpenAchievements.onClick.AddListener(flow.ShowAchievements);
             view.ControlsBack.onClick.AddListener(flow.ShowMenu);
             view.BriefingBack.onClick.AddListener(flow.ShowZoneSelect);
             if (view.SettingsBack != null) view.SettingsBack.onClick.AddListener(flow.ShowMenu);
+            if (view.AchievementsBack != null) view.AchievementsBack.onClick.AddListener(flow.ShowMenu);
             if (view.ZoneSelectBack != null) view.ZoneSelectBack.onClick.AddListener(flow.ShowMenu);
             view.Resume.onClick.AddListener(flow.Resume);
             view.PauseMenu.onClick.AddListener(flow.ReturnToMenu);
@@ -174,11 +177,19 @@ namespace Rimbara.UI
             view.Menu.SetActive(mode == ScreenMode.Menu);
             if (view.ZoneSelect != null) view.ZoneSelect.SetActive(mode == ScreenMode.ZoneSelect);
             if (view.Settings != null) view.Settings.SetActive(mode == ScreenMode.Settings);
+            if (view.Achievements != null) view.Achievements.SetActive(mode == ScreenMode.Achievements);
             view.Briefing.SetActive(mode == ScreenMode.Briefing);
             view.Controls.SetActive(mode == ScreenMode.Controls);
             view.Pause.SetActive(mode == ScreenMode.Paused);
             view.Victory.SetActive(mode == ScreenMode.Victory);
             view.Dimmer.SetActive(mode != ScreenMode.Playing);
+            if (view.MenuScreens != null)
+            {
+                if (mode == ScreenMode.Menu) view.MenuScreens.RefreshContinueState(flow.CanContinue);
+                RestorationScore s = RestorationScore.From(state.Snapshot, 1);
+                view.MenuScreens.SyncGameplayBadges(s.Fires, s.FireGoal, s.Trees, mode == ScreenMode.Playing, mode == ScreenMode.Victory);
+                if (mode == ScreenMode.Achievements) view.MenuScreens.RefreshAchievements();
+            }
             if (mode == ScreenMode.ZoneSelect && view.MenuScreens != null)
             {
                 float frac = missions.DisasterChapter != null
